@@ -1,0 +1,93 @@
+{
+    "title": "msp430G2452 programming with linux"
+}
+
+![](la-foto-1024x768.jpg)
+
+The MSP430G2452 is cheap and has more flash than the MSPs shipped with the launchpad (8k vs 2k). Only problem is that it is not always supported by standard tools (by standard I mean the ones that came with your distribution). And the introduction from [hackaday](http://hackaday.com/2010/08/11/how-to-launchpad-programming-with-linux) is good but does not allow to use the 8k of the 2452.
+Below the steps to get everything from the 2452:
+
+<!--more-->
+
+
+
+= Download and install mspdebug 0.16 =
+
+I had 0.14 previously which did not recognize the 2452. So download mspdebug from [here](http://sourceforge.net/projects/mspdebug/files/mspdebug-0.16.tar.gz/download) and compile/install it. If everything goes well, it should look like below (there are some errors but still it does not prevent from programming the MSP):
+
+    mspdebug rf2500
+    MSPDebug version 0.16 - debugging tool for MSP430 MCUs
+    Copyright (C) 2009-2011 Daniel Beer <dlbeer@gmail.com>
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    
+    Trying to open interface 1 on 007
+    rf2500: warning: can't detach kernel driver: No data available
+    Initializing FET...
+    FET protocol version is 30001000
+    Configured for Spy-Bi-Wire
+    Set Vcc: 3000 mV
+    fet: FET returned error code 4 (Could not find device (or device not supported))
+    fet: command C_IDENT1 failed
+    fet: identify failed
+    Trying again...
+    Initializing FET...
+    FET protocol version is 30001000
+    Configured for Spy-Bi-Wire
+    Sending reset...
+    Set Vcc: 3000 mV
+    Device ID: 0x2452
+    Device: MSP430G2452
+    Code memory starts at 0xe000
+    Number of breakpoints: 1
+    
+    Available commands:
+        =         delbreak  gdb       load      opt       reset     simio     
+        alias     dis       help      locka     prog      run       step      
+        break     erase     hexout    md        read      set       sym       
+        cgraph    exit      isearch   mw        regs      setbreak  
+    
+    Available options:
+        color           gdb_loop        iradix          
+        fet_block_size  gdbc_xfer_size  quiet           
+    
+    Type "help <topic>" for more information.
+    Press Ctrl+D to quit.
+    
+    (mspdebug)
+    
+    
+
+= Compile for 2452 (-mmcu=msp430g2452) =
+
+The hackaday sample program actually compiles and run ok with gcc version 4.4.5 (MSPGCC4_20110213) and -mmcu=msp430x2012. Certainly the memory map for standard peripherals like watchdog and timers are similar... But still this is a bit of a hack and anyway, this does not allow loading more than 1k of program data:
+
+    msp430-gcc -Os -Wall -g -mmcu=msp430x2012 -o main.elf main.o
+    /opt/msp430-gcc-4.4.5/lib/gcc/msp430/4.4.5/../../../../msp430/bin/ld: main.elf section `.bss' will not fit in region `data'
+    /opt/msp430-gcc-4.4.5/lib/gcc/msp430/4.4.5/../../../../msp430/bin/ld: region `data' overflowed by 3968 bytes
+    collect2: ld returned 1 exit status
+    make: *** [all] Error 1
+    
+
+So I had to get a more decent version of mspgcc anyway. Luckily a nice guy posted a [tutorial](https://github.com/sergiocampama/Launchpad/blob/master/README.md) about this not long ago. As I speak, everything runs smoothly and I ended up with a 4.5.2 gcc toolchain fully functionnal. I can now compile with -mmcu=msp430g2452
+
+To keep programmers busy some changes are needed to make the sample stuff compile:
+
+Use new headers:
+
+    < #include <io.h>
+    < #include <signal.h>
+    < 
+    ---
+    > #include <msp430.h>
+    
+
+Use new interrupt syntax (note the subtle TIMERA0_VECTOR -> TIMER0_A0_VECTOR transformation)
+
+    < interrupt(TIMERA0_VECTOR) TIMERA0_ISR(void) {
+    ---
+    > __attribute__((interrupt(TIMER0_A0_VECTOR)))
+    > void TIMERA0_ISR(void) {
+    
+
+Et voilà, you can now use 8 kBytes of storage

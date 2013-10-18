@@ -1,13 +1,31 @@
-# ordered item 1
-    indented text does not restart numbering
-#* unordered subitem 1
-#* unordered subitem 2
-# ordered item 2
+= Code Blocks =
 
+    code line 1
+    code line 2    
 
-[link text](link url)
+= Special Lines =
 
 ![alt text](image url)
 
 = header level 1 =
 == header level 2 ==
+
+<!--more-->
+
+= Paragraphs
+A paragraph is standard text. It may contain <b>HTML</b> but markup is not interpreted inside <b>HTML *tags*</b>. A paragraph ends with an empty line.
+
+[link text](link url)
+you can escape \* with a \\
+
+= Lists =
+
+# ordered item 1
+    indented text does not restart numbering
+#* unordered subitem 1
+#* unordered subitem 2
+#* <b>HTML is valid inside items<b>
+# *markup* is also valid inside items
+# ordered item 3
+
+

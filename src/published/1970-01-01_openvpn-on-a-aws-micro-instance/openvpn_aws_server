@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [[ $# < 2 ]]
+then
+        echo "$0 [instance ip or domain] [instance pem]"
+        exit 1;
+fi
+INSTANCE=$1
+INSTANCE_PEM=$2
+ssh ubuntu@$INSTANCE -i $INSTANCE_PEM <<EOF1
+echo "dev tun
+ifconfig 10.8.0.1 10.8.0.2
+keepalive 10 60
+ping-timer-rem
+persist-tun
+persist-key
+secret static.key
+" > server.conf || ( echo "cannot write config"; exit 1 )
+sudo -s <<EOF2
+#aptitude install openvpn 
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+echo 1 > /proc/sys/net/ipv4/ip_forward
+openvpn --genkey --secret static.key || ( echo "cannot genkey"; exit 1 )
+EOF2
+sudo -s <<EOF2
+killall -9 openvpn
+openvpn --config server.conf
+rm static.key
+rm server.conf
+EOF2
+EOF1
+

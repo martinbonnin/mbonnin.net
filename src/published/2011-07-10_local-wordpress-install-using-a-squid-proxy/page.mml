@@ -1,0 +1,44 @@
+{
+    "title": "Local Wordpress install using a squid proxy"
+}
+
+![](2278852.jpg)After 6 months of playing with wordpress, I always end up testing modifications directly on the production website because all the urls are hardcoded to http://mbonnin.net/ inside the SQL database and testing on localhost breaks them. While editing directly the production website is fast, I would like to avoid breaking it by accident and also I would like to keep a subversion repository of my html/php files somewhere on my local hard drive to keep track of the changes I make. So I was looking for a way to make my browser believe mbonnin.net is local...<!--more-->
+
+First idea is to trick the resolver by adding an entry into /etc/hosts:
+
+    127.0.0.1    mbonnin.net
+    
+
+Problem is that I have to edit the file each time I want to change from production to test and I am lazy. Other problem is that DNS information is cached and you have to reset it each time. So I ended up setting a http proxy and using 2 webbrowsers: one with direct internet access, the other one through the proxy.
+
+= Installing and configuring squid =
+
+
+First step is to install squid
+
+    sudo aptitude install squid
+    
+
+
+Then edit the configuration file /etc/squid/squid.conf. We need to tell squid to use localhost as a cache peer for the mbonnin.net host.
+
+    acl all src all
+    
+    http_port 3128 accel vhost
+    cache_peer 127.0.0.1 parent 80 0 no-query originserver name=myAccel
+    acl our_sites dstdomain mbonnin.net
+    http_access allow our_sites
+    http_access deny all
+    cache_peer_access myAccel allow our_sites
+    cache_peer_access myAccel deny all
+    negative_ttl 0
+    
+    access_log /var/log/squid/access.log squid
+    hosts_file /etc/hosts
+    coredump_dir /var/spool/squid
+    
+
+The important part is the cache_peer directive that tells squid where to find the pages for mbonnin.net. Also important is the http_port directive, that defines the port squid is going to listen to and above all the 'accel' option. Without this, squid might fetch the data from the 'real' server and not localhost.
+The negative_ttl stuff prevents squid to cache HTTP errors in case I mess up the php.
+Now configure your webbrowser to use the proxy on 127.0.01:3128 and you can modify all the php/html you want without touching the production website.
+Et voilà !
