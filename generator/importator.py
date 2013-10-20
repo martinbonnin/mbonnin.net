@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 # coding=utf8
 
 from lxml import etree;
@@ -41,7 +41,7 @@ class Post:
             pass;
 
         try:
-            f = codecs.open(post_dir + "/page.mml", encoding='utf-8', mode="wb");
+            f = codecs.open(post_dir + "/page.markdown", encoding='utf-8', mode="wb");
         except:
             print("cannot open file");
             raise;
