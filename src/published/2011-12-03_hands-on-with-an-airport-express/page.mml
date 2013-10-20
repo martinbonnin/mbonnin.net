@@ -1,0 +1,30 @@
+{
+    "title": "Hands on with an Airport Express"
+}
+
+I have an iPhone. It works relatively well (well, except for the facebook app but that's another story. EDIT: the new facebook app is much better now). Especially, I use the [deezer](http://deezer.com) application a lot. I use it to discover new artists or listen to playlists while I'm at home. I was looking for a cheap way to stream the music to my speakers wirelessly. Especially, I wanted to do this with no additional wifi access point nor ethernet cable of course. Something I thought would be easy now that we can compute pi to 2700 billion digits. I was wrong.
+<!--more-->
+The available solutions were:
+
+The available solutions were:
+
+* Airplay wireless speakers by Bose or [Parrot](http://zikmu.parrot.com/fr/presentation): nice but quite expensive. And my current speakers work fine so I want to keep them
+* [ShairPort](http://arstechnica.com/apple/news/2011/04/shairport-emulates-airport-express-to-receive-airplay-streams.ars), the reverse engineered version of the AirportExterme: open source, quite an interesting project for a [pandaboard](http://pandaboard.org/content/platform) but I don't want to spend too much time on it either.
+* The Airport express: official way to do this. 
+
+[Airport Utility](http://support.apple.com/fr_FR/downloads/#airport) installed. Hurrah ! I also play the PS3 from time to time so 45 minutes of setup time and updates download is the usual price to pay. Sony taught me to accept this so I'm now almost thinking that's the way to do it right.
+
+The airport express is already configured so I make a hard factory reset to make sure to start from a clean state. Of course the Airport Utility cannot see the new airport express unless you connect the PC to the temporary access point. Seems ok. I disconnect from my freebox (and lose internet access) and connect to the airport express. The utility sees it and I can configure it. I tell the airport express to join my current network, fill in the network details and press OK. 
+
+![](join.png)
+
+Now comes the fun part. Not only did the airport not reboot correctly but windows lost internet access completely. And I cannot connect to my freebox. I get an error message like "the settings saved on this computer for the network do not match the requirements of the network". I have to remove the network connection, do a factory reset on the airport express and reenter the wifi details inside windows to make it work again.
+
+![](settings-1024x322.png)
+Looks like I'm not the only one...
+
+[skip] After some trials, I finally find an interesting setting in the freebox configuration page. Forcing the WPA2 to TKIP seems to make the airport express behave a bit better. It is still not 100% perfect though because while the airport express is rebooting, I need to explicitely tell windows to reconnect to the freebox (remember, it needs to switch from the airport auto generated access point to my freebox access point). 
+
+![](tkip.png)
+
+The iPhone UI freezes a bit each time I change the audio destination, looks like someone is doing synchronous requests in the UI thread... Also the audio has cuts from time to time, which is a bit worrying... But I can now stream [Daft Punk](http://www.youtube.com/watch?v=H0TBZeCgL0E) to my speakers 5 meters away.

@@ -1,0 +1,39 @@
+{
+    "title": "Optimizing the developer's pipeline"
+}
+
+== Getting notified upon make completion ==
+
+My typical day involves a fair amout of code/compile/debug cycles..
+Sometimes, I compile 2 repositories at the same time and do something else waiting for my computer to crunch source code. Sometimes I forget what I was doing in the first place when I realize some time later that my make process completed (or failed miserabily...). In all cases, I always waste a few minutes in the debug pipeline because my polling interval is too large.
+
+So I was looking for a way to get interrupts from bash whenever my brain can resume its previous processing.
+
+
+<!--more-->
+
+I found out the gnome Desktop had a small command line tool to sent notifications called notify-send. That, in addition to a small bash function does the job:
+
+
+
+
+I found out the gnome Desktop had a small command line tool to sent notifications called notify-send. That, in addition to a small bash function does the job:
+
+
+    make() {
+            PARAMS="make"
+            SUMMARY=""
+            /usr/bin/make "${@}"
+            CODE=$?
+            if [[ $CODE != 0 ]]
+            then
+                    SUMMARY+="failed"
+            else
+                    SUMMARY+="success"
+            fi
+            for i in "${@}"; do PARAMS+=" $i"; done;
+            notify-send -t 3000 "${SUMMARY}" -- "${PARAMS}" > /dev/null
+            return $CODE
+    }
+    
+Et voilà

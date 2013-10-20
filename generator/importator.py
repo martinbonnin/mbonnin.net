@@ -9,10 +9,10 @@ import json;
 import re;
 import time;
 import codecs;
-import HTMLParser;
 import string;
 import urlparse;
 import utils;
+import cgi;
 
 def nicify(name):
     ret = name.lower()
@@ -30,6 +30,7 @@ def _wp(tag):
 class Post:
     def __init__(self, item):
         title = item.findtext("title");
+        self.in_list = 0;
         print("processing " + title);
         
         date = time.strptime(item.findtext("pubDate"), "%a, %d %b %Y %H:%M:%S +0000");
@@ -58,19 +59,22 @@ class Post:
             #print("select thumbnail " + thumbnail_ids[0]);
             thumbnail_urls = tree.xpath("//*[local-name()='post_id'][.='" + thumbnail_ids[0] + "']/parent::*/*[local-name()='attachment_url']/text()");
             if (thumbnail_urls):
+                ext = os.path.splitext(thumbnail_urls[0])[1].lower();
+                proc = utils.Popen('wget -O ' + self.dir + '/thumbnail' + ext + ' ' + thumbnail_urls[0]);
+                if (proc.returncode != 0):
+                    print("cannot download " + thumbnail_urls[0]);
+                    print(proc.err);
+                    print(proc.out);
                 header['thumbnail'] = os.path.basename(thumbnail_urls[0]);
                 
         self.f.write(json.dumps(header, indent=4));
         self.f.write("\n\n");
 
-    def write_content(self, item):
-
-        lines = item.findtext(_content("encoded")).splitlines();
-        item_link = item.findtext("link");
-
+    def transform_code_blocks(self, content):
+        #we need a root node to have a valid XML document
+        ret = "<xml>";
+        lines = content.splitlines();
         current_code_tag = None;
-        list_stack = [];
-        line_is_first = 0;
         for line in lines:
             match = re.search("\[(/?)([^ \]]*).*", line);                
             if (match):
@@ -86,102 +90,160 @@ class Post:
                     if (m != current_code_tag):
                         print("got " + m + " instead of " + current_code_tag);
                     current_code_tag = None;
-                else:
-                    # XXX: should I unescape ?
-                    line = HTMLParser.HTMLParser().unescape(line);
-                    self.f.write("    " + line + "\n");
-                continue;
+                    ret += "</code>";
+                    continue;
             elif (has_code_tag & (not closing)):
                 current_code_tag = match.group(2).lower();
+                ret += "<code>";
                 continue;
 
-            # XXX: not very nice.... should it use a html parser ?
-            if (re.search("<ul[^>]*>", line)):
-                #print("<ul>");
-                list_stack.append({"tag": "ul"});
-                line_is_first = 0;
-                continue;
-            elif (re.search("<ol[^>]*>", line)):
-                #print("<ol>");
-                list_stack.append({"tag": "ol"});
-                line_is_first = 0;
-                continue;
-            elif (re.search("</ul>", line)):
-                #print("</ul>");
-                old = list_stack.pop();
-                if (old['tag'] != "ul"):
-                    print("got </ul> while expecting " + old['tag']);
-                continue;
-            elif (re.search("</ol*>", line)):
-                #print("</ol>");
-                old = list_stack.pop();
-                if (old['tag'] != "ol"):
-                    print("got </ol> while expecting " + old['tag']);
-                continue;
+            if (current_code_tag):
+                ret += cgi.escape(line) + "\n";
+            else:
+                ret += line + "\n";
 
+        ret += "</xml>";
+        return ret;
 
+    def write_content(self, item):
+        xml = self.transform_code_blocks(item.findtext(_content("encoded")));
+
+        #print("----------------------------------------------------\n" + xml);
+        # fromstring() fals on 'href="http://server/path?a=1&b=2
+        #content = etree.fromstring(xml);
+        content = etree.HTML(xml);
+        self.prefix="";
+        
+        def unhandled(element):
+            print("skipped " + element.tag + etree.tostring(element));
+
+        def write_img(element):
+            self.f.write("![" + element.get("alt") + "]");
+            attachment = download_attachment(element.get("src"));
+            if (not attachment):
+                print("cannot download attachment " + element.get("src"));
+                attachment = element.get("src");
+            self.f.write("(" + attachment + ")");
             
-            if (len(list_stack) > 0):
-                #print(line)
-                if (line_is_first):
-                    list_stack[-1]['line'] = 0;
-                    line_is_first = 0;
-                elif (re.search("<li[^>]*>", line)):
-                    list_stack[-1]['line'] = 0;
-                    line = re.sub("[ \t]*<li[^>]*>.*", "", line);
-                    if (line == ""):
-                        #print("empty li");
-                        line_is_first = 1;
-                        continue;            
-                else:
-                    list_stack[-1]['line'] = list_stack[-1]['line'] + 1;
 
-                if (list_stack[-1]['line'] > 0):
-                    i = 0;
-                    while (i < len(list_stack)):
-                        self.f.write(" ");
-                        i = i + 1;
-                else:
-                    for l in list_stack:
-                        if (l['tag'] == "ul"):
-                            self.f.write("*");
-                        elif (l['tag'] == "ol"):
-                            self.f.write("#");            
-                self.f.write(" ");
+        def download_attachment(attachment):
+            if (string.find(attachment, "wp-content/upload") != -1):
+                item_link = item.findtext("link");
+                attachment = urlparse.urljoin(item_link, attachment);
+                attachment_name = attachment[string.rfind(attachment, "/"):];
+                af = self.dir + attachment_name;
+                #print("download " + attachment + " to " + f);
+                if (not os.path.isfile(af)):
+                    print("downloading... " + attachment);
+                    proc = utils.Popen('wget -O ' + af + ' ' + attachment);
+                    if (proc.returncode != 0):
+                        print("cannot download " + attachment);
+                        print(proc.err);
+                        os.remove(af);
+                        sys.exit(2);
+                return attachment_name[1:];
 
-            line = re.sub("</li>", "", line);
-            line = re.sub("<br>", "", line);
-            line = re.sub("<p>", "", line);
-            line = re.sub("</p>", "", line);
-            line = re.sub(r'<h1[^>]*>(.*)</h1>', r'= \1 =', line);
-            line = re.sub(r'<h3[^>]*>(.*)</h3>', r'== \1 ==', line);
-            a_re = r'<a.*href=[\'"]?([^\'"]*)[\'"]?[^>]*>(.*)</a>';
-            while (1):
-                match = re.search(a_re, line);
-                if (not match):
-                    break;
-                attachment = match.group(1);
-                attachment_name = None;
-                if (string.find(attachment, "wp-content/upload") != -1):
-                    attachment = urlparse.urljoin(item_link, attachment);
-                    attachment_name = attachment[string.rfind(attachment, "/"):];
-                    af = self.dir + attachment_name;
-                    #print("download " + attachment + " to " + f);
-                    if (not os.path.isfile(af)):
-                        print("downloading... " + attachment);
-                        proc = utils.Popen('wget -O ' + af + ' ' + attachment);
-                        if (proc.returncode != 0):
-                            print("cannot download " + attachment);
-                            print(proc.err);
-                            os.remove(af);
-                            sys.exit(2);
-                if (attachment_name):
-                    line = re.sub(a_re, r'[\2](' + attachment_name[1:] + ')', line);
-                else:
-                    line = re.sub(a_re, r'[\2](\1)', line);
+        def walk(element):
+            for child in element.iterchildren():
+                text = "";
+                if (child.text):
+                    text = child.text;
+                if (isinstance(child.tag, basestring)):
+                    if (child.tag == "ul"):
+                        self.prefix += "*";
+                        self.f.write("\n");
+                        self.in_list += 1;
+                        walk(child);
+                        self.in_list -= 1;
+                        self.prefix = self.prefix[:-1];
+                        if (len(self.prefix) == 0):
+                            self.f.write("\n");
+                        continue;
+                    elif (child.tag == "ol"):
+                        self.prefix += "#";
+                        self.in_list += 1;
+                        walk(child);
+                        self.in_list -= 1;
+                        self.prefix = self.prefix[:-1];
+                        if (len(self.prefix) == 0):
+                            self.f.write("\n");
+                        continue;
+                    elif (child.tag == "li"):
+                        # strip leading whitespace
+                        while (len(text) and (text[0] == '\n' or text[0] == ' ')):
+                            text = text[1:];
+                        text = re.sub("\n", "\n    ", text);
+                        self.f.write(self.prefix + " " + text);
+                        # there might be <a> or <br> embedded inside <li>
+                        walk(child);
+                        self.f.write("\n");
+                        continue;
+                    elif (child.tag == "a"):
+                        if (len(child) == 1 and child[0].tag == "img"):
+                            write_img(child[0]);
+                        elif (len(child) == 0):
+                            href = child.get("href");
+                            if (href):
+                                self.f.write("[" + text + "]");
+                                self.f.write("(" + href + ")");
+                                download_attachment(href);
+                            else:
+                                unhandled(child);
+                        else:
+                            unhandled(child);
+                    elif (child.tag == "img"):
+                        if (len(child) == 0):
+                            write_img(child);
+                        else:
+                            unhandled(child);
+                    elif (child.tag == "br"):
+                        pass;
+                    elif (child.tag == "p"):
+                        self.f.write(text);
+                        walk(child);
+                    elif (child.tag == "body"):
+                        # it seems this tag is generated automatically
+                        walk(child);
+                    elif (child.tag == "xml"):
+                        # this tag we put it 
+                        self.f.write(text);
+                        walk(child);
+                    elif (child.tag == "h1"):
+                        if (len(child) == 0):
+                            self.f.write("= " + text + " =\n");
+                        else:
+                            unhandled(child);
+                    elif (child.tag == "h3"):
+                        if (len(child) == 0):
+                            self.f.write("== " + text + " ==\n");
+                        else:
+                            unhandled(child);
+                    elif (child.tag == "code"):
+                        if (len(child) == 0):                            
+                            lines = text.split("\n");
+                            for line in lines:
+                                self.f.write("    " + utils.unescape(line) + "\n");
+                        else:
+                            unhandled(child);
+                    else:
+                        self.f.write("<" + child.tag);
+                        for key in child.keys():
+                            self.f.write(" " + key + "=\"" + cgi.escape(child.get(key)) + "\"");
+                        self.f.write(">");
+                        self.f.write(text);
+                        walk(child);
+                        self.f.write("</" + child.tag + ">");
+                elif (isinstance(child, etree._Comment)):
+                    self.f.write(etree.tostring(child));
 
-            line = re.sub(r'\[<img.*alt="([^"]*)".*/>\]', r'![\1]', line);
-            self.f.write(line + "\n");
+                if (child.tail):
+                    if (self.in_list):
+                        tail = re.sub("\n", "\n    ", child.tail);
+                    else:
+                        tail = child.tail;
+                    self.f.write(tail);
+                
+        walk(content);
 
 #
 # main program
