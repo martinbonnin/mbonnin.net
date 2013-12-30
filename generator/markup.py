@@ -4,9 +4,9 @@ import utils;
 from lxml import etree;
 
 class Renderer:
-    def __init__(self, attachment_cb):
+    def __init__(self, image_cb):
         self.prefix = [];
-        self.attachment_cb = attachment_cb;
+        self.image_cb = image_cb;
         self.link_re = "\[([^\]]*)\]\(([^\)]*)\)";
         self.list_re = "([\*#]+) *(.*)";
 
@@ -36,7 +36,7 @@ class Renderer:
             return True;
         m = re.search("!" + self.link_re, line);
         if (m):
-            img_url = self.attachment_cb(m.group(2), True);
+            img_url = self.image_cb(m.group(2), True);
             fd.write("<a href=\"" + img_url + "\"><img src=\"" + img_url + "\" alt=\"" + m.group(1) + "\"/></a>\n");
             found(m);
             return True;
@@ -54,7 +54,7 @@ class Renderer:
                 result += text[start:];
                 break;
             result += text[start:start + m.start()];
-            url = self.attachment_cb(m.group(2));
+            url = self.image_cb(m.group(2));
             result += "<a href=\"" + url + "\">" + m.group(1) + "</a>"
             start += m.end();
         result = re.sub(r"[^\\]\*([^\* ]*[^\\])\*", r"<b>\1</b>", result);
@@ -191,6 +191,6 @@ class Renderer:
                 continue;
 
 # helper function
-def render(markup, fd, attachment_cb):
-    Renderer(attachment_cb).render(markup, fd);
+def render(markup, fd, image_cb):
+    Renderer(image_cb).render(markup, fd);
     

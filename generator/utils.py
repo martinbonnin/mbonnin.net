@@ -34,3 +34,7 @@ def re_replace_all(re_str, template, match_cb):
         result += template[start:start + m.start()];
         result += match_cb(m);
         start += m.end();
+
+def fatal(text):
+    print(text);
+    sys.exit(1);

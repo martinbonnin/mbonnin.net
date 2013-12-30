@@ -1,0 +1,24 @@
+{
+    "title": "Bye Bye WordPress",
+    "description": "I've got a new CMS now. It uses python and a database called ext4."
+}
+
+
+<!--more-->
+
+
+New website ! Like [many others](http://nanoc.ws/about/#similar-projects), I give up on wordpress and move my blog to static pages. There is plenty of discussion over the web about the rationale behind this. Basically:
+* no more database to maintain
+* faster
+* ability to write my posts with my favorite editor
+* easy version control
+* markdown support
+
+The drawback is that there are no comments or pingback anymore. Well... 
+
+Actually I didn't really need a new website, the old wordpress stuff was still working. But I saw this as an opportunity to learn some python and responsive design. Oh and rgnutdjuuu XML/XPath... It's now official, I hate XML and perl, I love json and python !
+
+
+The generator is quite simple. It takes an arborescence of markup and images as input and produces HTML pages as output. I made my own markup parser, that works on a syntax similar but not 100% compatible with markdown. Some libraries exist like [Misaka](http://misaka.61924.nl/) but this was a good python exercise.
+
+The frontend is using a fluid grid and CSS3. It should adapt on smartphones and PC screens.

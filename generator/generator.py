@@ -7,29 +7,13 @@ import codecs;
 import os.path;
 import json;
 import utils;
+import imgutils;
 import collections;
 import re;
 
 class Generator:
     def __init__(self):
         self.posts=[]
-
-    def column_width(self, count):
-        count *= self.blog_parameters['column_width'];
-        if (count < 0):
-            count = 100 + count;
-        return str(count) + "%";
-
-    def replace_commands(self, template):
-        def match_cb(m, self=self):
-            # mouhahaha 
-            if (hasattr(self, "post")):
-                post = self.post;
-            blog_parameters = self.blog_parameters;
-            column_width = self.column_width;
-            return eval(m.group(1));
-
-        return utils.re_replace_all("%{([^}]*)}%", template, match_cb);
 
     def process_file(self, in_file, out_file):
         out_fd = utils.open_file(self.out_dir + "/" + out_file, "wb");
@@ -57,32 +41,44 @@ class Generator:
     def generate(self, in_dir, out_dir):
         self.in_dir = in_dir;
         self.out_dir = out_dir;
-        published_dir = in_dir + "/published";
+        posts_dir = in_dir + "/posts";
         
         try:
             os.mkdir(out_dir);
         except:
             pass;
-        
-        # parse blog_parameters
-        blog_parameters_fd = utils.open_file(in_dir + "/blog_parameters.json", "rb");
-        self.blog_parameters = json.load(blog_parameters_fd);
-        
-        # copy resources
-        proc = utils.Popen("cp -rf " + in_dir + "/res " + out_dir);        
+                
+        imgutils.init(in_dir);
+
+        # copy resources and index.html
+        proc = utils.Popen("cp -rf " + in_dir + "/res " + out_dir);
+        proc = utils.Popen("cp -rf " + in_dir + "/index.html " + out_dir);
          
         # parse posts
-        for d in os.listdir(published_dir):
-            if (not os.path.isdir(published_dir)):
+        for d in os.listdir(posts_dir):
+            if (not os.path.isdir(posts_dir + "/" + d)):
                 continue;
 
-            self.posts.append(post.Post(published_dir + "/" + d, out_dir));
+            print("=== post " + d + "===");
+            self.posts.append(post.Post(posts_dir + "/" + d, out_dir + "/posts"));
 
-        # sort posts
+        # sort posts, in reverse order: latest first
         self.posts.sort(cmp=lambda x,y: cmp(y.date, x.date));
 
-        self.process_file("home.html", "index.html");
-        self.process_file("style.css", "style.css");                    
+        # and write the home app.js. It is the concatenation of:
+        #  1. json dump of all posts
+        #  2. page specific javascript
+        #  3. common javascript
+        home_fd = utils.open_file(self.in_dir + "/home.js", "rb");
+        common_fd = utils.open_file(self.in_dir + "/common.js", "rb");
+        app_fd = utils.open_file(self.out_dir + "/app.js", "wb");
+
+        app_fd.write("posts = ");
+        posts = [{k: getattr(p, k, None) for k in ["directory", "title", "date_str", "description"]} for p in self.posts];
+        json.dump(posts, app_fd, indent=4);
+        app_fd.write(";\n");
+        app_fd.write(home_fd.read());
+        app_fd.write(common_fd.read());
         
 if(__name__ == "__main__"):
     if (len(sys.argv) < 3):
