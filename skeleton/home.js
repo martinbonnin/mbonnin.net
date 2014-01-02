@@ -1,16 +1,26 @@
 /* --------------------------------------------------------------------- */
 
 var i = 0;
-var makeText = function makeText(str)
+var makeText = function makeText(str, fontSize)
 {
     var text = $("<div>");
 
-    text.css("font-family", "sans-serif");
-    text.css("font-size", "18px");
-    text.css("color", "#404040");
+    if (!fontSize) {
+        fontSize = 18;
+    }
+    
+    text.css("font-size", fontSize + "px");
     text.text(str);
     text.attr("id", "text" + (i++));
+    text.css("position", "absolute");    
 
+    // HACK to measure the height of the text
+    // height is not valid until the node has been added somewhere in the DOM...
+    text.attr("visibility", "hidden");
+    $("body").append(text);
+    text.height2 = text.height();
+    text.attr("visibility", "");
+    text.remove();
     return text;
 }
 
@@ -29,15 +39,20 @@ var makeVignette = function makeVignette(p, index)
     left.css("height", 0.1 * width);
 
     var odd = (index >> 0) % 2;
-    var base = "posts/" + p.directory + "/thumbnail_" + (odd ? "green":"yellow");
+    var base = p.path + "/thumbnail_" + (odd ? "green":"yellow");
     
-    thumbnail = makeHoverImage(base + "_bw.png", base + ".png", p.title);
+    var thumbnail = makeHoverImage(base + "_bw.png", base + ".png", p.title);
     thumbnail.css("position", "absolute");
     thumbnail.css("width", 0.1 * width);
     thumbnail.css("height", 0.1 * width);
     thumbnail.css("left", odd * 0.05 * width);
+    thumbnail.front.css("transition", "opacity 0.5s");
 
-    left.append(thumbnail);
+    var a = $("<a>");
+    a.append(thumbnail);
+    a.attr("href", "" + p.path);
+
+    left.append(a);
     vignette.append(left);
 
     var right = $("<div>");
@@ -52,17 +67,37 @@ var makeVignette = function makeVignette(p, index)
     centerer.css("position", "absolute");
     centerer.css("width", "100%");
 
-    var title = makeText(p.title);
-    var date_str = makeText(p.date_str);
-    var description = makeText(p.description);
+    var title = makeText(p.title, 18);
+    title.css("font-weight", "bold");
 
-    title.load(function() {console.log("title loaded: " + title.height());});
-    centerer.append(title);
+    var y =  title.height2;
+    var date_str = makeText("" + p.date_str + "", 10);
+    date_str.css("top", y);
+    y += 1.7 * date_str.height2;
+    var description = makeText(p.description, 16);
+    description.css("top", y);
+    y += description.height2;
+
+    var a = $("<a>");
+    a.append(title);
+    a.attr("href", "" + p.path);
+    a.css("text-decoration", "none");
+    a.hover(function () {
+            thumbnail.front.css("opacity", 1);
+            title.css("color", "#009000");
+        },
+        function () {
+            thumbnail.front.css("opacity", 0);
+            title.css("color", "#404040");
+        });
+
+    
+    centerer.append(a);
     centerer.append(date_str);
     centerer.append(description);
     right.append(centerer);
 
-    total_height = 18 * 3; //title.height() + date_str.height() + description.height();
+    total_height = y;
 
     centerer.css("height", total_height);
     centerer.css("top", (right.height() - total_height)/2);
@@ -71,7 +106,7 @@ var makeVignette = function makeVignette(p, index)
     return vignette;
 }
 
-var makeContent = function makeContent(centerer)
+var getContent = function getContent(centerer)
 {
     var y = 0;
     var spacing = 0.01 * width;
@@ -89,4 +124,7 @@ var makeContent = function makeContent(centerer)
     return;
 }
 
+var getDepth = function getDepth() {
+    return "";
+}
 /* --------------------------------------------------------------------- */

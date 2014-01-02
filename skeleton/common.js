@@ -58,18 +58,21 @@ var makeHeader = function makeHeader()
     header.css("box-shadow", "0 0 " + (0.02 * h) + "px " + (0.02 * h) + "px rgba(0,0,0,0.5)");
     
     var title_logo = $("<img>");
-    title_logo.attr("src", "res/title_logo.png");
+    title_logo.attr("src", getDepth() + "res/title_logo.png");
     title_logo.css("position", "absolute");
     title_logo.css("width", 0.33 * w);
     title_logo.css("top", 0.10 * h);
     title_logo.css("left", padding);
-    header.append(title_logo);
+    var a = $("<a>");
+    a.attr("href", getDepth() + ".");
+    a.append(title_logo);
+    header.append(a);
     
     var bubble_size = 0.27 * h;
     var appendBubble = function(what, href, x) {
         var a = $("<a>");
         a.attr("href", href);
-        var src_base = "res/bubble_" + what;
+        var src_base = getDepth() + "res/bubble_" + what;
         var bubble = makeHoverImage(src_base + "_bw.png", src_base + ".png", what);
         bubble.css("position", "absolute");
         bubble.css("width", bubble_size);
@@ -82,9 +85,9 @@ var makeHeader = function makeHeader()
 
     var bubble_spacing = 0.08 * h;
     var x = w - bubble_size - padding;
-    appendBubble("about", "about.html", x);
+    appendBubble("about", getDepth() + "pages/about/", x);
     x -= bubble_size + bubble_spacing;
-    appendBubble("rss", "feed/", x);
+    appendBubble("rss", getDepth() + "feed/", x);
     x -= bubble_size + bubble_spacing;
     appendBubble("linkedin", "http://www.linkedin.com/pub/martin-bonnin/1/344/947", x);
     x -= bubble_size + bubble_spacing;
@@ -111,6 +114,7 @@ var documentReady = function documentReady()
 {
     var y = 0;
     $("head").append($("<title>").text(blog_parameters["title"] + " | " + blog_parameters["description"]));
+    $("head").append($("<link>").attr("rel", "shortcut icon").attr("href", getDepth() + "res/favicon.ico"));
     
     $("body").css("background", "#e9e9e9");
     $("body").css("margin", "0");
@@ -127,20 +131,39 @@ var documentReady = function documentReady()
     
     var centerer = $("<div>");
     var padding_v = 0.035 * width;
-    var padding_h = 0.10 * width;
+    var padding_h = 0.20 * width;
     centerer.css("position", "absolute");
     centerer.css("top", y + padding_v);
     centerer.css("left", padding_h);
     centerer.css("width", width - 2 * padding_h);
 
-    makeContent(centerer);
+    getContent(centerer);
 
     $("body").append(centerer);
     y += centerer.height() + 2 * padding_v;
 
     var footer = makeFooter();
+    if (y < $(window).height() - footer.height())
+        y = $(window).height() - footer.height();
+    
     footer.css("top", y);
+    
     $("body").append(footer);
+}
+
+var measureHeight = function measureHeight(htmlStr, width)
+{
+    var div = $("<div>");
+    div.css("position", "absolute");
+    div.css("width", width);
+    div.html(htmlStr);
+
+    div.attr("visibility", "hidden");
+    $("body").append(div);
+    var h = div.height();
+    div.attr("visibility", "");
+    div.remove();
+    return h;
 }
 
 $(document).ready(documentReady);

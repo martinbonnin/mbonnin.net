@@ -1,5 +1,6 @@
 {
-    "title": "Paris Chess Board"
+    "title": "Paris Chess Board",
+    "description": "A chess board made using a laser cutter."
 }
 
 Another attempt of creating something with a laser cutter. After the [Paris Circuit Board](http://mbonnin.net/2011/03/09/paris-circuit-board/), I made another type of PCB, this time, I'll call it the Paris Chess Board. It still involves a fair amount of inkscape but with more plexiglass this time. And no chemicals except some glue.

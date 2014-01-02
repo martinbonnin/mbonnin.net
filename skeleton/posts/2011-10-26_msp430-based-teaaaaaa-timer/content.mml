@@ -1,5 +1,6 @@
 {
-    "title": "MSP430 based Teaaaaaa timer"
+    "title": "MSP430 based Teaaaaaa timer",
+    "description": "A stupid, rabbid, shouting tea timer using a MSP430."
 }
 
 My [last project](http://mbonnin.net/2011/01/05/bwaaaaaaaaaaaaaaalarm-clock/) was fun but a bit overkill. Embedding a beagle board to make a speaking alarm clock is sure very flexible and evolutive but does not make the cheapest clock ever... It's been some time I wanted to learn about microcontrollers so I decided it was high time to start and make the next project a bit more optimized.

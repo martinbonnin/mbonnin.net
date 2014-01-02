@@ -1,5 +1,6 @@
 {
-    "title": "Optimizing the developer's pipeline"
+    "title": "Optimizing the developer's pipeline",
+    "description": "Never forget what you were doing 30 minutes earlier!"
 }
 
 == Getting notified upon make completion ==

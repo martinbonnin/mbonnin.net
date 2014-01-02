@@ -1,5 +1,6 @@
 {
-    "title": "Local Wordpress install using a squid proxy"
+    "title": "Local Wordpress install using a squid proxy",
+    "description": "Working with hardcoded wordpress links."
 }
 
 ![](2278852.jpg)After 6 months of playing with wordpress, I always end up testing modifications directly on the production website because all the urls are hardcoded to http://mbonnin.net/ inside the SQL database and testing on localhost breaks them. While editing directly the production website is fast, I would like to avoid breaking it by accident and also I would like to keep a subversion repository of my html/php files somewhere on my local hard drive to keep track of the changes I make. So I was looking for a way to make my browser believe mbonnin.net is local...<!--more-->

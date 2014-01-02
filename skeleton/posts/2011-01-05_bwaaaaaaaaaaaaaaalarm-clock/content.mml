@@ -1,5 +1,6 @@
 {
-    "title": "Bwaaaaaaaaaaaaaaalarm clock"
+    "title": "Bwaaaaaaaaaaaaaaalarm clock",
+    "description": "A stupid, rabbid, speaking alarm clock based on a beagleboard and a fair amount of time and resin."
 }
 
 I first wanted to make a huge raving rabbid like [this one](http://www.attakus.fr/Lapin-Cretin-Lifesize)... That was before I realized that most of my flat was already occupied by things like a bed, a table or a refrigerator. As I had no intention of giving up eating or sleeping, I decided to train on something smaller first. Since it was smaller, it had to have something extra so I decided to make it smart.

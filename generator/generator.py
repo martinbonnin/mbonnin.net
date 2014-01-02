@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys;
 sys.dont_write_bytecode = True
-import post;
+import content;
 import os;
 import codecs;
 import os.path;
@@ -13,72 +13,63 @@ import re;
 
 class Generator:
     def __init__(self):
-        self.posts=[]
+        pass;                
 
-    def process_file(self, in_file, out_file):
-        out_fd = utils.open_file(self.out_dir + "/" + out_file, "wb");
-        in_fd = utils.open_file(self.in_dir + "/" + in_file, "rb");
+    def generate_content(self, directory):
+        in_path = self.in_base_path + "/" + directory;
+        out_path = self.out_base_path + "/" + directory;
 
-        lines = collections.deque(in_fd.readlines());
-        while (len(lines) > 0):
-            line = lines.popleft();
-            # XXX: this is not recursive
-            if (re.search("#{for_each_post}#", line)):
-                template = "";
-                while (len(lines) > 0):
-                    line = lines.popleft();
-                    if (re.search("#{done}#", line)):
-                        for p in self.posts:
-                            self.post = p;
-                            out_fd.write(self.replace_commands(template));
-                        break;
-                    template += line;
-            
-            else:
-                 out_fd.write(self.replace_commands(line));
-                
-
-    def generate(self, in_dir, out_dir):
-        self.in_dir = in_dir;
-        self.out_dir = out_dir;
-        posts_dir = in_dir + "/posts";
-        
-        try:
-            os.mkdir(out_dir);
-        except:
-            pass;
-                
-        imgutils.init(in_dir);
-
-        # copy resources and index.html
-        proc = utils.Popen("cp -rf " + in_dir + "/res " + out_dir);
-        proc = utils.Popen("cp -rf " + in_dir + "/index.html " + out_dir);
-         
-        # parse posts
-        for d in os.listdir(posts_dir):
-            if (not os.path.isdir(posts_dir + "/" + d)):
+        # parse content
+        for d in os.listdir(in_path):
+            if (not os.path.isdir(in_path + "/" + d)):
                 continue;
 
-            print("=== post " + d + "===");
-            self.posts.append(post.Post(posts_dir + "/" + d, out_dir + "/posts"));
-
+            print("=== " + directory + "/" + d + "===");
+            c = content.Content(self.in_base_path, in_path + "/" + d, out_path);
+            c.path = directory + "/" + c.directory;
+            getattr(self, directory).append(c);
+        
+    def generate_home(self):
         # sort posts, in reverse order: latest first
         self.posts.sort(cmp=lambda x,y: cmp(y.date, x.date));
 
-        # and write the home app.js. It is the concatenation of:
+        # write the home app.js. It is the concatenation of:
         #  1. json dump of all posts
         #  2. page specific javascript
         #  3. common javascript
-        home_fd = utils.open_file(self.in_dir + "/home.js", "rb");
-        common_fd = utils.open_file(self.in_dir + "/common.js", "rb");
-        app_fd = utils.open_file(self.out_dir + "/app.js", "wb");
+        home_fd = utils.open_file(self.in_base_path + "/home.js", "rb");
+        common_fd = utils.open_file(self.in_base_path + "/common.js", "rb");
+        app_fd = utils.open_file(self.out_base_path + "/app.js", "wb");
 
         app_fd.write("posts = ");
-        posts = [{k: getattr(p, k, None) for k in ["directory", "title", "date_str", "description"]} for p in self.posts];
+        posts = [{k: getattr(p, k, None) for k in ["path", "title", "date_str", "description"]} for p in self.posts];
         json.dump(posts, app_fd, indent=4);
         app_fd.write(";\n");
         app_fd.write(home_fd.read());
         app_fd.write(common_fd.read());
+
+    def generate(self, in_base_path, out_base_path):
+        self.in_base_path = in_base_path;
+        self.out_base_path = out_base_path;
+        
+        try:
+            os.mkdir(out_base_path);
+        except:
+            pass;
+                
+        imgutils.init(in_base_path);
+
+        # copy static content
+        utils.Popen("cp -rf " + in_base_path + "/res " + out_base_path);
+        utils.Popen("cp -rf " + in_base_path + "/index.html " + out_base_path);
+         
+        # 'dynamic' content
+        for c in ["pages", "posts"]:
+            setattr(self, c, []);
+            self.generate_content(c);
+        
+        # home page
+        self.generate_home();
         
 if(__name__ == "__main__"):
     if (len(sys.argv) < 3):
