@@ -73,6 +73,7 @@ var makeHeader = function makeHeader()
         var bubble = makeHoverImage(src_base + "_bw.png", src_base + ".png", what);
         bubble.css("position", "absolute");
         bubble.css("width", bubble_size);
+        bubble.css("height", bubble_size);
         bubble.css("top", 0.40 * h);
         bubble.css("left", x);
         a.append(bubble);
