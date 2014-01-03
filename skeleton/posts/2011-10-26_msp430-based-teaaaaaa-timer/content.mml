@@ -11,7 +11,7 @@ Of course, this project had to involve a rabbit somewhere...
 
 ![](IMG_1936-1024x768.jpg)
 
-= Features =
+# Features #
 
 
 * 1 stupid sound
@@ -21,7 +21,7 @@ Of course, this project had to involve a rabbit somewhere...
 * 1.7 uA consumption (hibernating)
 * ~8 years of life expectancy (hibernating)
 
-= Schematics =
+# Schematics #
 
 ![](timer-1024x486.png)
 
@@ -49,7 +49,7 @@ Board layout:
 
 (do not pay attention to the 4 large pads at the bottom, they are from a previous iteration of the battery holder, see later)
 
-= Power supply =
+# Power supply #
 
 
 This is actually one of the part where I spent the most time and I am still not completely satisfied with the results. I wanted something that does not take too much space so that it fits inside the case and yet that could ideally provide peak currents of ~80 mA during a few seconds when the audio is activated.
@@ -62,7 +62,7 @@ The other solution is to use a step up converter (either boost or charge pump) a
 
 I made some tests with a TPS61097 boost converter but was not able to make it output more than 30mA (which is a bit strange because it is rated 100mA IIRC). So I gave up and used a MCP1700 LDO instead. Since the AAA were too big for my case, I went for 4xLR44 coin batteries. They have a ~8 ohm internal resistance, which is quite bad. The voltage drops almost 3V when audio is activated and the display goes very dim but the MSP still manages to survive. Another option would have been 2 x CR2032 coin batteries but I'm not sure they are much better. I also ordered LiPo batteries to see how they compare. Still investigating...
 
-= Board etching and soldering =
+# Board etching and soldering #
 
 
 The PCB is etched using the toner transfer method, like described [here](http://mbonnin.net/2011/03/09/paris-circuit-board/).
@@ -93,7 +93,7 @@ Much better !
 The final board:
 ![](IMG_1761_expliquee-1024x768.jpg)
 
-= Case =
+# Case #
 
 
 The case is made using super sculpey clay and 4 neodymium magnets. I first made a template of the case using a 0.5 mm aluminium sheet:
@@ -112,7 +112,7 @@ Fixation system, which gave me almost as many head aches as the power supply. Th
 
 ![](IMG_1890-1024x768.jpg)
 
-= Software =
+# Software #
 
 Nothing to fancy there. Just a few things to note:
 
@@ -521,7 +521,7 @@ Nothing to fancy there. Just a few things to note:
         else if (seconds >= 3 * 60 * 60)
             seconds = (3 * 60 * 60);
     
-        if (seconds == 0) {
+        if (seconds ## 0) {
             _go_to_alarm();
         } else {
             _display_seconds(seconds);
@@ -563,7 +563,7 @@ Nothing to fancy there. Just a few things to note:
             return;
         }
              
-        if ((bwaaa_index == -1) && !(alarm_seconds & 0x3)) {
+        if ((bwaaa_index ## -1) && !(alarm_seconds & 0x3)) {
             bwaaa_index = 0;
         }
         LPM1;
@@ -681,7 +681,7 @@ Nothing to fancy there. Just a few things to note:
                         }
                     }
                 }
-                if (alarm_seconds_count == 7812) {
+                if (alarm_seconds_count ## 7812) {
                     alarm_seconds++;
                     alarm_seconds_count = 0;
                     LPM1_EXIT;
@@ -698,7 +698,7 @@ Nothing to fancy there. Just a few things to note:
                         /* button repeat, go back to main loop */
                         LPM1_EXIT;
                     }
-                } else if (seconds_count == 3906) {
+                } else if (seconds_count ## 3906) {
                     seconds_count = 0;
                     if (seconds > 0)
                         seconds--;
@@ -724,7 +724,7 @@ Nothing to fancy there. Just a few things to note:
     
     __attribute__((interrupt(PORT1_VECTOR))) void PORT1_ISR(void) 
     {    
-        if (state == STATE_SLEEP) {
+        if (state ## STATE_SLEEP) {
             LPM4_EXIT;
             goto end;
         }
@@ -749,7 +749,7 @@ Nothing to fancy there. Just a few things to note:
     }
     
 
-= Acoustic patch =
+# Acoustic patch #
 
 After everything was assembled, I was not very happy with the sound level of the rabbit. The speaker was still a bit weak so I started investigating possible alternatives.
 
@@ -791,7 +791,7 @@ And the speaker is now at the bottom. I gained something like ~10 dB in the proc
 
 
 
-= What version 2 could use =
+# What version 2 could use #
 
 
 * a better power supply solution, especially a small battery that can handle 80mA without problems. Maybe a lipo battery ?
@@ -803,7 +803,7 @@ And the speaker is now at the bottom. I gained something like ~10 dB in the proc
 * some carrots
 * a 3D printed case !
 
-= Bill of materials =
+# Bill of materials #
 
 I put digikey references into brackets. You might find better/cheaper alternatives elsewhere but at least it's a starting point.
 For the board:
@@ -829,6 +829,6 @@ For the board:
 * white primer
 * red & white modelism paint
 
-= Downloads =
+# Downloads #
 
 click [here](http://mbonnin.net/wp-content/uploads/2011/09/timer.tar.gz) to download the schematics and source files

@@ -1,6 +1,6 @@
 
 var blog_parameters = {
-    "description": "breaking and fixing", 
+    "description": "rabbits, computer science and the meaning of life", 
     "title": "mbonnin's blog",
 }
 
@@ -52,15 +52,16 @@ var makeHeader = function makeHeader()
     var sha
     
     header.css("background", "#000000");
-    header.css("position", "absolute");
-    header.css("width", w);
-    header.css("height", h);
+    header.css("width", "100%");
+    header.css("box-sizing", "border-box");
+    header.css("padding-bottom", "10%");
+    header.css("position", "relative");
     header.css("box-shadow", "0 0 " + (0.02 * h) + "px " + (0.02 * h) + "px rgba(0,0,0,0.5)");
     
     var title_logo = $("<img>");
     title_logo.attr("src", getDepth() + "res/title_logo.png");
     title_logo.css("position", "absolute");
-    title_logo.css("width", 0.33 * w);
+    title_logo.css("width", "33%");
     title_logo.css("top", 0.10 * h);
     title_logo.css("left", padding);
     var a = $("<a>");
@@ -99,55 +100,49 @@ var makeHeader = function makeHeader()
 var makeFooter = function makeFooter()
 {
     var footer = $("<div>");
-    var w = width;
-    var h = 0.02 * width;
     
     footer.css("background", "#000000");
-    footer.css("position", "absolute");
-    footer.css("width", w);
-    footer.css("height", h);
-    footer.css("box-shadow", "");
+    footer.css("position", "relative");
+    footer.css("width", "100%");
+    footer.css("padding-bottom", "2%");
+    footer.css("box-sizing", "border-box");
     return footer;
 }
 
 var documentReady = function documentReady()
 {
-    var y = 0;
-    $("head").append($("<title>").text(blog_parameters["title"] + " | " + blog_parameters["description"]));
-    $("head").append($("<link>").attr("rel", "shortcut icon").attr("href", getDepth() + "res/favicon.ico"));
-    
+    $("html").css("height", "100%");
     $("body").css("background", "#e9e9e9");
     $("body").css("margin", "0");
     $("body").css("padding", "0");
+    $("body").css("height", "100%");
 
     // force a scrollbar on the right so that we get the correct width
     $("body").css("overflow-y", "scroll");
     width = $(document).width();
 
+    var wrapper = $("<div>");
+    wrapper.css("min-height", "100%");
+    wrapper.attr("id", "wrapper");
+    $("body").append(wrapper);
+
     var header = makeHeader();
-    header.css("top", y);
-    $("body").append(header);    
-    y += header.height();
+    wrapper.append(header);    
     
     var centerer = $("<div>");
     var padding_v = 0.035 * width;
     var padding_h = 0.20 * width;
-    centerer.css("position", "absolute");
-    centerer.css("top", y + padding_v);
-    centerer.css("left", padding_h);
-    centerer.css("width", width - 2 * padding_h);
+    centerer.css("position", "relative");
+    centerer.attr("id", "content");
+    centerer.css("padding", "3.5% 20%");
+    centerer.css("min-height", "100%");
 
     getContent(centerer);
 
-    $("body").append(centerer);
-    y += centerer.height() + 2 * padding_v;
-
+    wrapper.append(centerer);
     var footer = makeFooter();
-    if (y < $(window).height() - footer.height())
-        y = $(window).height() - footer.height();
-    
-    footer.css("top", y);
-    
+    footer.css("position", "relative");
+    footer.css("margin-top", "-2%");
     $("body").append(footer);
 }
 

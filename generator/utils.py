@@ -6,6 +6,7 @@ import HTMLParser;
 import cgi;
 import codecs;
 import re;
+from xml.sax.saxutils import escape
 
 class Popen:
     def __init__(self, string):
@@ -13,6 +14,10 @@ class Popen:
         proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE);
         (self.out, self.err) = proc.communicate()
         self.returncode = proc.returncode;
+
+def init(base):
+    global in_base_path;
+    in_base_path = base;
 
 def unescape(s):
     return HTMLParser.HTMLParser().unescape(s);
@@ -38,3 +43,10 @@ def re_replace_all(re_str, template, match_cb):
 def fatal(text):
     print(text);
     sys.exit(1);
+
+def generate_index(title, depth, out_path):
+    in_fd = open_file(in_base_path + "/index.html", "rb");
+    out_fd = open_file(out_path, "wb");
+    a = in_fd.read().replace("%TITLE", escape(title));
+    a = a.replace("%DEPTH", depth);
+    out_fd.write(a);        

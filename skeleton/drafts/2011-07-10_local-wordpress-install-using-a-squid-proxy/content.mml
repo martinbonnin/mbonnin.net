@@ -12,7 +12,7 @@ First idea is to trick the resolver by adding an entry into /etc/hosts:
 
 Problem is that I have to edit the file each time I want to change from production to test and I am lazy. Other problem is that DNS information is cached and you have to reset it each time. So I ended up setting a http proxy and using 2 webbrowsers: one with direct internet access, the other one through the proxy.
 
-= Installing and configuring squid =
+# Installing and configuring squid #
 
 
 First step is to install squid

@@ -9,19 +9,19 @@
 
 ![](photo-1024x768.jpg)
 
-= Needed =
+# Needed #
 
 
 * Cheap paillasson or whatever the english name is
 * Inkscape, Paper & Printer
 * Black paint spray
 
-= Inkscape =
+# Inkscape #
 
 
 ![](inkscape-1024x556.png)
 
-= Printing & Cutting =
+# Printing & Cutting #
 
 To print it on several pages, I used a small program called pdfposter:
     pdfposter -p59x33cm invader.pdf invader_tiled.pdf
@@ -29,7 +29,7 @@ To print it on several pages, I used a small program called pdfposter:
 
 ![](IMAGE_E63BD433-B5AF-4BCC-AAE6-A7F5D4F453ED.jpg)
 
-= Painting =
+# Painting #
 
 
 I used a black paint spray and some ceramic tiles to make sure the paper stays. It took the night to dry. 

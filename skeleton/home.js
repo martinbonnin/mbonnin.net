@@ -12,31 +12,24 @@ var makeText = function makeText(str, fontSize)
     text.css("font-size", fontSize + "px");
     text.text(str);
     text.attr("id", "text" + (i++));
-    text.css("position", "absolute");    
 
-    // HACK to measure the height of the text
-    // height is not valid until the node has been added somewhere in the DOM...
-    text.attr("visibility", "hidden");
-    $("body").append(text);
-    text.height2 = text.height();
-    text.attr("visibility", "");
-    text.remove();
     return text;
 }
 
 var makeVignette = function makeVignette(p, index)
 {
     var vignette = $("<div>");
-    vignette.css("position", "absolute");
+    vignette.css("position", "relative");
+    vignette.css("box-sizing", "border-box");
     vignette.attr("class", "vignette");
     vignette.css("width", "100%");
-    vignette.css("height", 0.1 * width);
+    vignette.css("padding-bottom", "18%");
 
     var left = $("<div>");
     left.attr("class", "left");
     left.css("position", "absolute");
     left.css("width", "30%");
-    left.css("height", 0.1 * width);
+    left.css("height", "100%");
 
     var odd = (index >> 0) % 2;
     var base = p.path + "/thumbnail_" + (odd ? "green":"yellow");
@@ -60,23 +53,27 @@ var makeVignette = function makeVignette(p, index)
     right.css("position", "absolute");
     right.css("width", "70%");
     right.css("left", "30%");
-    right.css("height", 0.1 * width);
-
+    right.css("height", "100%");
+    
+    var table = $("<table>");
+    table.css("width", "100%");
+    table.css("height", "100%");
+    right.append(table);
+    var tr = $("<tr>");
+    table.append(tr);
+    var td = $("<td>").css("vertical-align", "middle");
+    tr.append(td);
+    
     var centerer = $("<div>");
-    centerer.attr("class", "centerer");
-    centerer.css("position", "absolute");
-    centerer.css("width", "100%");
 
-    var title = makeText(p.title, 18);
+    var title = makeText(p.title, 22);
     title.css("font-weight", "bold");
+    centerer.attr("class", "centerer");
+    centerer.css("width", "100%");
+    centerer.css("margin", "auto");
 
-    var y =  title.height2;
-    var date_str = makeText("" + p.date_str + "", 10);
-    date_str.css("top", y);
-    y += 1.7 * date_str.height2;
-    var description = makeText(p.description, 16);
-    description.css("top", y);
-    y += description.height2;
+    var date_str = makeText("" + p.date_str + "", 14);
+    var description = makeText(p.description, 20);
 
     var a = $("<a>");
     a.append(title);
@@ -92,15 +89,13 @@ var makeVignette = function makeVignette(p, index)
         });
 
     
+    description.css("padding-top", "1em");
     centerer.append(a);
     centerer.append(date_str);
     centerer.append(description);
-    right.append(centerer);
+    td.append(centerer);
+    right.append(table);
 
-    total_height = y;
-
-    centerer.css("height", total_height);
-    centerer.css("top", (right.height() - total_height)/2);
     vignette.append(right);
 
     return vignette;
@@ -119,7 +114,6 @@ var getContent = function getContent(centerer)
     }
     
     y -= spacing;
-    centerer.css("height", y);
 
     return;
 }

@@ -3,7 +3,7 @@
     "description": "Never forget what you were doing 30 minutes earlier!"
 }
 
-== Getting notified upon make completion ==
+## Getting notified upon make completion ##
 
 My typical day involves a fair amout of code/compile/debug cycles..
 Sometimes, I compile 2 repositories at the same time and do something else waiting for my computer to crunch source code. Sometimes I forget what I was doing in the first place when I realize some time later that my make process completed (or failed miserabily...). In all cases, I always waste a few minutes in the debug pipeline because my polling interval is too large.

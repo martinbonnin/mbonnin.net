@@ -14,8 +14,10 @@ import markdown;
 
 code = """var getContent = function getContent(centerer)
 {
-    centerer.html(contentHtml);
-    centerer.css("height", measureHeight(contentHtml));
+    var post = $("<div>");
+    post.attr("id", "post");
+    post.html(contentHtml);
+    centerer.append(post);
 
     return;
 }
@@ -56,7 +58,7 @@ class Content(object):
         try:
             self.date = time.strptime(self.directory[:10], "%Y-%m-%d");
         except ValueError as e:
-            self.date = time.time();
+            self.date = None;
             pass;
 
         self.attachments = [];
@@ -76,13 +78,16 @@ class Content(object):
         # generate app.js 
         common_fd = utils.open_file(in_base_path + "/common.js", "rb");
         app_fd = utils.open_file(self.out_path + "/app.js", "wb");
-        escaped_markup = markdown.markdown(self.markdown).replace("\"", "\\\"").replace("\n", "\\n");
-        app_fd.write("contentHtml = \"" + escaped_markup + "\";\n\n");
-        app_fd.write(code);
+        escaped_html = self.html.replace("\"", "\\\"").replace("\n", "\\n");
+        app_fd.write("contentHtml = \"" + escaped_html + "\";\n\n");
+        if (not self.date):
+            app_fd.write(code.replace("\"post\"", "\"page\""));
+        else:
+            app_fd.write(code);
         app_fd.write(common_fd.read());
         
         # and index.html
-        utils.Popen("cp -rf " + in_base_path + "/index.html " + self.out_path);
+        utils.generate_index(self.title, "../../", self.out_path + "/index.html");
         
                     
     # called from the renderer to replace images with their striped down version
@@ -104,7 +109,7 @@ class Content(object):
     def processHeader(self):
         fd = utils.open_file(self.page_path, "rb");
         header_json="";
-        self.markdown="";
+        m="";
         in_header = True;
         for line in fd:
             if (in_header):
@@ -112,7 +117,7 @@ class Content(object):
                     in_header = False;
                 header_json += line;
             else:
-                self.markdown += line;
+                m += line;
         try:
             self.header = json.loads(header_json);
         except ValueError as e:
@@ -120,6 +125,8 @@ class Content(object):
                         
         for k in self.header:
             setattr(self, k, self.header[k]);
+
+        self.html = markdown.markdown(m);
 
     # copies all attachments. 
     # for pictures, it will downscale them if needed
@@ -148,7 +155,10 @@ class Content(object):
     def __getattribute__(self, name):
         #print("getattr " + name + "\n");
         if (name == "date_str"):
-            return time.strftime("%B %d, %Y", self.date)
+            if (self.date):
+                return time.strftime("%B %d, %Y", self.date)
+            else:
+                return "none";
         else:
             return object.__getattribute__(self, name)
 

@@ -9,7 +9,7 @@ After <del>some</del> a lot of time, the 'Bwaaaaaaaaaaaaaaalarm clock' finally s
 
 <!--more-->
 
-= Features =
+# Features #
 
 
 ![](mode_demploi-1024x1024.png)
@@ -24,7 +24,7 @@ After <del>some</del> a lot of time, the 'Bwaaaaaaaaaaaaaaalarm clock' finally s
 The thing is basically an alarm clock. I gave up wifi pretty early mainly because I did not have enough room/time so it is not a [connected rabbit](http://www.nabaztag.com/en/index.html). Maybe for V2.0... The operation mode is controlled using the toilet brush. When low, the rabbid just displays time. When middle, the basic alarm is enabled. When high, the rabbid alarm is enabled to make sure you really wakeup. In addition, when high, the rabbid will also teach you his wisdom with [wikiquotes](http://fr.wikiquote.org/wiki/Accueil) citations. That happens between 8am and 12pm. The rabbid needs to sleep sometimes, right?
 Anytime, you can press the big mushroom to make the rabbid yell. But don't do it too much, he might get angry...
 
-= What's inside. =
+# What's inside. #
 
 
 ![](la-foto3-1024x768.jpg)
@@ -38,7 +38,7 @@ The toilet brush is a 3-positions switch covered with [epoxy putty](http://en.wi
 The rabbit itself is polyurethane resin cast into a hand-made silicone mold.
 Remarks and comments welcome.
 
-= The details =
+# The details #
 
 
 	
@@ -55,18 +55,18 @@ Remarks and comments welcome.
 * [eagle schematics](#eagle-schematics)
 * [source code](#source-code)
 
-= Rabbit molding =
+# Rabbit molding #
 
 The rabbit body and base are made using [resin casting](http://en.wikipedia.org/wiki/Resin_casting). This allows to turn a clay based model into a much more solid resin object.
 
 ![](IMG_0801-1024x768.jpg)
 
-== Clay modeling ==
+## Clay modeling ##
 
 The first step is to actually sculpt the rabbit in clay. This is not going to be the final piece, it is just a "master" model that is going to be reproduced in resin so it's okay if the clay is a bit soft. The clay needs to be compatible with silicon and easy to work with though. I used [plastiline](http://www.plastiline.fr/) because this is what I found in my favorite [art shop](http://maps.google.com/maps/place?cid=6222786968151427468) but I guess any other oil-based clay will do. 
 Luckily, rabbids are quite simple to do. I made mine using my fingers, a couple of toothpicks and the back of a paintbrush. Tthe arms and ears are made and molded separately to avoid overcomplicated molds and ease unmodling.
 
-== Silicone mold making ==
+## Silicone mold making ##
 
 Silicone is made by mixing the silicone itself with a catalyst. I used silicone RTV151 since it was the cheapest one (~40€/kg) and it proved good enough for rabbits. The proportion are 2%-5% catalyst, the rest of silicon. The more catalyst, the faster the silicon will cure. It also depends the temperature so it is a bit difficult to predict the final time the reaction will take. The first molds I made where in May or so and took around 20min to cure. I made other ones with the same proportions in September and they took several hours. In the end it is a trade-off, you want your silicon to stay liquid for some time so that you can work with it without hurry (20minutes is a bit short). But then if you do not pour enough catalyst there's the risk of the silicon staying liquid forever in which case you lost your silicone and very likely your clay model at the same time. It did not happen to me fortunately.
 For measuring the catalyst, a the pipette quite useful. And ice-cream sticks are perfect for mixing everything together
@@ -81,7 +81,7 @@ I put enough silicon in the recipient for for covering the rabbit body with ~3mm
 For the arm and ears, I did a 2 parts-mold like explained [here (french)](http://vonhymack.blogspot.com/search/label/%5Bmoulage%5D). While it's easier to do and allows more details, it consumes significantly more silicon so I did not use it for large pieces like the rabbit body. But it's perfect for arms and ears. The secret is the use of legos to make the casing. I made a rectangular lego casing half-filled with soft plastiline and push the models inside. I then poured silicone directly inside the casing. The important thing is to avoid the air bubbles inside the silicon as much as possible. "Professional" hobbyist use vacuum chambers but I do not have this kind of things so I was left with the options of taking care and pouring the silicone in a very thin line, very slowly (and not directly on the model). And that was still not enough so I had to rework a bit afterwards.
 After 24hours I had the first half of my mold. To make the second part, I removed the soft plastiline, covered all the visible silicon with unmolding agent (so that they do not merge, we do not want the same behavior as previously). Some use Vaseline, I used something called "cire de démoulage". Once the first part of the mold is secured behind wax, I poured some more silicon to make the second part. After 23 more hours, it is ready.
 
-== Resin casting ==
+## Resin casting ##
 
 I waited some more days for everything to stabilize and could then begin the resin-fun ! Resin is a bit like silicon, you have to mix 2 components and wait for it to harden. I used polyurethane resin (~25 euros/kg). The process is exactly like silicon except that my resin had to be mixed 50/50% so it is much easier to measure. For the small parts, I used a syringe to inject the resin, it allows to be more precise. The rest is ice-cream sticks and everything as before.  
 
@@ -99,7 +99,7 @@ Once I had all the pieces, I glued everything together using a loctite gel super
 
 But still, this was my first sculpting/molding project and the figurine was still a bit ugly, with air bubbles a bit everywhere and the surface quite irregular... On the picture above, I damaged the left ear trying to polish it with the dremel. This was not a good idea... So I spent a lot of time trying to rework all this. I'm not sure, if I could have done better by spending more time on modeling and less on reworking...
 
-== Reworking the seams and imperfections ==
+## Reworking the seams and imperfections ##
 
 ![](molding_5.png)
 
@@ -109,7 +109,7 @@ After the milliput, I removed some parts of the rabbit using the dremel to make 
 ![](molding_6.png)
 <div style="text-align: center">dremel roughing with some milliput rework</div>
 
-== Sanding, sanding, sanding, aka the "magic 800 sandpaper" ==
+## Sanding, sanding, sanding, aka the "magic 800 sandpaper" ##
 
 At this stage, the rabbit did not have any air bubbles anymore but was still a bit ugly. The resin surface especially was quite irregular and the dremel would not help much. It was either too soft, doing nothing or too hard, removing too much material. I was beginning to lose faith in life and polymers when I discovered the 800 sandpaper. This is very fine sandpaper, used for car bodies. It is to be used under water with a bit of dishwashing liquid. I spend a couple of evening sanding and sanding but it was worth it. It makes the surface almost perfectly flat.
 
@@ -119,9 +119,9 @@ At this stage, the rabbit did not have any air bubbles anymore but was still a b
 I then drilled loooong holes into the rabbit to pass the wires to the eyes (I was lucky that my holes connected inside the rabbit for both eyes without doing any precise calculation :-)).
 And... raaaaaabbid molding is finished ! 
 
-= Base molding =
+# Base molding #
 
-== The base itself ==
+## The base itself ##
 
 The process is exactly the same as for the rabbit: clay modeling, silicon mold, resin cast. This time I used transparent resin so one can see the clock under the base. Also since this was a large piece (~10cm side, it had to contain a beagleboard), I added some plaster bands on top of the silicon to make everything rigid
 
@@ -136,20 +136,20 @@ The base is ~2mm thin so I had to make holes in the clay that will be filled wit
 
 After the resin is dry, I drilled the holes for the SD card, DC-in and USB-in.
 
-== Toilet brush ==
+## Toilet brush ##
 
 
 The toilet brush is a [SPDT switch](http://en.wikipedia.org/wiki/Switch) covered with milliput. SPDT is a barbarian way to say the switch has 3 positions and the middle position is the "off" one (Single Pole, Double Throw)... The nice thing with milliput compared with other polymer clays like fimo or sculpey is that it does not need to bake. I'm not sure if the switch would have liked that.
 
 ![](base_3-1024x501.png)
 
-== Carrots ==
+## Carrots ##
 
 Carrots are made with super sculpey. As these are carrots, they need baking 15min
 ![](base_5.png)
 <div style="text-align:center">baking carrots and other things</div>
 
-== Touch Mushrooms ==
+## Touch Mushrooms ##
 
 
 ![](IMG_08101-768x1024.jpg)
@@ -159,14 +159,14 @@ Mushrooms need baking too :-). They also need a metallic core to act as sensing 
 ![](base_4.png)
 <div style="text-align:center">left: the mushrooms electrode wiresright: the switch connections</div>
 
-== Last bits ==
+## Last bits ##
 
 I drilled some holes for the sound to come out behind the rabbit and spent some more hours with my friend "800 sandpaper".
 And... that's it, the base is done
 
-= Electronics =
+# Electronics #
 
-== Boards layout ==
+## Boards layout ##
 
 In addition to the beagle board itself, the rabbit contains 2 other "daughter" boards, although I'm not sure the "daughter" denomination can apply here given the artistic nature of the connections between the different boards. I'm not even sure the word "layout" applies as well... Below how it looks like:
 
@@ -175,7 +175,7 @@ In addition to the beagle board itself, the rabbit contains 2 other "daughter" b
 The first board contains everything needed for the clock display. It takes 5V from the second one and is connected to GPIO 139, 138 and 137. The second one contains the eyes connections, the touch sensors and the audio amplifier. It takes 5V from the expansion header on the beagleboard, is connected to audio out, GPIO 168, 183, 131, 156, 159 and 132. 
 Being able to stuff all this inside the base was definitely a challenge and I had to actually take care of the size of some components. It was not that easy to find a small 200microF capacitor for audio decoupling. Also I wish I could unsolder the useless S-Video and JTAG connectors from the beagle to save some space but gave up when the PCB started turning from red to black. I guess the solder is high temperature or such... Next time, I'll definitively plan more room for the electronics. Having to work in such a small area was frustrating. Also, having more space would allow a better organization, solder proper connectors instead of the thick wires I plugged directly into the expansion header, putting test points, ...
 
-== Life of an electronics padawan (or doing stuff without a keyboard) ==
+## Life of an electronics padawan (or doing stuff without a keyboard) ##
 
 A few basic things are needed to begin the hardware fun. 
 
@@ -199,10 +199,10 @@ A few basic things are needed to begin the hardware fun.
 
 <div style="text-align: center">basic inverting 2N2222 based level shifter</div>
 
-Nobody's perfect... The beagleboard can decode HD video, do USB host and device, drive 3D graphics on a big LCD and do more or less whatever you want. But it can hardly speak to other devices. The reason being that the OMAP3 IO levels are 1.8V. While this might be very interesting as far as power consumption is concerned (is it ?), it is definitively a problem when trying to interface the OMAP with anything else. Both the QT110 and the MAX7219 use 5V levels so some kind of 5V  1.8V level conversion is needed. The [official](http://groups.google.com/group/beagleboard/browse_thread/thread/3fd6c891608f2cc9/b04ebe6c4a6ba8bc?lnk=gst&q=level+translation#b04ebe6c4a6ba8bc) way to do this is to use a small TXS0108 chip that will handle the level shifting. The nice thing is that it works in both directions, enabling to use protocols like i2c and provides 8 channels in a relatively small area. The bad thing is that it is only available in SMT packages and I was too afraid to solder this when starting the project. As I only need unidirectional transfers anyway, I decided to use hand made level shifters using good old  transistors and resistors. That is the reason for all the 2N2222 transistors you can see in the first pictures. (The other reason is that it is nicer and fills the boards nicely but I did not realized that in the first place). 
+Nobody's perfect... The beagleboard can decode HD video, do USB host and device, drive 3D graphics on a big LCD and do more or less whatever you want. But it can hardly speak to other devices. The reason being that the OMAP3 IO levels are 1.8V. While this might be very interesting as far as power consumption is concerned (is it ?), it is definitively a problem when trying to interface the OMAP with anything else. Both the QT110 and the MAX7219 use 5V levels so some kind of 5V  1.8V level conversion is needed. The [official](http://groups.google.com/group/beagleboard/browse_thread/thread/3fd6c891608f2cc9/b04ebe6c4a6ba8bc?lnk#gst&q#level+translation#b04ebe6c4a6ba8bc) way to do this is to use a small TXS0108 chip that will handle the level shifting. The nice thing is that it works in both directions, enabling to use protocols like i2c and provides 8 channels in a relatively small area. The bad thing is that it is only available in SMT packages and I was too afraid to solder this when starting the project. As I only need unidirectional transfers anyway, I decided to use hand made level shifters using good old  transistors and resistors. That is the reason for all the 2N2222 transistors you can see in the first pictures. (The other reason is that it is nicer and fills the boards nicely but I did not realized that in the first place). 
 As you can see in the schematic, the transistors act as inverting level shifters. When using the GPIO as output (for the MAX7219), it needs to be pulled low to get 5V on the output. When used as input (for the QT110), the GPIO is 0 when the input voltage is 5V.  In the end, around 30% of the boards real estate is used by 2N2222 (or 2N3904). 
 
-= MAX7219 LED driver =
+# MAX7219 LED driver #
 
 The [MAX7219](http://pdfserv.maxim-ic.com/en/ds/MAX7219-MAX7221.pdf) is a led driver that can drive 64 LEDs or 8 7-segments digits (the 7-segments has 8 LEDs if you count the decimal point). In my case, it drives 4 digits. The nice thing about it is that it can do this with only 3 input pins and 16 output pins. It does this using time [multiplexing](http://en.wikipedia.org/wiki/Multiplexed_display). The idea is to only light 4 LEDs at a time and refresh them fast enough for them to appear always on due to persistence of vision. For 4 digits, the MAX7219 can use a refresh rate of 1600Hz, which is largely enough. It would have been 800Hz for 8 digits, which is also large enough :-). 
 
@@ -216,7 +216,7 @@ In terms of power consumption, the MAX7219 and digits LEDs are one of the most p
 
 The same goal is also certainly achievable using using shift registers and a timer interrupt on the CPU, although certainly with a bit more solder, resistors and software. There are plenty of [blogs](http://en.wordpress.com/tag/max7219/) and [videos](http://www.youtube.com/watch?v=B2Vu69B6FfU) about how to use the MAX7219 so I'll let you do your own digging.
 
-== fiesta del soldering ==
+## fiesta del soldering ##
 
 Soldering the displays was not easy. As said earlier, I did not want to do my own PCBs for this project so I used breadboard. Which is very nice and fast until you want to solder 4 digits, with 36 pins in total to 12 on the MAX7219 (remember the same pin can drive several LEDs). I used something called 'fil émaillé' in french . I don't know the exact translation in english but it is something used to make coils (edit: see [http://en.wikipedia.org/wiki/Wiring_pencil](http://en.wikipedia.org/wiki/Wiring_pencil), thanks av500 for the link). The nice thing is that the insulator is destroyed when the wire is put into hot liquid solder so there's no need to strippe, just putting the wire inside the solder is enough for the connection to be made. 
 
@@ -224,7 +224,7 @@ Soldering the displays was not easy. As said earlier, I did not want to do my ow
 
 It took me a looooooong evening to solder everything and quite frankly, I'm still surprised that all the single LEDs where connected correctly in the end and are still working today after moving the board several times. These wires are good stuff.
 
-== serial communication ==
+## serial communication ##
 
 The protocol is quite simple. It consists of 16bits frames. The first 8 bits are address, the other 8 bits are value. DIN is sampled on the CLK rising edge. I first did a user space driver but had some errors from time to time where the display would become corrupted. I charged that on bad timings and moved everything into the kernel. The main routine is as below:
 
@@ -244,7 +244,7 @@ The protocol is quite simple. It consists of 16bits frames. The first 8 bits are
     	gpio_set_value(PIN_LOAD, LOW);
     	DELAY;
     	
-    	for (i = 15; i >= 0; i--) {
+    	for (i # 15; i ># 0; i--) {
     		gpio_set_value(PIN_DIN, (bits & (1 << i)) ? HIGH : LOW);
     		DELAY;
     		gpio_set_value(PIN_CLOCK, HIGH);
@@ -264,7 +264,7 @@ The protocol is quite simple. It consists of 16bits frames. The first 8 bits are
 
 The body of the function is pretty straightforward: pull LOAD low, send your data synchronously and set LOAD back to high to tell the MAX7219 you just sent a frame. I was not very sure the irqs needed to be disabled but still had some errors from time to time so decided to leave them disabled, just in case. 
 
-== udelay() disgression ==
+## udelay() disgression ##
 
 Writing the code above I began to wonder what this udelay() thing was doing. Even with the driver in kernel space, I was still seeing some errors, even if the frequency of the errors was much lower as before. More specifically I was wondering if this udelay() was a busy loop or if could it somehow reschedule ? (See [here](http://book.chinaunix.net/special/ebook/Linux_Kernel_Development/0672327201/ch10lev1sec8.html) if this sentence does not make any sense to you)
 The answer is that it is a busy loop. Mainly because it's not really possible to sleep for durations 
@@ -275,14 +275,14 @@ The answer is that it is a busy loop. Mainly because it's not really possible to
 [here](http://geeki.wordpress.com/2010/10/09/loops-per-jiffy-to-mdelay-udelay-and-ndelay/) for more gory details about udealay().
 
 
-== The rggntudjuuuuu decoupling capacitors ==
+## The rggntudjuuuuu decoupling capacitors ##
 
 
 ![](IMG_05782-768x1024.jpg)
 
 After spending some hours trying to understand how the delays and scheduling works inside the kernel (I had no scope to look at the actual signals...),  I finally realized that the max7219 lacked the decoupling capacitors. Especially since this components takes big spikes of currents to light the digits one after the others, I guess it could interfere quite a lot and distort the serial communication. The MAX7221 is a variant of the MAX7219 with softer slopes designed especially to create less interference so maybe it is less sensitive. But this served as a lesson, I'll always put the decoupling capacitors from now on (C1 & C2 on the schematic above).
 
-= LM386 audio amplifier =
+# LM386 audio amplifier #
 
 ![](IMG_0830-1024x768.jpg)
 
@@ -293,18 +293,18 @@ The LM386 is a very used audio amplifier. Actually, I am not sure that there are
 It is rated 500mW and this is not that bad. Not that it will replace a home stereo but definitely audible clearly.
 Not much else to say, apart from saying this is a great chip to play with. Again, the Internet is full of DIY LM386 amplifiers so I don't want to create too much entropy by adding redundant information here.
 
-== The rgntuuuuudjuuu decoupling capacitors ==
+## The rgntuuuuudjuuu decoupling capacitors ##
 
 While the amplifier was working just fine standalone, adding the clock display was a catastrophe. Each time the 4 digits were not identical, I would hear a very nice and loud noise around 1600Hz (just a guess as I still do not have a scope but something else would be very strange). The rabbit was going to be an alarm clock. Having it making noise all night long is not very nice, even for a rabbid raving rabbit. Feeling lucking with decoupling capacitors from my preceding experience, I started to put more of them a bit everywhere on the board ... without any audible success ... I had to find something else.
 
-== The magical mute ==
+## The magical mute ##
 
 The LM386 has this pin labeled 'pin 7:bypass'. I'm not sure it was intended for this purpose but this sounded promising and I started experimenting with it. Connecting it to the ground muted the amp totally ! Well... almost too easy. Looking at the equivalent schematic of the LM386 (page 1 of the [datasheet](http://www.biltek.tubitak.gov.tr/gelisim/elektronik/dosyalar/6/LM386.pdf)), I guess this will leak some current all night long. Understanding this equivalent schematic is still on my todo list. I'm still a bit uncomfortable with this solution. How come it works ? And also how do the real people do when they want to drive displays and output audio at the same time...
 In the end, the mute is controlled through GPIO132. The amp is mute almost all the time except when the rabbit is yelling or declaiming. In which case the noise is still there of course but barely audible as the rabbit yells louder
 
-= Touch mushrooms =
+# Touch mushrooms #
 
-== The DIY handmade touch button ==
+## The DIY handmade touch button ##
 
 I learnt about this method while reading the [arduino playground](http://www.arduino.cc/playground/Main/CapSense). 
 
@@ -346,7 +346,7 @@ The source code contains a test driver that uses interrupts so that it does not 
     
     		INIT_COMPLETION(completer);
     
-    		got_a = got_b = 0;
+    		got_a # got_b # 0;
     		
     		/* send the wood */
     		gpio_set_value(PIN_SEND, 1);
@@ -366,10 +366,10 @@ The source code contains a test driver that uses interrupts so that it does not 
 In practice, the delays are very small, even with high values of R. I measured values around 60-90 microseconds when idle and 90-120 when touched. For some reason, the OMAP resolution when measuring time seems to be 30microseconds (there's actually a way of changing this through CONFIG_OMAP_32K_TIMER but this was not working much better, I cannot remember the details). And 30 microseconds of resolution for measuring 60microsecond times is a bit short. 
 With a lot of filtering, calibration and cpu power, this was more or less working but still triggered some false positive from time to time. So I had to consider using a QT110, even if it is SMT...
 
-== The reliable touch button ==
+## The reliable touch button ##
 
 
-A good explanation of the charge transfer detection behind this little chip can be found [here](http://www.media.mit.edu/resenv/classes/MAS836/QPROX-white_paper.pdf). The QT110 is a small chip that handles all this automagically and just outputs 5V if something is sensed. Digikey has a good [eval board](http://search.digikey.com/scripts/DkSearch/dksus.dll?Cat=2622557&k=QT100) for experimenting with it. There are plenty of versions of basically the same features. QT1010, QT100, QT110, QT110A, QT100-ISG,.... When I placed my order, the QT100 DIP version was long forgotten about, the QT100 SMD as well. There were some QT110A-ISG available for purchase but now even these are not available anymore... I'll stock them next time !
+A good explanation of the charge transfer detection behind this little chip can be found [here](http://www.media.mit.edu/resenv/classes/MAS836/QPROX-white_paper.pdf). The QT110 is a small chip that handles all this automagically and just outputs 5V if something is sensed. Digikey has a good [eval board](http://search.digikey.com/scripts/DkSearch/dksus.dll?Cat#2622557&k#QT100) for experimenting with it. There are plenty of versions of basically the same features. QT1010, QT100, QT110, QT110A, QT100-ISG,.... When I placed my order, the QT100 DIP version was long forgotten about, the QT100 SMD as well. There were some QT110A-ISG available for purchase but now even these are not available anymore... I'll stock them next time !
 
 ![](first_smt_solder-1024x624.png)
 <div style="text-align:center">First SMT soldering</div>
@@ -379,9 +379,9 @@ A good explanation of the charge transfer detection behind this little chip can 
 
 The QT110 works quite well. It even makes the filtering and calibration itself so detecting a touch event is just reading a GPIO.
 
-= Eyes and brush =
+# Eyes and brush #
 
-== The left eye and the rgnntuuudjuuuuu common cathode ==
+## The left eye and the rgnntuuudjuuuuu common cathode ##
 
 
 ![](IMG_08311-768x1024.jpg)
@@ -396,15 +396,15 @@ The solution was to add a PNP transistor as well, doubling the number of nice di
 
 ![](good_common_cathode.png)
 
-== The toilet brush ==
+## The toilet brush ##
 
 
 ![](A103SYZQ.jpg)
 The brush is a tri-stable switch connected to GPIOs 143, 144 and 146. The middle one is configured as output as set to 1.8V. The two other ones are configured as input with an internal pull-down enabled. Reading them makes it possible to know the position of the switch.
 
-= Software =
+# Software #
 
-== openembedded ==
+## openembedded ##
 
 [openembedded](http://www.openembedded.org) is a framework for cross-compiling a complete linux distribution from the sources. It is used to build Angstrom, a tiny linux distribution that works well with the beagleboard. Everything is nice and well architectured but everything is also very slow. The first compilation of a console-image on my Corei3, 2.27GHz, 4GB RAM took several hours. I updated the openembedded tree after a week or two and tried to recompile. And it again took some more hours. Needless to say, I did not update since then. The bad thing is that even rebuilding a single package is quite slow due to bitbake doing lots of smart things... 
 The rabbid filesystem is based on console-image plus some other packages:
@@ -430,9 +430,9 @@ recipe for inheriting a image from console-image (lapin is the french for rabbit
 
 This gives the root filesystem and kernel that I put on the SDcard. The rabbit software itself is a binary called 'lapin' and started from inittab (yes, the alarm clock as a boot time of ~20seconds :-( ). This binary is built outside of openembedded and just reuses the cross compiler. It links statically with espeak for the speech synthesis. This is the only dependency.
 
-== OMAP gpios ==
+## OMAP gpios ##
 
-There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse_thread/thread/ff6f6aa843afd950/043f755790b92ee7?lnk=gst&q=gpio+pad#043f755790b92ee7) about how to use the GPIOs. While using '/sys/class/gpio/' is pretty straightforward, it's not really clear which gpio is available and which one is not. Indeed, the OMAP allows most of its IO pin to serve different purposes. For an example, the same pin could be used as GPIO or I2C clock, or even a MMC pin. This is configurable using the PADCONF registers. My understanding is that this is done inside the bootloader but could possibly done in the kernel also. So I did like [many others](http://groups.google.com/group/beagleboard/browse_thread/thread/74e538d3149fa68e/621e9158f35971c3?lnk=gst&q=gpio+mmap#621e9158f35971c3) and did all the gpio configuration from user space directly mmap'ing the PADCONF registers <strong>(edit: this is bad... The kernel is the good place where to do this.)</strong> . The resulting code is inside gpio.c:
+There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse_thread/thread/ff6f6aa843afd950/043f755790b92ee7?lnk#gst&q#gpio+pad#043f755790b92ee7) about how to use the GPIOs. While using '/sys/class/gpio/' is pretty straightforward, it's not really clear which gpio is available and which one is not. Indeed, the OMAP allows most of its IO pin to serve different purposes. For an example, the same pin could be used as GPIO or I2C clock, or even a MMC pin. This is configurable using the PADCONF registers. My understanding is that this is done inside the bootloader but could possibly done in the kernel also. So I did like [many others](http://groups.google.com/group/beagleboard/browse_thread/thread/74e538d3149fa68e/621e9158f35971c3?lnk#gst&q#gpio+mmap#621e9158f35971c3) and did all the gpio configuration from user space directly mmap'ing the PADCONF registers <strong>(edit: this is bad... The kernel is the good place where to do this.)</strong> . The resulting code is inside gpio.c:
 
     	pad_fd = open("/dev/mem", O_RDWR | O_SYNC);
     
@@ -442,7 +442,7 @@ There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse
     	}
     
     	padconf = mmap(NULL, 0x10000, PROT_READ | PROT_WRITE, MAP_SHARED, pad_fd, 0x48000000);
-    	if (padconf == MAP_FAILED) {
+    	if (padconf ## MAP_FAILED) {
     		printf("cannot map padconf\n");
     		goto exit_close_pad_fd;
     	}
@@ -455,10 +455,10 @@ There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse
     		return;	
     	} else if (gpio < 167) {
     		pad = &padconf[0x2154 / 4 + (gpio - 128) / 2];
-    	} else if (gpio == 168) {
+    	} else if (gpio ## 168) {
     		pad = &padconf[0x21BC / 4];
     		use_high_bits = 1;
-    	} else if (gpio == 183) {
+    	} else if (gpio ## 183) {
     		pad = &padconf[0x21C0 / 4];
     		use_high_bits = 0;			
     	} else {
@@ -472,7 +472,7 @@ There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse
     	conf_value |= 4;
     	if (!is_out) {
     		conf_value |= 1 << 8; /* input enable */
-    		if (pull_up == GPIO_PULLUP) {
+    		if (pull_up ## GPIO_PULLUP) {
     			conf_value |= 1 << 4; /* use pull up */
     		}
     			
@@ -491,10 +491,10 @@ There is a lot of [discussion](http://groups.google.com/group/beagleboard/browse
     
     
 
-All the gory details and everything you ever wanted to know about OMAP3 can be found inside the 3400 pages of the [OMAP3530 technical reference manual](http://focus.ti.com/general/docs/lit/getliterature.tsp?literatureNumber=spruf98m&fileType=pdf). It is worth noting that all the GPIO can have a pull-up or pull-down enabled in software, which saves some soldering :-). The code above can be compiled standalone to create the ./gpio binary, which proved very usefull during debug.
+All the gory details and everything you ever wanted to know about OMAP3 can be found inside the 3400 pages of the [OMAP3530 technical reference manual](http://focus.ti.com/general/docs/lit/getliterature.tsp?literatureNumber#spruf98m&fileType#pdf). It is worth noting that all the GPIO can have a pull-up or pull-down enabled in software, which saves some soldering :-). The code above can be compiled standalone to create the ./gpio binary, which proved very usefull during debug.
 
 
-== Espeak ==
+## Espeak ##
 
 
     
@@ -539,27 +539,27 @@ When initializing, [eSpeak](http://espeak.sourceforge.net/) returns the sample r
 
 The rest of the software is pretty standard C code. The rabbit has a mainloop that reacts to touch events and timers and asks the audio thread to yell or play some music
 
-= Paint =
+# Paint #
 
 ![](IMG_0841-1024x768.jpg)
-== Primer ==
+## Primer ##
 
 ![](IMG_06451-768x1024.jpg)
 <div style="text-align:center">rabbit was just primed and took a shower</div>
 I used a "lefranc-bourgeois" spray primer to make the rabbit white. Spray is quite nice because it makes a very smooth surface. The problem is to apply it uniformly else it creates some thick drops. I made some on the back of the rabbit, had to sand and prime the rabbit again.
 
-== Pink belly ==
+## Pink belly ##
 
 ![](IMG_0650-768x1024.jpg)
 
  For the belly and ears, I used pink "amsterdam" acrylic I found in [BHV](www.bhv.fr). The color was exactly what I was looking for but I'm not very happy about the result of this paint. If I do not dilute it at all, then it is too solid and one can see plenty of brush marks. Diluting it with water leaves some marks when drying. In the end, I diluted it with a mat agent but still the surface is not very uniform. I also tried with liquitex with the same results... maybe I just miss something...
 
-== Grass ==
+## Grass ##
 
 ![](IMG_0682-1024x768.jpg)
 The grass is made using a special paint called 'resin sand' but I guess one can do exactly the same using glue and standard sand. It is then painted with acrylic. I found the first green a bit dark so put another lighter green on top of it. Maybe the paint is a bit too thick now but I did not really have time to sand the base and redo everything again...
 
-== The rest ==
+## The rest ##
 
 
 ![](IMG_0685-768x1024.jpg)
@@ -570,9 +570,9 @@ All the rest is painted using citadel paint and I wish I had found this paint be
 That concludes the rabbid story. I never imagined doing an alarm clock could be that complicated but it was fun overall !
 See you later and ... Bwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhh !!!!!!!!!!! 
 
-= shopping =
+# shopping #
 
-== molding ==
+## molding ##
 
 Favorite shops:
 
@@ -618,7 +618,7 @@ Favorite shops:
 <tr><td>primer</td><td>Rougier et plé</td></tr>
 </table>
 
-== electronics ==
+## electronics ##
 
 
 Favorite shops:
@@ -648,21 +648,21 @@ Favorite shops:
 <tr><td>some more stuff missing</td><td></td></tr>
 </table>
 
-= Schematics =
+# Schematics #
 
 
 <strong>disclaimer</strong>: The schematics are provided as is. They are here to illustrate the posts but were not actually used during the making of the rabbit so I'm not sure they're really correct.
 
-<strong>schematics</strong>: [schematics.tar.gz](../../../../wp-content/uploads/2011/01/schematics.tar.gz)
+<strong>schematics</strong>: [schematics.tar.gz](schematics.tar.gz)
 
-= Source code =
+# Source code #
 
 
 You need to set CROSS to where your arm cross compiler is in the top level Makefile.
 The main target is the lapin binary but it is also possible to type 'make gpio' or 'make max' for small debug programs
 For building the modules, you also need to tell make where the source of the kernel is.
 
-<strong>source code</strong>: [lapin.tar.gz](../../../../wp-content/uploads/2011/01/lapin.tar.gz)
+<strong>source code</strong>: [lapin.tar.gz](lapin.tar.gz)
 
 
 

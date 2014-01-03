@@ -1,24 +1,34 @@
 {
     "title": "Bye Bye WordPress",
-    "description": "I've got a new CMS now. It uses python and a database called ext4."
+    "description": "I've got a new CMS now. It uses python and a revolutionnary database called ext4."
 }
 
 
 <!--more-->
 
 
-New website ! Like [many others](http://nanoc.ws/about/#similar-projects), I give up on wordpress and move my blog to static pages. There is plenty of discussion over the web about the rationale behind this. Basically:
-* no more database to maintain
-* faster
-* ability to write my posts with my favorite editor
-* easy version control
-* markdown support
+# New website ! #
 
-The drawback is that there are no comments or pingback anymore. Well... 
+Like [many others](http://nanoc.ws/about/#similar-projects), I give up on wordpress and move my blog to static pages. There is plenty of discussion over the web about the rationale behind this. Basically:
 
-Actually I didn't really need a new website, the old wordpress stuff was still working. But I saw this as an opportunity to learn some python and responsive design. Oh and rgnutdjuuu XML/XPath... It's now official, I hate XML and perl, I love json and python !
+-  no more database to maintain
+-  faster
+-  ability to write my posts with my favorite editor
+-  easy version control
+-  markdown support
+-  ...
 
+This was also an opportunity to learn python (good) and css3 (not good).
 
-The generator is quite simple. It takes an arborescence of markup and images as input and produces HTML pages as output. I made my own markup parser, that works on a syntax similar but not 100% compatible with markdown. Some libraries exist like [Misaka](http://misaka.61924.nl/) but this was a good python exercise.
+I wasted far too much time trying to understand the HTML box model. Or I should rather say the various HTML box model**s**. I hate "table-cell" and "margin: auto". Trying to center something vertically was quite complicated. Getting a 'div' to have a display aspect ratio independant from the viewport resolution was more like brain torture.
 
-The frontend is using a fluid grid and CSS3. It should adapt on smartphones and PC screens.
+# Source code #
+
+I am a bit out of time right now so the code is still quite messy. I won't say it is as messy as the wordpress code but still not very clean. That was not really the initial goal. Anyway, it's all available on <a href="https://github.com/martinbonnin/mbonnin.net">github</a> of course.
+
+# Coming soon #
+
+- phone support (aka responsive, fluid, grid, media-query, [insert your favorite buzzword here]).
+- dynamic resize support.
+
+Hope it'll will work correctly. Please tell <a href="mailto:martin@mbonnin.net">me</a> if it does not.

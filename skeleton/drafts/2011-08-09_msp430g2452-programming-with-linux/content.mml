@@ -12,7 +12,7 @@ Below the steps to get everything from the 2452:
 
 
 
-= Download and install mspdebug 0.16 =
+# Download and install mspdebug 0.16 #
 
 I had 0.14 previously which did not recognize the 2452. So download mspdebug from [here](http://sourceforge.net/projects/mspdebug/files/mspdebug-0.16.tar.gz/download) and compile/install it. If everything goes well, it should look like below (there are some errors but still it does not prevent from programming the MSP):
 
@@ -59,7 +59,7 @@ I had 0.14 previously which did not recognize the 2452. So download mspdebug fro
     
     
 
-= Compile for 2452 (-mmcu=msp430g2452) =
+# Compile for 2452 (-mmcu#msp430g2452) =
 
 The hackaday sample program actually compiles and run ok with gcc version 4.4.5 (MSPGCC4_20110213) and -mmcu=msp430x2012. Certainly the memory map for standard peripherals like watchdog and timers are similar... But still this is a bit of a hack and anyway, this does not allow loading more than 1k of program data:
 
