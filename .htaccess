@@ -11,15 +11,5 @@ Redirect permanent /2011/01/05/bwaaaaaaaaaaaaaaalarm-clock /posts/2011-01-05_bwa
 Redirect permanent /2011/01/01/first-post /posts/2011-01-01_first-post/
 Redirect permanent /about /pages/about/
 
-Options FollowSymLinks
-
-RewriteEngine on
-RewriteBase /
-
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_URI} .*[^/]$
-RewriteRule (.*) $1/ [R,L]
-RewriteCond %{REQUEST_FILENAME} -d 
-RewriteRule (.*) $1index.html [E=TOTO:$1]
 
 
