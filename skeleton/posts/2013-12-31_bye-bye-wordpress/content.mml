@@ -30,5 +30,7 @@ I am a bit out of time right now so the code is still quite messy. I won't say i
 
 - phone support (aka responsive, fluid, grid, media-query, [insert your favorite buzzword here]).
 - dynamic resize support.
+- nicer 404 error.
+- some markdown fixes.
 
 Hope it'll will work correctly. Please tell <a href="mailto:martin@mbonnin.net">me</a> if it does not.
