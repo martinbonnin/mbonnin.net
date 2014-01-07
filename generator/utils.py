@@ -2,6 +2,7 @@ import sys;
 sys.dont_write_bytecode = True
 import subprocess;
 import os;
+import errno;
 import HTMLParser;
 import cgi;
 import codecs;
@@ -25,7 +26,7 @@ def unescape(s):
 def escape(s):
     return cgi.escape(s);
 
-def open_file(path, _mode):
+def open_file(path, _mode="rb"):
     return codecs.open(path, encoding='utf-8', mode=_mode);
 
 def re_replace_all(re_str, template, match_cb):
@@ -42,6 +43,7 @@ def re_replace_all(re_str, template, match_cb):
 
 def fatal(text):
     print(text);
+    raise;
     sys.exit(1);
 
 def generate_index(title, depth, out_path):
@@ -50,3 +52,10 @@ def generate_index(title, depth, out_path):
     a = in_fd.read().replace("%TITLE", escape(title));
     a = a.replace("%DEPTH", depth);
     out_fd.write(a);        
+
+def makedirs(path):
+    try:
+        os.makedirs(path);
+    except OSError as e:
+        if (e.errno != errno.EEXIST):
+            fatal("cannot make dir");

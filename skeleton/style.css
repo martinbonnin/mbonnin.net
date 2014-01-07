@@ -1,0 +1,241 @@
+
+html * {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #404040;
+}
+
+a, img {
+    border: none;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+a:hover h1, a:hover h2 {
+    color: #009000;
+}
+
+h1, h2 {
+    font-family: 'Montserrat', "Helvetica Neue",Helvetica,Arial,sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+.posts img {
+    margin: auto;
+    display: block;
+    border: solid #909090;
+    max-width: 100%;
+}
+body {
+    background: none repeat scroll 0% 0% #e9e9e9; 
+    margin: 0px; 
+    padding: 0px; 
+    height: 100%; 
+}
+
+.wrapper {
+    min-height: 100%;
+}
+
+.header-content {
+    width: 100%;
+}
+
+.header-container {
+    width: 96%;
+    background: #000000;
+    padding: 1% 2% 2%;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.content {
+    position: relative; 
+    width: 60%;
+    padding: 3.5% 20%; 
+}
+
+.footer-container {
+    background: none repeat scroll 0% 0% rgb(0, 0, 0); 
+    position: relative; 
+    width: 100%; 
+    padding-bottom: 2%; 
+    margin-top: -2%;
+    box-sizing: border-box; 
+}
+
+.logo-desktop {
+    width: 700px;    
+}
+
+.bubbles-container {
+    width: 280px;
+}
+
+.bubble-container {
+    width: 50px;
+    height: 50px;
+    float: right;
+    margin-left: 15px;
+}
+
+.bubble {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #404040;
+    overflow: hidden;
+}
+
+.bubble_img {
+    max-width: 100%;
+    position: relative;
+    top: -50px;
+    transition: top 0.3s ease;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.home {
+    width: 100%;
+}
+
+.home .vignette {
+    width: 100%;
+}
+
+.home .left {
+    display: inline-block;
+    width: 30%;
+    vertical-align: middle;
+}
+
+.home .vignette-thumbnail {
+    position: relative;
+    width: 50%;
+    top: 0%;
+    transition: top 0.5s;
+}
+
+.home .vignette-summary {
+    width: 69%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.home .even {
+    left: 40%;
+}
+
+.home h2 {
+    font-size: 80%;
+}
+.home .front {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.home img {
+    max-width: 100%;
+}
+
+@media (max-width: 750px) {
+    .button {
+        width: 7%;
+        float: right;
+        position: relative;
+        top: 7px;
+    }
+    .header-container {
+        padding: 6% 2%;
+    }
+    .menu {
+        position: absolute;
+        z-index: 9;
+        width: 100%;
+        height: 0px;
+        overflow: hidden;
+        background: black;
+        box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+    .menu h1 {
+        margin-left: 5%;
+        padding: 2% 0%;
+        color: #e9e9e9;
+    }
+    .bubbles-container {
+        display: none;
+    }
+    .content {
+        padding: 2% 0%;
+        width: 100%;
+    }
+    .logo-phone {
+        width: 75%;
+    }    
+    .desktop {
+        display: none;
+    }    
+    .logo-desktop {
+        display: none;
+    }
+    .home .left {
+        width: 20%;
+        display: block;
+        float: left;
+    }
+    .home .even {
+        left: 0%;
+    }
+    .home .vignette-thumbnail {
+        width: 75%;
+    }
+    .home .vignette-summary {
+        display: block;
+        width: 79%;
+        float: left;
+    }
+}
+
+@media (min-width: 750px) {
+    .phone {
+        display: none;
+    }
+    .logo-phone {
+        display: none;
+    }
+}
+
+@media (min-width: 751px) and (max-width: 1200px) {
+    .logo-desktop {
+        margin: auto;
+        display: block;
+        position: relative;
+        left: 50px;
+    }    
+    .bubbles-container {
+        margin: auto;
+        display: block;
+    }
+}
+
+@media (min-width: 1201px) {
+    .logo-desktop {
+        float: left;
+    }    
+    .bubbles-container {
+        float: right;
+        position: relative;
+        top: 70px;
+    }
+}

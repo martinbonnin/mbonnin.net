@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<!--
+                               |        |
+                               |\      /|
+                               | \____/ |
+                               |  /\/\  |
+                              .'___  ___`.
+                             /  \|/  \|/  \
+            _.--------------( ____ __ _____)
+         .-' \  -. | | | | | \ ----\/---- /
+       .'\  | | / \` | | | |  `.  -'`-  .'
+      /`  ` ` '/ / \ | | | | \  `------'\
+     /-  `-------.' `-----.       -----. `---.
+    (  / | | | |  )/ | | | )/ | | | | | ) | | )
+     `._________.'_____,,,/\_______,,,,/_,,,,/
+
+
+          WELCOME TO MBONNIN.NET
+-->
+    <meta charset="utf-8">
+    <style type="text/css">
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>    
+    <link href='%{page.depth}style.css' rel='stylesheet' type='text/css'>    
+    <link rel="alternate" type="application/rss+xml" href="%{page.depth}feed/feed.xml" title="latest posts"/>
+    <title>%{blog.title + " | " + page.title}</title>
+    <link rel="shortcut icon" href="%{page.depth}res/favicon.ico"/>
+    <script src="%{page.depth}app.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="header-container">
+                <div class="header-content">
+                    <a href="%{page.depth}">
+                        <img class="logo-desktop" src="%{page.depth}res/title_combined.png" />
+                        <img class="logo-phone" src="%{page.depth}res/title_logo.png" />
+                    </a>
+                    <div class="bubbles-container">
+                        <div class="bubble-container">
+                            <div class="bubble"><a href="%{page.depth}sticky/about/" alt="About"><img class="bubble_img" src="%{page.depth}res/sprite_about.png" /></a></div>
+                        </div>
+                        <div class="bubble-container">
+                            <div class="bubble"><a href="%{page.depth}feed/" alt="Feed"><img class="bubble_img" src="%{page.depth}res/sprite_rss.png" /></a></div>
+                        </div>
+                        <div class="bubble-container">
+                            <div class="bubble"><a href="http://www.linkedin.com/pub/martin-bonnin/1/344/947" alt="LinedIn"><img class="bubble_img" src="%{page.depth}res/sprite_linkedin.png"/></a></div>
+                        </div>
+                        <div class="bubble-container">
+                            <div class="bubble"><a href="https://github.com/martinbonnin" alt="Github"><img class="bubble_img" src="%{page.depth}res/sprite_github.png"/></a></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <img class="button phone" src="%{page.depth}res/button.png"/>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="menu phone">
+                <a href="https://github.com/martinbonnin"><h1>Github</h1></a>
+                <a href="http://www.linkedin.com/pub/martin-bonnin/1/344/947"><h1>LinkedIn</h1></a>
+                <a href="%{page.depth}feed/"><h1>Feed</h1></a>
+                <a href="%{page.depth}sticky/about/"><h1>About</h1></a>
+            </div>
+            <div class="content">
+                %{-include(page.template)}
+            </div>
+        </div>
+        <div class="footer-container">
+        </div>
+    </body>
+</html>

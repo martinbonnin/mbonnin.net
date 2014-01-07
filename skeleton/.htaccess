@@ -11,5 +11,6 @@ Redirect permanent /2011/01/05/bwaaaaaaaaaaaaaaalarm-clock /posts/2011-01-05_bwa
 Redirect permanent /2011/01/01/first-post /posts/2011-01-01_first-post/
 Redirect permanent /about /pages/about/
 
+DirectoryIndex index.html feed.xml
 
 

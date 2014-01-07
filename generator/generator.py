@@ -14,46 +14,10 @@ import time;
 import urlparse;
 from xml.sax.saxutils import escape
 
-feed_header = """<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"
-	xmlns:content="http://purl.org/rss/1.0/modules/content/"
-	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:atom="http://www.w3.org/2005/Atom"
-	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
-	>
-
-<channel>
-	<title>mbonnin&#039;s blog</title>
-	<atom:link href="%DOMAINfeed/" rel="self" type="application/rss+xml" />
-	<link>%DOMAIN</link>
-	<description>rabbits, computer science and the meaning of life</description>
-	<lastBuildDate>%BUILDDATE</lastBuildDate>
-	<language>en</language>
-	<sy:updatePeriod>hourly</sy:updatePeriod>
-	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>mouahahahha</generator>""";
-
-feed_footer = """</channel>
-</rss>""";
-
-feed_item =""" 		<item>
-		<title>%TITLE</title>
-		<link>%DOMAIN%PATH/</link>
-		<pubDate>%PUBDATE</pubDate>
-		<dc:creator>martin</dc:creator>
-        <category><![CDATA[Uncategorized]]></category>
-
-		<guid isPermaLink="true">%DOMAIN%PATH/</guid>
-		<description>%DESCRIPTION</description>
-			<content:encoded>%CONTENT_ENCODED</content:encoded>
-		<slash:comments>0</slash:comments>
-		</item>""";
-
-feed_time_format = "%a, %d %b %Y %H:%M:%S +0000";
-domain = "http://staging.mbonnin.net/";
-
+class Struct(object):
+    def __init__(self, entries): 
+        self.__dict__.update(entries)
+    
 class Generator:
     def __init__(self):
         pass;                
@@ -67,88 +31,115 @@ class Generator:
             if (not os.path.isdir(in_path + "/" + d)):
                 continue;
 
-            print("=== " + directory + "/" + d + "===");
             c = content.Content(self.in_base_path, in_path + "/" + d, out_path);
-            c.path = directory + "/" + c.directory;
+            c.relpath = directory + "/" + c.directory;
+            c.type = directory;
             getattr(self, directory).append(c);
+            context = {};
+            context["content"] = c;
+            context["page"] = Struct({"title": c.title, "template": "content.template", "depth": "../../"});
+            self.process_file("index.template", c.relpath + "/index.html", context);
+
+    def replace_commands(self, template, context):
+        def match_cb(m, self=self):
+            do_esc = True;
+            s = m.group(1);
+            if (s[0] == "-"):
+                do_esc = False;
+                s = s[1:];
+
+            # mouhahaha 
+            try:
+                r = eval(s, globals(), context);
+                if (do_esc):
+                    #print("before " + r);
+                    r = escape(r);
+                    #print("after " + r);
+                return r;
+            except:
+                utils.fatal("error on eval(" + m.group(1) + ")");
+
+        return utils.re_replace_all("%{([^}]*)}", template, match_cb);
+
+    def include(self, in_relpath, context):
+        #print("including: " + in_relpath);
+        output_str = "";
+        context["blog"] = self.blog;
+        def include2(relpath):
+            return self.include(relpath, context);
+
+        context["include"] = include2;
+
+        fd = utils.open_file(self.in_base_path + "/" + in_relpath, "rb");
+        lines = collections.deque(fd.readlines());
+        while (len(lines) > 0):
+            line = lines.popleft();
+            # XXX: this is not recursive
+            if (re.search("#{for_each_post}", line)):
+                template = "";
+                while (len(lines) > 0):
+                    line = lines.popleft();
+                    if (re.search("#{done}", line)):
+                        for p in self.posts:
+                            context["post"] = p;
+                            output_str += self.replace_commands(template, context);
+                        del context["post"];
+                        break;
+                    template += line;
+            
+            else:
+                 output_str += self.replace_commands(line, context);
+
+        #print("include returned'" + output_str + "'");
+        return output_str;
+
+    def process_file(self, in_relpath, out_relfpath, context):
+        print("=== " + out_relfpath + " ===");
+        out_fpath = self.out_base_path + "/" + out_relfpath;
+        utils.makedirs(os.path.dirname(out_fpath));
+        utils.open_file(out_fpath, "wb").write(self.include(in_relpath, context));
         
     def generate_feed(self):
-        feed_path = self.out_base_path + "/feed";
-        try:
-            os.makedirs(feed_path);
-        except:
-            #fatal("cannot make dir");
-            pass;
-
-        feed_path += "/index.html";
-        fd = utils.open_file(feed_path, "wb");
-        a = feed_header.replace("%BUILDDATE", time.strftime(feed_time_format, time.gmtime()));
-        a = a.replace("%DOMAIN", domain);
-        fd.write(a);
-        for p in self.posts:
-            a = feed_item;
-            a = a.replace("%TITLE", escape(p.title));
-            a = a.replace("%PUBDATE", time.strftime(feed_time_format, p.date));
-            a = a.replace("%PATH", p.path);
-            a = a.replace("%DESCRIPTION", escape(p.description));
-            def make_absolute_url(m):
-                #print("make absolute " + m.group(1));
-                if (m.group(1).find("http:") == 0):
-                    r = m.group(1);
-                else:
-                    r = urlparse.urljoin(domain + p.path + "/", m.group(1));
-                #print("    => " + r);
-                return "src=\"" + r + "\"";
-            b = utils.re_replace_all('src="([^"]*)"', p.html, make_absolute_url);
-            b = utils.re_replace_all('href="([^"]*)"', b, make_absolute_url);
-            a = a.replace("%CONTENT_ENCODED", "<![CDATA[" + b + "]]>");
-            a = a.replace("%DOMAIN", domain);
-            fd.write(a);
-        fd.write(feed_footer);
+        self.process_file("feed.template", "feed/feed.xml", {});
+        utils.Popen("cp -rf " + self.in_base_path + "/feed.htaccess " + self.out_base_path + "/feed/.htaccess");
         
     def generate_home(self):
         # sort posts, in reverse order: latest first
         self.posts.sort(cmp=lambda x,y: cmp(y.date, x.date));
 
-        # write the home app.js. It is the concatenation of:
-        #  1. json dump of all posts
-        #  2. page specific javascript
-        #  3. common javascript
-        home_fd = utils.open_file(self.in_base_path + "/home.js", "rb");
-        common_fd = utils.open_file(self.in_base_path + "/common.js", "rb");
-        app_fd = utils.open_file(self.out_base_path + "/app.js", "wb");
+        index = 0;
+        for p in self.posts:
+            p.index = index;
+            index += 1;
 
-        app_fd.write("posts = ");
-        posts = [{k: getattr(p, k, None) for k in ["path", "title", "date_str", "description"]} for p in self.posts];
-        json.dump(posts, app_fd, indent=4);
-        app_fd.write(";\n");
-        app_fd.write(home_fd.read());
-        app_fd.write(common_fd.read());
-        utils.generate_index("mbonnin's blog", "", self.out_base_path + "/index.html");
+        context = {};
+        context["page"] = Struct({"title": self.blog.description, "depth": "/", "template":"home.template"});
+        self.process_file("index.template", "index.html", context);
+        utils.Popen("cp -rf " + self.in_base_path + "/.htaccess " + self.out_base_path + "/.htaccess");
 
     def generate(self, in_base_path, out_base_path):
         self.in_base_path = in_base_path;
         self.out_base_path = out_base_path;
         
-        try:
-            os.mkdir(out_base_path);
-        except:
-            pass;
-                
+        utils.makedirs(out_base_path);                
         imgutils.init(in_base_path);
         utils.init(in_base_path);
+        
+        self.blog = Struct(json.load(utils.open_file(self.in_base_path + "/blog.json")));
 
         # copy static content
         utils.Popen("cp -rf " + in_base_path + "/res " + out_base_path);
-         
+        utils.Popen("cp -rf " + in_base_path + "/style.css " + out_base_path);
+        utils.Popen("cp -rf " + in_base_path + "/app.js " + out_base_path);
+        
         # 'dynamic' content
-        for c in ["pages", "posts"]:
+        for c in ["sticky", "posts"]:
             setattr(self, c, []);
-            self.generate_content(c);
+            self.generate_content(c);        
         
         # home page
         self.generate_home();
-        
+
         # feed
         self.generate_feed();
         

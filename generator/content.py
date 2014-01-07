@@ -12,21 +12,6 @@ import codecs;
 import time;
 import markdown;
 
-code = """var getContent = function getContent(centerer)
-{
-    var post = $("<div>");
-    post.attr("id", "post");
-    post.html(contentHtml);
-    centerer.append(post);
-
-    return;
-}
-
-var getDepth = function getDepth() {
-    return "../../";
-}
-""";
-
 def is_picture(f):
     f = f.lower();
     ext = os.path.splitext(f)[1];
@@ -43,6 +28,7 @@ def is_picture(f):
     else:
         return False;
 
+    
 class Content(object):
     def __init__(self, in_base_path, in_path, out_path):
         self.directory = os.path.basename(in_path);
@@ -50,10 +36,7 @@ class Content(object):
         self.out_path = out_path + "/" + self.directory;
         self.small_dirname = "small";
         self.date_str = "";
-        try:
-            os.makedirs(self.out_path + "/"  + self.small_dirname);
-        except:
-            pass;
+        utils.makedirs(self.out_path + "/"  + self.small_dirname);
 
         try:
             self.date = time.strptime(self.directory[:10], "%Y-%m-%d");
@@ -73,22 +56,7 @@ class Content(object):
                     self.processHeader();
                 else:
                     self.attachments.append(f);
-        self.processAttachments();
-        
-        # generate app.js 
-        common_fd = utils.open_file(in_base_path + "/common.js", "rb");
-        app_fd = utils.open_file(self.out_path + "/app.js", "wb");
-        escaped_html = self.html.replace("\"", "\\\"").replace("\n", "\\n");
-        app_fd.write("contentHtml = \"" + escaped_html + "\";\n\n");
-        if (not self.date):
-            app_fd.write(code.replace("\"post\"", "\"page\""));
-        else:
-            app_fd.write(code);
-        app_fd.write(common_fd.read());
-        
-        # and index.html
-        utils.generate_index(self.title, "../../", self.out_path + "/index.html");
-        
+        self.processAttachments();                
                     
     # called from the renderer to replace images with their striped down version
     def image_cb(self, f):
