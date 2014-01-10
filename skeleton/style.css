@@ -31,6 +31,7 @@ html {
     display: block;
     border: solid #909090;
     max-width: 100%;
+    box-sizing: border-box;
 }
 body {
     background: none repeat scroll 0% 0% #e9e9e9; 
@@ -177,8 +178,9 @@ body {
         display: none;
     }
     .content {
-        padding: 2% 0%;
-        width: 100%;
+        padding: 2% 2%;
+        width: 96%;
+        overflow: hidden;
     }
     .logo-phone {
         width: 75%;
@@ -204,6 +206,9 @@ body {
         display: block;
         width: 79%;
         float: left;
+    }
+    .posts img {
+        border: none;
     }
 }
 

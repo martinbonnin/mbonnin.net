@@ -26,6 +26,7 @@
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>    
     <link href='%{page.depth}style.css' rel='stylesheet' type='text/css'>    
     <link rel="alternate" type="application/rss+xml" href="%{page.depth}feed/feed.xml" title="latest posts"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>%{blog.title + " | " + page.title}</title>
     <link rel="shortcut icon" href="%{page.depth}res/favicon.ico"/>
     <script src="%{page.depth}app.js"></script>

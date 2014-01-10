@@ -22,7 +22,7 @@ def generate_thumbnail(_in, _out_dir):
     _tmp_round_bw = tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
 
     # make input square
-    proc = utils.Popen("convert -resize 512x512^ -gravity center -extent 512x512 " + _in + " " + _tmp_square);
+    proc = utils.Popen("convert -resize 256x256^ -gravity center -extent 256x256 " + _in + " " + _tmp_square);
     if (proc.returncode != 0):
         utils.fatal("could not square thumbnail " + _in +": " + proc.err);
 
