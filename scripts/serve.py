@@ -12,7 +12,7 @@ PORT = 8080
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     extensions_map = mime.types;
     #add the default type
-    extensions_map[''] = "application/octet-sam";
+    extensions_map[''] = "application/octet-stream";
 
     def guess_type(self, path):
         (root, ext) = os.path.splitext(path);
