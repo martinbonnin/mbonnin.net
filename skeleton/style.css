@@ -150,7 +150,7 @@ body {
     max-width: 100%;
 }
 
-@media (max-width: 750px) {
+@media (max-width: 819px) {
     .button {
         width: 7%;
         float: right;
@@ -212,7 +212,7 @@ body {
     }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 820px) {
     .phone {
         display: none;
     }
@@ -221,7 +221,7 @@ body {
     }
 }
 
-@media (min-width: 751px) and (max-width: 1200px) {
+@media (min-width: 820px) and (max-width: 1200px) {
     .logo-desktop {
         margin: auto;
         display: block;
