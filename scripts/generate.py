@@ -115,7 +115,6 @@ class Generator:
         context = {};
         context["page"] = Struct({"title": self.blog.description, "depth": "/", "template":"home.template"});
         self.process_file("index.template", "index.html", context);
-        utils.execute_shell("cp -rf " + self.in_base_path + "/.htaccess " + self.out_base_path + "/.htaccess");
 
     def generate(self, in_base_path, out_base_path):
         self.in_base_path = in_base_path;
