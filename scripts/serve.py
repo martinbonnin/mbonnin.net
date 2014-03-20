@@ -67,6 +67,10 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.wfile.write(data);
         else:
             self.send_response(404);
+            self.end_headers();
+            self.wfile.write("cannot find " + path + "\n");
+            if (self.path == "/"):
+                self.wfile.write("try reloading...");
         
 class MyServer(SocketServer.TCPServer):
     allow_reuse_address = True
