@@ -7,6 +7,18 @@
 
 
 <div style="width: 30%; float: left"><img src="rabbit_circled.png" style="width: 60%; "></div>
-<div style="width: 70%; float: left"><p>I am a software developper working on connected TVs in Paris. This blog is an opportunity for me to stay up to date with web technologies and experiment with various hardware/software hacks.</p><h1>Contact</h1><p>You can contact me at martin@mbonnin.net.</p><p>Unless otherwise stated, the contents of this blog are licensed under <a href="http://creativecommons.org/licenses/by/2.0/fr/">Creative Commons BY</a></p></div>
+<div style="width: 70%; float: left">
+<h1>About me</h1>
+<p>I am a software developper working on connected TVs in Paris. This blog is an opportunity for me to stay up to date with web technologies and experiment with various hardware/software hacks.</p>
+
+<h1>Contact</h1>
+
+<p>You can contact me at martin@mbonnin.net.</p>
+
+<p>My pgp key is <a href="../../pgp.txt">here</a>.</p>
+
+<hr>
+Unless otherwise stated, the contents of this blog are licensed under [Creative Commons BY](http://creativecommons.org/licenses/by/2.0/fr/)
+</div>
 
 

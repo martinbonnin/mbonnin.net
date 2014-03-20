@@ -101,7 +101,7 @@ class Generator:
         
     def generate_feed(self):
         self.process_file("feed.template", "feed/feed.xml", {});
-        utils.Popen("cp -rf " + self.in_base_path + "/feed.htaccess " + self.out_base_path + "/feed/.htaccess");
+        utils.execute_shell("cp -rf " + self.in_base_path + "/feed.htaccess " + self.out_base_path + "/feed/.htaccess");
         
     def generate_home(self):
         # sort posts, in reverse order: latest first
@@ -115,7 +115,7 @@ class Generator:
         context = {};
         context["page"] = Struct({"title": self.blog.description, "depth": "/", "template":"home.template"});
         self.process_file("index.template", "index.html", context);
-        utils.Popen("cp -rf " + self.in_base_path + "/.htaccess " + self.out_base_path + "/.htaccess");
+        utils.execute_shell("cp -rf " + self.in_base_path + "/.htaccess " + self.out_base_path + "/.htaccess");
 
     def generate(self, in_base_path, out_base_path):
         self.in_base_path = in_base_path;
@@ -128,9 +128,9 @@ class Generator:
         self.blog = Struct(json.load(utils.open_file(self.in_base_path + "/blog.json")));
 
         # copy static content
-        utils.Popen("cp -rf " + in_base_path + "/res " + out_base_path);
-        utils.Popen("cp -rf " + in_base_path + "/style.css " + out_base_path);
-        utils.Popen("cp -rf " + in_base_path + "/app.js " + out_base_path);
+        cmd = "cp -rf " + in_base_path + "/static/* " + out_base_path;
+        print("copy static content: " + cmd)
+        proc = utils.execute_shell(cmd);
         
         # 'dynamic' content
         for c in ["sticky", "posts"]:

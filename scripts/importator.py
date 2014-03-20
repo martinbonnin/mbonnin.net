@@ -60,7 +60,7 @@ class Post:
             thumbnail_urls = tree.xpath("//*[local-name()='post_id'][.='" + thumbnail_ids[0] + "']/parent::*/*[local-name()='attachment_url']/text()");
             if (thumbnail_urls):
                 ext = os.path.splitext(thumbnail_urls[0])[1].lower();
-                proc = utils.Popen('wget -O ' + self.dir + '/thumbnail' + ext + ' ' + thumbnail_urls[0]);
+                proc = utils.execute_shell('wget -O ' + self.dir + '/thumbnail' + ext + ' ' + thumbnail_urls[0]);
                 if (proc.returncode != 0):
                     print("cannot download " + thumbnail_urls[0]);
                     print(proc.err);
@@ -135,7 +135,7 @@ class Post:
                 #print("download " + attachment + " to " + f);
                 if (not os.path.isfile(af)):
                     print("downloading... " + attachment);
-                    proc = utils.Popen('wget -O ' + af + ' ' + attachment);
+                    proc = utils.execute_shell('wget -O ' + af + ' ' + attachment);
                     if (proc.returncode != 0):
                         print("cannot download " + attachment);
                         print(proc.err);

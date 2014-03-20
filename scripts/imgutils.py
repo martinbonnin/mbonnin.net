@@ -6,7 +6,7 @@ import tempfile;
 import os;
 
 def ensure_less_than_one_megapixel(_in, _out):
-    proc = utils.Popen("convert -resize @1000000> " + _in + " " + _out);
+    proc = utils.execute_shell("convert -resize \@1000000\> " + _in + " " + _out);
     if (proc.returncode != 0):
         print("could not convert " + _in +": " + proc.err + ":" + proc.out);
         sys.exit(1);
@@ -22,12 +22,12 @@ def generate_thumbnail(_in, _out_dir):
     _tmp_round_bw = tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
 
     # make input square
-    proc = utils.Popen("convert -resize 256x256^ -gravity center -extent 256x256 " + _in + " " + _tmp_square);
+    proc = utils.execute_shell("convert -resize 256x256^ -gravity center -extent 256x256 " + _in + " " + _tmp_square);
     if (proc.returncode != 0):
         utils.fatal("could not square thumbnail " + _in +": " + proc.err);
 
     # clip
-    proc = utils.Popen("convert " + in_dir + "/thumbnail_clip_mask.png " + _tmp_square + " -compose src-in -composite " + _tmp_round);
+    proc = utils.execute_shell("convert " + in_dir + "/thumbnail_clip_mask.png " + _tmp_square + " -compose src-in -composite " + _tmp_round);
     if (proc.returncode != 0):
         utils.fatal("could not generate_thumbnail " + _in +": " + proc.err);
 
@@ -41,7 +41,7 @@ def generate_thumbnail(_in, _out_dir):
             else:
                 r = _tmp_round;
             _out = _out_dir + "/thumbnail_" + color + bw + ".png";
-            proc = utils.Popen("convert " + in_dir + "/thumbnail_border_" + color + ".png " + r + " -composite " + _out);
+            proc = utils.execute_shell("convert " + in_dir + "/thumbnail_border_" + color + ".png " + r + " -composite " + _out);
             if (proc.returncode != 0):
                 utils.fatal("could not generate_thumbnail " + _in +": " + proc.err);
     
@@ -54,6 +54,6 @@ def init(_in):
     in_dir = _in;
     
 def desaturate(_in, _out):
-    proc = utils.Popen("convert " + _in + " -colorspace Gray " + _out);
+    proc = utils.execute_shell("convert " + _in + " -colorspace Gray " + _out);
     if (proc.returncode != 0):
         utils.fatal("could not desaturate " + _in +": " + proc.err);
