@@ -100,8 +100,7 @@ class Generator:
         utils.open_file(out_fpath, "wb").write(self.include(in_relpath, context));
         
     def generate_feed(self):
-        self.process_file("feed.template", "feed/feed.xml", {});
-        utils.execute_shell("cp -rf " + self.in_base_path + "/feed.htaccess " + self.out_base_path + "/feed/.htaccess");
+        self.process_file("feed.template", "feed/index.html", {});
         
     def generate_home(self):
         # sort posts, in reverse order: latest first

@@ -58,6 +58,10 @@ cat > ${CONF_FILE} << EOF
 		Order allow,deny
 		allow from all
 	</Directory>
+    <Directory /root/site/feed>
+        AddType application/rss+xml .xml
+        DirectoryIndex feed.xml
+    </Directory>
 
 	SSLEngine on
 	SSLCertificateFile /etc/apache2/ssl/mbonnin.net_2014_chain.pem
