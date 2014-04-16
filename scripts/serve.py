@@ -35,7 +35,10 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.send_header("Location", self.path + "/");
                 self.end_headers();
                 return;out               
-            path += "index.html"
+            if (self.path == "/feed/"):
+                path += "feed.xml";
+            else:
+                path += "index.html"
         
         if (path.find("index.html") != -1):
             print("refresh...");
