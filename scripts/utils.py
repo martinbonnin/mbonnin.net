@@ -10,7 +10,7 @@ import re;
 from xml.sax.saxutils import escape
 
 def execute_shell(args):
-    print("execute_shell: " + args);
+    #print("execute_shell: " + args);
     proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True);
     class Result(object):
         out = ''
