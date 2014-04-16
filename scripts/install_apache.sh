@@ -68,6 +68,8 @@ cat > ${CONF_FILE} << EOF
     SSLCertificateKeyFile /etc/apache2/ssl/mbonnin.net_2014.key
 	SSLCertificateChainFile /etc/apache2/ssl/mbonnin.net_2014_chain.pem
     
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
 </IfModule>
 EOF
