@@ -21,6 +21,7 @@ I also took this opportunity to publish my PGP public key. You can find it here:
 
 The OVH web hosting I was using previously does not allow custom SSL certificates so I moved to a [VPS classic 1 instance](http://www.ovh.com/fr/vps/vps-classic.xml). At 2€/month it's not that expensive and much cheaper than a micro EC2 instance. Let's see how it behaves...
 
+Edit 15/04/2014: Turned out HTTPS was not enough to prevent eavesdropping. The instance has been patched last week to fix the [heartbleed bug](http://en.wikipedia.org/wiki/Heartbleed).
 
 <hr>
 Lock photo by [Thomas](https://flic.kr/p/7ywqZ6)
