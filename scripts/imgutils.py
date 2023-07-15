@@ -17,9 +17,9 @@ def generate_thumbnail(_in, _out_dir):
     if (os.path.isfile(_out_dir + "/thumbnail_green.png")):
         return;
     
-    _tmp_square = tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
-    _tmp_round = tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
-    _tmp_round_bw = tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
+    _tmp_square = _out_dir + "/tmp_square.png" #tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
+    _tmp_round = _out_dir + "/tmp_round.png" #tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
+    _tmp_round_bw = _out_dir + "/tmp_round_bw.png" #tempfile.mkstemp(suffix=".png", prefix="mbonnin.net")[1];
 
     # make input square
     proc = utils.execute_shell("convert -resize 256x256^ -gravity center -extent 256x256 " + _in + " " + _tmp_square);
@@ -27,7 +27,7 @@ def generate_thumbnail(_in, _out_dir):
         utils.fatal("could not square thumbnail " + _in +": " + proc.err);
 
     # clip
-    proc = utils.execute_shell("convert " + in_dir + "/thumbnail_clip_mask.png " + _tmp_square + " -compose src-in -composite " + _tmp_round);
+    proc = utils.execute_shell("convert -colorspace sRGB " + in_dir + "/thumbnail_clip_mask.png " + _tmp_square + " -compose src-in -composite " + _tmp_round);
     if (proc.returncode != 0):
         utils.fatal("could not generate_thumbnail " + _in +": " + proc.err);
 
@@ -41,13 +41,14 @@ def generate_thumbnail(_in, _out_dir):
             else:
                 r = _tmp_round;
             _out = _out_dir + "/thumbnail_" + color + bw + ".png";
-            proc = utils.execute_shell("convert " + in_dir + "/thumbnail_border_" + color + ".png " + r + " -composite " + _out);
+            print("convert -colorspace sRGB " + in_dir + "/thumbnail_border_" + color + ".png " + r + " -composite " + _out)
+            proc = utils.execute_shell("convert -colorspace sRGB " + in_dir + "/thumbnail_border_" + color + ".png " + r + " -composite " + _out);
             if (proc.returncode != 0):
                 utils.fatal("could not generate_thumbnail " + _in +": " + proc.err);
     
-    os.remove(_tmp_square);
-    os.remove(_tmp_round);
-    os.remove(_tmp_round_bw);
+    #os.remove(_tmp_square);
+    #os.remove(_tmp_round);
+    #os.remove(_tmp_round_bw);
 
 def init(_in):
     global in_dir;

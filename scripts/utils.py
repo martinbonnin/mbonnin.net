@@ -3,7 +3,7 @@ sys.dont_write_bytecode = True
 import subprocess;
 import os;
 import errno;
-import HTMLParser;
+from html.parser import HTMLParser
 import cgi;
 import codecs;
 import re;

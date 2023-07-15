@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys;
 sys.dont_write_bytecode = True
 import content;
@@ -11,7 +11,7 @@ import imgutils;
 import collections;
 import re;
 import time;
-import urlparse;
+from urllib.parse import urlparse;
 from xml.sax.saxutils import escape
 
 class Struct(object):
@@ -101,10 +101,10 @@ class Generator:
         
     def generate_feed(self):
         self.process_file("feed.template", "feed/feed.xml", {});
-        
+    
     def generate_home(self):
         # sort posts, in reverse order: latest first
-        self.posts.sort(cmp=lambda x,y: cmp(y.date, x.date));
+        self.posts.sort(key=lambda x: x.date, reverse=True);
 
         index = 0;
         for p in self.posts:
