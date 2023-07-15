@@ -85,11 +85,6 @@ skeleton_dir = os.path.realpath(base_dir + "/skeleton")
 
 lock = threading.Lock()
 
-try:
-    os.mkdir(site_dir);
-except OSError as e:
-    pass;
-
 httpd = MyServer(("", PORT), MyHandler)
 
 print "script_dir: " + script_dir

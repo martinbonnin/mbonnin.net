@@ -44,7 +44,7 @@
                             <div class="bubble"><a href="%{page.depth}sticky/about/" alt="About"><img class="bubble_img" src="%{page.depth}res/sprite_about.png" /></a></div>
                         </div>
                         <div class="bubble-container">
-                            <div class="bubble"><a href="%{page.depth}feed/" alt="Feed"><img class="bubble_img" src="%{page.depth}res/sprite_rss.png" /></a></div>
+                            <div class="bubble"><a href="%{page.depth}feed/feed.xml" alt="Feed"><img class="bubble_img" src="%{page.depth}res/sprite_rss.png" /></a></div>
                         </div>
                         <div class="bubble-container">
                             <div class="bubble"><a href="http://www.linkedin.com/pub/martin-bonnin/1/344/947" alt="LinedIn"><img class="bubble_img" src="%{page.depth}res/sprite_linkedin.png"/></a></div>
