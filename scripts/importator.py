@@ -12,7 +12,7 @@ import codecs;
 import string;
 import urlparse;
 import utils;
-import cgi;
+import html;
 
 def nicify(name):
     ret = name.lower()
@@ -98,7 +98,7 @@ class Post:
                 continue;
 
             if (current_code_tag):
-                ret += cgi.escape(line) + "\n";
+                ret += html.escape(line) + "\n";
             else:
                 ret += line + "\n";
 
@@ -228,7 +228,7 @@ class Post:
                     else:
                         self.f.write("<" + child.tag);
                         for key in child.keys():
-                            self.f.write(" " + key + "=\"" + cgi.escape(child.get(key)) + "\"");
+                            self.f.write(" " + key + "=\"" + html.escape(child.get(key)) + "\"");
                         self.f.write(">");
                         self.f.write(text);
                         walk(child);

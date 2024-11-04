@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#! /usr/bin/env python3
 import sys;
 sys.dont_write_bytecode = True
 import content;
@@ -116,6 +116,7 @@ class Generator:
         self.process_file("index.template", "index.html", context);
 
     def generate(self, in_base_path, out_base_path):
+        print("here");
         self.in_base_path = in_base_path;
         self.out_base_path = out_base_path;
         

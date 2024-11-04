@@ -4,7 +4,7 @@ import subprocess;
 import os;
 import errno;
 from html.parser import HTMLParser
-import cgi;
+import html;
 import codecs;
 import re;
 from xml.sax.saxutils import escape
@@ -30,7 +30,7 @@ def unescape(s):
     return HTMLParser.HTMLParser().unescape(s);
 
 def escape(s):
-    return cgi.escape(s);
+    return html.escape(s);
 
 def open_file(path, _mode="rb"):
     return codecs.open(path, encoding='utf-8', mode=_mode);
