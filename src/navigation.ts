@@ -8,7 +8,7 @@ export const headerData = {
     },
     {
       text: 'About',
-      href: 'about',
+      href: '/about',
     },
   ],
   socialLinks: [
