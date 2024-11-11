@@ -9,6 +9,46 @@
         "type": 301
       },
       {
+        "source": "/posts/2011-01-01_first-post/",
+        "destination": "/2011-01-01_first-post/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2011-01-05_bwaaaaaaaaaaaaaaalarm-clock/",
+        "destination": "/2011-01-05_bwaaaaaaaaaaaaaaalarm-clock/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2011-03-09_paris-circuit-board/",
+        "destination": "/2011-03-09_paris-circuit-board/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2011-10-26_msp430-based-teaaaaaa-timer/",
+        "destination": "/2011-10-26_msp430-based-teaaaaaa-timer/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2011-12-31_diy-gobo/",
+        "destination": "/2011-12-31_diy-gobo/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2012-03-04_paris-chess-board/",
+        "destination": "/2012-03-04_paris-chess-board/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2013-12-31_bye-bye-wordpress/",
+        "destination": "/2013-12-31_bye-bye-wordpress/",
+        "type": 301
+      },
+      {
+        "source": "/posts/2014-03-20_security_security_security/",
+        "destination": "/2014-03-20_security_security_security/",
+        "type": 301
+      },
+      {
         "source": "/posts/2014-08-03_hexamonkey/",
         "destination": "/2014-08-03_hexamonkey/",
         "type": 301
