@@ -30,6 +30,7 @@
     "astro": "^4.16.2",
     "astro-embed": "^0.7.4",
     "astro-icon": "^1.1.1",
+    "firebase-tools": "^13.24.2",
     "limax": "4.1.0",
     "lodash.merge": "^4.6.2",
     "unpic": "^3.18.0"
