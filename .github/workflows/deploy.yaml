@@ -15,7 +15,7 @@ jobs:
       - run: npm ci
       - run: |
           npm run build
-          echo $GOOGLE_SERVICES_JSON > credentials.json 
+          echo -E $GOOGLE_SERVICES_JSON > credentials.json 
           export GOOGLE_APPLICATION_CREDENTIALS=credentials.json
           npx firebase deploy --only hosting
         env:
