@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/blog",
+        "type": 301
+      },
+      {
+        "source": "/posts/2014-08-03_hexamonkey/",
+        "destination": "/2014-08-03_hexamonkey/",
+        "type": 301
+      }
+    ]
+  }
+}

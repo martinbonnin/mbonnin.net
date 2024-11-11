@@ -1,6 +1,5 @@
 .firebase
 .firebaserc
-firebase.json
 
 # build output
 dist/
