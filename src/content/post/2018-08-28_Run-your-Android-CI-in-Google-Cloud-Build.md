@@ -3,12 +3,11 @@ title: 'Run your Android CI in Google Cloud Build'
 excerpt: 'Android emulators in Docker'
 publishDate: 2018-08-28T00:00:00Z
 image: '~/assets/images/2018-08-28_Run-your-Android-CI-in-Google-Cloud-Build/1*rofmkuXun1cv_3dl-BLhfg.jpeg'
-
 ---
 
 You don't need travis-ci or bitrise to spin Android virtual machines that can build your Android apps. Follow these steps and benefit the flexibility and scalability of the Google Cloud Platform.
 
-*** ** * ** ***
+---
 
 ### 1. Fork and clone the tutorial repo
 
@@ -34,13 +33,13 @@ Then, enable Cloud Build API from your project page ([https://console.cloud.goog
 ### 3. Create your docker cloud-builder image and upload it to the Google container registry
 
 ```
-# If you haven't already, install gcloud from these instructions: 
+# If you haven't already, install gcloud from these instructions:
 # https://cloud.google.com/sdk/install
 cd android-cloud-build-sample/cloud-builder
 gcloud auth login
 gcloud config set project cloudbuildsample
-gcloud builds submit --config cloudbuild.yaml 
-# You now have a docker image with gradle and the android SDK 
+gcloud builds submit --config cloudbuild.yaml
+# You now have a docker image with gradle and the android SDK
 # uploaded to the google container registry
 ```
 
@@ -85,9 +84,9 @@ COPY gradle-build /bin/
 `gradle-build` takes care of unziping/ziping the contents of the gradle cache:
 
 ```shell
-# unzip command might fail the first time if cache.zip does not 
+# unzip command might fail the first time if cache.zip does not
 # exist. That's okay
-unzip -o -q cache.zip 
+unzip -o -q cache.zip
 ./gradlew $@
 status=$?
 zip -qr cache.zip .gradle
@@ -106,16 +105,16 @@ Go to the triggers page (<https://console.cloud.google.com/cloud-build/triggers?
 
 ```yaml
 steps:
-# get the cache from cloud storage
-- name: gcr.io/cloud-builders/gsutil
-  args: ['cp', 'gs://gradle_cache_$PROJECT_ID/cache.zip', 'cache.zip']
-# build the app
-- name: 'gcr.io/$PROJECT_ID/android-builder'
-  entrypoint: 'gradle-build'
-  args: ['-g', '.gradle', 'assemble']
-# push the cache to cloud storage
-- name: gcr.io/cloud-builders/gsutil
-  args: ['cp', 'cache.zip', 'gs://gradle_cache_$PROJECT_ID/cache.zip']
+  # get the cache from cloud storage
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'gs://gradle_cache_$PROJECT_ID/cache.zip', 'cache.zip']
+  # build the app
+  - name: 'gcr.io/$PROJECT_ID/android-builder'
+    entrypoint: 'gradle-build'
+    args: ['-g', '.gradle', 'assemble']
+  # push the cache to cloud storage
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'cache.zip', 'gs://gradle_cache_$PROJECT_ID/cache.zip']
 ```
 
 ### 6. That's it, you're done !
@@ -127,18 +126,18 @@ Next time you push something to your repo, Google Cloud Build will build it for 
 
 #### Pros
 
-* Per-minute pricing. There is no extra cost if no-one is pushing during the weekends.
-* 2 hours of free build time/day for small projects (including private projects).
-* Google Cloud scale. You can use up to 32 CPUS/28GB RAM machines if you really want to.
-* Complete control of your docker images and the build process.
-* Easy integration with other Google Cloud products. Storing artifacts in Cloud storage is a matter of adding a new step.
-* You can cache your `.gradle` directory!
+- Per-minute pricing. There is no extra cost if no-one is pushing during the weekends.
+- 2 hours of free build time/day for small projects (including private projects).
+- Google Cloud scale. You can use up to 32 CPUS/28GB RAM machines if you really want to.
+- Complete control of your docker images and the build process.
+- Easy integration with other Google Cloud products. Storing artifacts in Cloud storage is a matter of adding a new step.
+- You can cache your `.gradle` directory!
 
 #### Cons
 
-* We didn't find a solution that automatically displays the status of pull requests. You'll most likely have to set up the status hook handlers yourself.
-* It's not possible to start multiple builds for the same commit like Travis CI build matrices.
-* There's a bit of overhead to setup and maintain everything.
+- We didn't find a solution that automatically displays the status of pull requests. You'll most likely have to set up the status hook handlers yourself.
+- It's not possible to start multiple builds for the same commit like Travis CI build matrices.
+- There's a bit of overhead to setup and maintain everything.
 
 In the end, it really depends on your needs. If your existing CI isn't broken, there's no need to fix it. If you want to fine-tune your images, build times or bills, Cloud Build provides that flexibility. Hopefully the platform will continue to improve in the future!
 By [Martin Bonnin](https://medium.com/@mbonnin) on [August 28, 2018](https://medium.com/p/2487c8b70ccf).

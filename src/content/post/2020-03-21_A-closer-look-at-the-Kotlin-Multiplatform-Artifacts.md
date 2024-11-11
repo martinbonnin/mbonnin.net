@@ -5,7 +5,7 @@ publishDate: 2020-03-21T00:00:00Z
 image: '~/assets/images/2020-03-21_A-closer-look-at-the-Kotlin-Multiplatform-Artifacts/1*9PBeA1YlBqv-6PmYBTJBfw.jpeg'
 ---
 
-*Disclaimer: the below was tested with Gradle 6.2.2, I'm not sure how much support for module files is in Gradle \< 6.0*
+_Disclaimer: the below was tested with Gradle 6.2.2, I'm not sure how much support for module files is in Gradle \< 6.0_
 
 If you're coming from the JVM ecosystem, chances are you are familiar with the Maven ecosystem, which I covered in [another article](https://proandroiddev.com/publishing-a-maven-artifact-1-3-glossary-bc0068a440e0).
 
@@ -24,10 +24,10 @@ If you browse the [maven repository for Clikt on MavenCentral](https://repo1.mav
 
 Here you'll find:
 
-* `clikt` : the JVM project, as expected in the JVM world. This should actually be named `clikt-jvm` but the author [kept the](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)[clikt](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)[name](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)for backward compatibility.
-* `clikt-js` , `clikt-linxux64` , `clikt-macosx64` , `clikt-mingwx64` : the other platforms. `mingw64` is for building apps for windows. Note that there is no iOS or ARM platform so you won't be able to compile your command line app for mobile devices just yet
-* `clikt-metadata` : contains metadata about functions and types that cannot always be represented inside the individual platforms artifacts. Think of nullability, variance, etc... This is used by the IDE and by `kotlin.reflect` to have more information about the types.
-* `clikt-multiplatform` : the main entry point of the multiplatform lib. Multiplatform users of Clikt can just add this project to their dependencies instead of having to include each individual platform project.
+- `clikt` : the JVM project, as expected in the JVM world. This should actually be named `clikt-jvm` but the author [kept the](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)[clikt](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)[name](https://github.com/ajalt/clikt/blob/master/clikt/build.gradle.kts#L140)for backward compatibility.
+- `clikt-js` , `clikt-linxux64` , `clikt-macosx64` , `clikt-mingwx64` : the other platforms. `mingw64` is for building apps for windows. Note that there is no iOS or ARM platform so you won't be able to compile your command line app for mobile devices just yet
+- `clikt-metadata` : contains metadata about functions and types that cannot always be represented inside the individual platforms artifacts. Think of nullability, variance, etc... This is used by the IDE and by `kotlin.reflect` to have more information about the types.
+- `clikt-multiplatform` : the main entry point of the multiplatform lib. Multiplatform users of Clikt can just add this project to their dependencies instead of having to include each individual platform project.
 
 #### Using a multiplatform library
 
@@ -105,7 +105,6 @@ I'm looking forward to see the KMP ecosystem grow!
 By [Martin Bonnin](https://medium.com/@mbonnin) on [March 21, 2020](https://medium.com/p/47d0dc8223e5).
 
 Photo: "parallel lines" by [theilr](https://www.flickr.com/photos/theilr/10268837315/in/photolist-gDqtze-7oAiS7-7oAm2s-7owuot-7oAqMY-5NkEaS-7oAnKf-zXCcc-5Gh1qZ-7owBEe-7m9eKP-7owq38-7oAjQY-7oAjbG-7oAqxj-7oAuHG-7oAoj9-7oAjYj-7owBr8-7owAsz-7owsoF-7oAmLf-7oAuy1-7oAvTu-7oAtCs-7owwiF-7owzFn-7owuxg-P4RRy7-7owvxH-hkMoBr-7owC7F-7oAoqm-7owqWT-7oAuQ1-69YqeW-39SyR4-9PopNC-7owwmH-7Aq5me-7owqQT-7owrJZ-7owAea-7oAnxE-7oAmob-7oAneS-4fEHYf-7owuBr-7owB3M-7owtpV)
-
 
 [Canonical link](https://medium.com/@mbonnin/a-closer-look-at-the-kotlin-multiplatform-artifacts-47d0dc8223e5)
 

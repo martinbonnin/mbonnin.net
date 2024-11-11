@@ -4,8 +4,8 @@ excerpt: 'Moving from AndroidAnnotations to ButterKnife using automatic processi
 publishDate: 2017-03-28T00:00:00Z
 image: '~/assets/images/2017-03-28_Advanced-refactoring-with-custom-intelliJ-plugins/ij.png'
 ---
-*** ** * ** ***
 
+---
 
 The process allowed us to refactor \> 50 classes at once with minimal human intervention. The case described here is fairly specific to our own development style and conventions but you can reuse the techniques to manipulate your own java classes and automate a lot of repetitive coding tasks. The full source code to our plugin is available [on github](https://github.com/dailymotion/aa2bk) and can be as a base for all kinds of refactoring plugins.
 
@@ -13,10 +13,10 @@ The process allowed us to refactor \> 50 classes at once with minimal human inte
 
 At Dailymotion, we started working on the Android app back in 2012. At the time, we went for AndroidAnnotation as the swiss army knife of annotation processing. It works quite well and allows for more concise code, but over the years and as the apps became more complex, we began to find some things annoying:
 
-* Lack of focus, AndroidAnnotations has a very rich feature set but we mainly use it for view injection so we don't really care about `@Backround` or `@Rest`.
-* We use RxJava for async task handling and really don't want new devs to start using `@Background` just because they can. Same for `@Rest`
-* More generally, it looks like more devs are familiar with ButterKnife nowadays.
-* Having to append an underscore everytime you use a class is a pain, I'm not counting the number of times I referenced a view without its final `'_'`.
+- Lack of focus, AndroidAnnotations has a very rich feature set but we mainly use it for view injection so we don't really care about `@Backround` or `@Rest`.
+- We use RxJava for async task handling and really don't want new devs to start using `@Background` just because they can. Same for `@Rest`
+- More generally, it looks like more devs are familiar with ButterKnife nowadays.
+- Having to append an underscore everytime you use a class is a pain, I'm not counting the number of times I referenced a view without its final `'_'`.
 
 So we decided to move to Butterknife for View injection. We needed to do something like:
 
@@ -58,9 +58,9 @@ public class MyView extends View {
 
 The transformations are simple:
 
-* create a static method that will inflate the appropriate layout file.
-* move the contents of `@AfterView` to `onFinishInflate`
-* replace `@ViewById` by `@BindView`
+- create a static method that will inflate the appropriate layout file.
+- move the contents of `@AfterView` to `onFinishInflate`
+- replace `@ViewById` by `@BindView`
 
 If you have a single class, it's fairly easy to do but doing this over a large codebase is boring and error prone.
 
@@ -90,8 +90,8 @@ public void actionPerformed(AnActionEvent event) {
 }
 ```
 
-* `WriteCommandAction.runWriteCommandAction`: this makes the IDE aware that we are going to actually change code. This way, you can automagically undo your huge refactoring if you want to.
-* Then we traverse all the project files twice:
+- `WriteCommandAction.runWriteCommandAction`: this makes the IDE aware that we are going to actually change code. This way, you can automagically undo your huge refactoring if you want to.
+- Then we traverse all the project files twice:
 
 1. First time to transform all the classes
 2. Second time to change all the usages of the classes. `MyView_.build(context)`becomes `MyView.build(context)`. Note that it also changes the XML occurences too :-) !
@@ -100,7 +100,7 @@ public void actionPerformed(AnActionEvent event) {
 
 [PSI](http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview/psi_files.html) reprensents your whole files as trees where you can edit individual nodes. You can think of it as a sort of DOM for Java.
 
-* determine if a given field has a `ViewById` annotation:
+- determine if a given field has a `ViewById` annotation:
 
 ```java
 for (PsiElement element : annotationList) {
@@ -111,7 +111,7 @@ for (PsiElement element : annotationList) {
 }
 ```
 
-* replace the `ViewById` annotation with `BindView`:
+- replace the `ViewById` annotation with `BindView`:
 
 ```java
 String a = String.format("@BindView(R.id.%s)", fieldName);
@@ -119,7 +119,7 @@ PsiAnnotation newAnnotation = JavaPsiFacade.getInstance(mProject).getElementFact
 annotation.replace(newAnnotation);
 ```
 
-* adding a `onFinishInflate` method:
+- adding a `onFinishInflate` method:
 
 ```java
 body = "@Override" +

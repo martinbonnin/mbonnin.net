@@ -59,14 +59,14 @@ plugins {
 // app/build.gradle.kts
 
 plugins {
-  // ... 
+  // ...
   id("com.android.application")
 }
 
 // lib/build.gradle.kts
 
 plugins {
-  // ... 
+  // ...
   id("com.squareup.sqldelight")
 }
 ```
@@ -95,7 +95,7 @@ pluginManagement {
             if (requested.id.id == "com.squareup.sqldelight") {
                 useModule("com.squareup.sqldelight:gradle-plugin:${requested.version}")
             }
-            // The kotlin plugins have marker artifacts so we don't need to handle 
+            // The kotlin plugins have marker artifacts so we don't need to handle
             // them in resolutionStrategy {}
         }
     }
@@ -104,17 +104,18 @@ pluginManagement {
 // app/build.gradle.kts
 
 plugins {
-    // ... 
+    // ...
     id("com.android.application")
 }
 
 // lib/build.gradle.kts
 
 plugins {
-    // ... 
+    // ...
     id("com.squareup.sqldelight")
 }
 ```
+
 If you have a few minutes, read on 📚!
 
 ### Anatomy of a Gradle plugin
@@ -144,20 +145,20 @@ implementation-class=com.example.GreetingPlugin
 
 In the case of the Android plugin:
 
-* `classpath("com.android.tools.build:gradle:3.5.2")` tells Gradle to download the [jar](https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.5.2/gradle-3.5.2.jar) from the [Google maven repo](https://maven.google.com/web/index.html) and load it in the build in the classpath.
-* `apply plugin: 'com.android.application'` tells gradle to look for a [com.android.application.properties](https://android.googlesource.com/platform/tools/base/+/ecdfaee5fbdfa69e82bb9266b6742d9c3db27880/build-system/gradle-core/src/main/resources/META-INF/gradle-plugins/com.android.application.properties) resource file, create a new instance of [AppPlugin](https://android.googlesource.com/platform/tools/base/+/ecdfaee5fbdfa69e82bb9266b6742d9c3db27880/build-system/gradle-core/src/main/java/com/android/build/gradle/AppPlugin.kt) and apply it to the project.
+- `classpath("com.android.tools.build:gradle:3.5.2")` tells Gradle to download the [jar](https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.5.2/gradle-3.5.2.jar) from the [Google maven repo](https://maven.google.com/web/index.html) and load it in the build in the classpath.
+- `apply plugin: 'com.android.application'` tells gradle to look for a [com.android.application.properties](https://android.googlesource.com/platform/tools/base/+/ecdfaee5fbdfa69e82bb9266b6742d9c3db27880/build-system/gradle-core/src/main/resources/META-INF/gradle-plugins/com.android.application.properties) resource file, create a new instance of [AppPlugin](https://android.googlesource.com/platform/tools/base/+/ecdfaee5fbdfa69e82bb9266b6742d9c3db27880/build-system/gradle-core/src/main/java/com/android/build/gradle/AppPlugin.kt) and apply it to the project.
 
 Two pluginIds can point to the [same artifact and class](https://github.com/JetBrains/kotlin/tree/b37dc32e0383998e12c91af45d8726f2126c3072/libraries/tools/kotlin-gradle-plugin/src/main/resources/META-INF/gradle-plugins).For an example, the below are mostly equivalent:
 
-* `apply plugin:kotlin`
-* `apply plugin: org.jetbrains.kotlin.jvm`
+- `apply plugin:kotlin`
+- `apply plugin: org.jetbrains.kotlin.jvm`
 
 Also, an artifact can contain several pluginIds. For an example, the Android artifact [defines plugins](https://android.googlesource.com/platform/tools/base/+/ecdfaee5fbdfa69e82bb9266b6742d9c3db27880/build-system/gradle-core/src/main/resources/META-INF/gradle-plugins) for:
 
-* com.android.application
-* com.android.library
-* com.android.instantapp
-* etc..
+- com.android.application
+- com.android.library
+- com.android.instantapp
+- etc..
 
 ### Applying plugins: the plugins {} block
 
@@ -185,7 +186,7 @@ You can use the plugin block in your module build script, in the root build scri
 ```kotlin
 // build.gradle.kts
 plugins {
-  // load the module, do not apply it    
+  // load the module, do not apply it
   id("org.jetbrains.kotlin.android").version("1.3.60").apply(false)
 }
 
@@ -201,7 +202,7 @@ Latest versions of gradle even allow you to define your plugins in a centralized
 ```kotlin
 pluginManagement {
   plugins {
-   id("org.jetbrains.kotlin.android").version("1.3.60").apply(false)     
+   id("org.jetbrains.kotlin.android").version("1.3.60").apply(false)
   }
 }
 ```
@@ -211,7 +212,6 @@ pluginManagement {
 The plugin {} block works well if the artifact containing your pluginId is already in the classpath. Most of the time, it's not the case so you need a way to retrieve and load the appropriate maven artifact. Gradle introduced [marker artifacts](https://docs.gradle.org/current/userguide/plugins.html#sec:plugin_markers) to lookup the implementation artifact for a given pluginId. Just like the `com.example.properties` resource file points to the plugin implementation, the `com.example:com.example.gradle.plugin` artifacts points to the actual artifact by depending on it in its pom file.
 
 For an example the [Kotlin marker artifact](https://plugins.gradle.org/m2/org/jetbrains/kotlin/jvm/org.jetbrains.kotlin.jvm.gradle.plugin/1.3.60/)contains this pom:
-
 
 ```xml
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -283,7 +283,7 @@ pluginManagement {
             if (requested.id.id == "com.squareup.sqldelight") {
                 useModule("com.squareup.sqldelight:gradle-plugin:${requested.version}")
             }
-            // The kotlin plugins have marker artifacts so we don't need to handle 
+            // The kotlin plugins have marker artifacts so we don't need to handle
             // them in resolutionStrategy {}
         }
     }
@@ -292,14 +292,14 @@ pluginManagement {
 // app/build.gradle.kts
 
 plugins {
-    // ... 
+    // ...
     id("com.android.application")
 }
 
 // lib/build.gradle.kts
 
 plugins {
-    // ... 
+    // ...
     id("com.squareup.sqldelight")
 }
 ```

@@ -3,7 +3,8 @@ title: 'Espresso testing without dagger 2'
 publishDate: 2016-09-22T00:00:00Z
 image: '~/assets/images/2016-09-22_Espresso-testing-without-dagger-2/coffee.jpg'
 ---
-*** ** * ** ***
+
+---
 
 A lot of apps use some local storage to store things like the number of times the app has been launched. If it's the first launch, it displays an onboarding. After a few launches, it displays a dialog asking to rate the app, etc...
 
@@ -47,9 +48,9 @@ public class Environment {
 
 A few comments:
 
-* I called the class Environment because it's global to the whole app. But you can call it the way you want, Module or Global.
-* The @UsedByTestCode annotation is needed so that proguard does not remove the methods from the apk. Even if the production apk does not use them, the test apk will.
-* You most certainly need a static variable to store the ApplicationContext. This is need by so many android methods and this is what MyApplication.get() does.
+- I called the class Environment because it's global to the whole app. But you can call it the way you want, Module or Global.
+- The @UsedByTestCode annotation is needed so that proguard does not remove the methods from the apk. Even if the production apk does not use them, the test apk will.
+- You most certainly need a static variable to store the ApplicationContext. This is need by so many android methods and this is what MyApplication.get() does.
 
 When you want to access a setting, you can simply do:
 

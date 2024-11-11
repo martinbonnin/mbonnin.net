@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components';
 import { SITE } from 'astrowind:config';
 import { getHomePermalink } from '~/utils/permalinks';
 
@@ -74,7 +73,7 @@ const { secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astr
       }
     </div>
     <div class="md:flex md:items-center md:justify-between py-6 md:py-8">
-        <div class="text-sm mr-4 dark:text-muted">
+      <div class="text-sm mr-4 dark:text-muted">
         <Fragment set:html={footNote} />
       </div>
     </div>

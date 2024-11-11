@@ -4,6 +4,7 @@ excerpt: '...'
 publishDate: 2022-05-06T13:45:38.512Z
 image: '~/assets/images/2022-05-06_about-the-android-makers-app-security-and-google-servicesjson/3nQMK1bsA.png'
 ---
+
 [Android Makers](https://androidmakers.fr/) is over! With over 650 participants and 50 sessions over 2 days in Paris, it was a lot of fun! It was nice to see everyone in person again and discuss all the Android things (and 🍻 too)!
 
 This year, we decided to rewrite the Android app ([github](https://github.com/paug/AndroidMakersApp)) in Jetpack Compose and this too was a lot of fun 😃! We got a functional app in no time and [sent it out for public scrutiny](https://twitter.com/martinbonnin/status/1516377118355111936). We got a lot of feedback and contributions (did I mention this community rocks? 🤘💙)!
@@ -36,7 +37,7 @@ If you open it, you'll find something like this (some values redacted although I
         {
           "current_key": "[redacted]"
         }
-      ],
+      ]
     }
   ],
   "configuration_version": "1"
@@ -79,7 +80,7 @@ Why all these warnings if the API key can be retrieved in a few minutes by any m
 
 After [browsing the web a bunch](https://stackoverflow.com/questions/37358340/should-i-add-the-google-services-json-from-firebase-to-my-repository), realising that [there was an official answer in the firebase forums](https://groups.google.com/g/firebase-talk/c/bamCgTDajkw/m/uVEJXjtiBwAJ) (**edit**: and it's even in the [official Firebase documentation](https://firebase.google.com/docs/projects/learn-more#config-files-objects) as [@zsmb13 made me realize later](https://twitter.com/zsmb13/status/1524010043779211267)) and double checking that the values were in the apk anyway, we decided to ignore the scary warnings, stop living in fear (🤘) and [commit our `google-services.json`](https://github.com/paug/AndroidMakersApp/pull/100)!
 
-Now anyone can develop for the App using the real data. Special thanks to  [`@underwindfall`](https://github.com/underwindfall), [`@R4md4c`](https://github.com/R4md4c) and [`@oldergod`](https://github.com/oldergod) for their awesome contributions 💙!
+Now anyone can develop for the App using the real data. Special thanks to [`@underwindfall`](https://github.com/underwindfall), [`@R4md4c`](https://github.com/R4md4c) and [`@oldergod`](https://github.com/oldergod) for their awesome contributions 💙!
 
 ## What could go wrong?
 
@@ -119,19 +120,19 @@ At the end of the day, security is never a "yes" or "no" kind of question and ha
 
 Of all the possibilities:
 
-* Add [GCP API key restrictions](https://cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
-* Fine tune your [Firestore security rules](https://firebase.google.com/docs/firestore/security/get-started)
-* Check your app integrity with something like [Firebase App Check](https://firebase.google.com/docs/app-check)
-* Obfuscate your client code with something like [DexGuard](https://www.guardsquare.com/dexguard)
-* Implement server side rate limiting and fraud detection
-* Hide your API key from Github
+- Add [GCP API key restrictions](https://cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
+- Fine tune your [Firestore security rules](https://firebase.google.com/docs/firestore/security/get-started)
+- Check your app integrity with something like [Firebase App Check](https://firebase.google.com/docs/app-check)
+- Obfuscate your client code with something like [DexGuard](https://www.guardsquare.com/dexguard)
+- Implement server side rate limiting and fraud detection
+- Hide your API key from Github
 
 I'd argue that hiding your API key from Github is the one with the worst cost/security ratio.
 If you're relying on that for your security, you'd better add API key restrictions and double check your Firestore rules instead.
 
 > Note: none of the above applies to server API keys of course. If your API keys doesn't end up in a client, make sure to keep them secure in the depths of your infra.
 
-_This article was edited on  May 10th to add a note about the Firebase official doc, the `X-Android-Package` and `X-Android-Cert` headers and rework the conclusion to display more possible solutions._
+_This article was edited on May 10th to add a note about the Firebase official doc, the `X-Android-Package` and `X-Android-Cert` headers and rework the conclusion to display more possible solutions._
 
 _Many thanks to [Dorian Cussen](https://twitter.com/doriancussen) and [Edouard Marquez](https://www.edouard-marquez.me/) for proof reading this article_
 

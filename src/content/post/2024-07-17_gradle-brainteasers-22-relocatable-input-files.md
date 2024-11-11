@@ -4,6 +4,7 @@ excerpt: 'There is no such thing as a "File" input...'
 publishDate: 2024-07-17T08:41:15.615Z
 image: '~/assets/images/2024-07-17_gradle-brainteasers-22-relocatable-input-files/ab1225bf-d512-4938-bb11-c38413464a0c.webp'
 ---
+
 This is a follow up to [this other post](https://blog.mbonnin.net/gradle-brainteasers-12-aggregating-artifacts) about having fun with the Gradle APIs.
 
 In this post, I'm talking about how I spent a shameful amount of time understanding how Gradle handles input files.
@@ -61,7 +62,7 @@ A naive implementation could use the "base" directory as input so that it can co
       val packageName = it.relativeTo(File(baseDir))
                           .canonicalPath
                           .replace(File.separatorChar, '.')
-      // ... 
+      // ...
     }
   }
 ```
@@ -112,4 +113,4 @@ Looking ahead, [Gratatouille](https://github.com/GradleUp/gratatouille) will not
 
 ---
 
-*Brainteasers pictures from *[*mtairymd*](https://www.instructables.com/member/mtairymd/)* on *[*Instructables*](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
+_Brainteasers pictures from _[_mtairymd_](https://www.instructables.com/member/mtairymd/)_ on _[_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)

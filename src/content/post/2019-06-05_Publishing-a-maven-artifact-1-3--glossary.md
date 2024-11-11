@@ -7,11 +7,11 @@ image: '~/assets/images/2019-06-05_Publishing-a-maven-artifact-1-3--glossary/1*H
 
 ### Publishing a maven artifact 1/3: glossary
 
-*This is the first article in a series describing how I started distributing my android/kotlin libraries. I am quite new to the subject and these articles do not pretend to be exhaustive yet they should be a good introduction for anyone who has been developing for a time and wants to make his/her software more broadly available. Especially, this first article tries to decode a lot of confusion around the different actors of the ecosystem.*
+_This is the first article in a series describing how I started distributing my android/kotlin libraries. I am quite new to the subject and these articles do not pretend to be exhaustive yet they should be a good introduction for anyone who has been developing for a time and wants to make his/her software more broadly available. Especially, this first article tries to decode a lot of confusion around the different actors of the ecosystem._
 
-[*Part 2/3*](https://proandroiddev.com/publishing-a-maven-artifact-2-3-jcenter-or-mavencentral-e0f82ba3f473)*dives into the jcenter vs mavenCentral debate.*
+[_Part 2/3_](https://proandroiddev.com/publishing-a-maven-artifact-2-3-jcenter-or-mavencentral-e0f82ba3f473)_dives into the jcenter vs mavenCentral debate._
 
-[*Part 3/3*](https://medium.com/p/bd661081645d)*describes a step-by-step solution for publishing your android/kotlin project to MavenCentral.*
+[_Part 3/3_](https://medium.com/p/bd661081645d)_describes a step-by-step solution for publishing your android/kotlin project to MavenCentral._
 
 ### The common ground
 
@@ -20,10 +20,10 @@ Let's start by reviewing what exactly maven is and why we should care.
 
 #### Maven
 
-M[aven](https://maven.apache.org/) (or Apache Maven, [wikipedia](https://en.wikipedia.org/wiki/Apache_Maven)) is an open source build system, developed by the Apache foundation and mostly used for java projects.   
-It uses pom files that describe the structure of the project and its dependencies. Together with other artifacts like jar files or source.jars, this defines a format for hosting them and make them available for reuse.   
+M[aven](https://maven.apache.org/) (or Apache Maven, [wikipedia](https://en.wikipedia.org/wiki/Apache_Maven)) is an open source build system, developed by the Apache foundation and mostly used for java projects.  
+It uses pom files that describe the structure of the project and its dependencies. Together with other artifacts like jar files or source.jars, this defines a format for hosting them and make them available for reuse.  
 These files are hosted on a web server typically using the following structure:  
-*https://baseurl/{groupId}/{packageId}/{version}/{artifact}* For an example, okhttp will be at <https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/3.9.1/okhttp-3.9.1.jar>
+_https://baseurl/{groupId}/{packageId}/{version}/{artifact}_ For an example, okhttp will be at <https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/3.9.1/okhttp-3.9.1.jar>
 
 #### Pom file
 
@@ -53,8 +53,8 @@ A local repository simply serving artifacts over the filesystem. Usually it resi
 
 It can refer to two things:
 
-* A complete repository like mavenCentral or jcenter hosting a lot of packages
-* A subpart of a complete repository matching a groupId. If you manage a groupId on sonatype or Bintray, they will be shown as "repositories"
+- A complete repository like mavenCentral or jcenter hosting a lot of packages
+- A subpart of a complete repository matching a groupId. If you manage a groupId on sonatype or Bintray, they will be shown as "repositories"
 
 ### Sonatype ecosystem
 
@@ -66,12 +66,12 @@ It can refer to two things:
 
 #### MavenCentral
 
-[MavenCentral](https://central.sonatype.org/pages/about.html) is a repository hosted by Sonatype for open source artifacts. For an exemple, you can find the [okhttp](https://square.github.io/okhttp/) files [here](https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/3.9.1/).   
+[MavenCentral](https://central.sonatype.org/pages/about.html) is a repository hosted by Sonatype for open source artifacts. For an exemple, you can find the [okhttp](https://square.github.io/okhttp/) files [here](https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/3.9.1/).  
 To have your artifacts listed on MavenCentral, you first need to upload them on OSSRH before promoting them to MavenCentral.  
-Browse at: <https://repo1.maven.org/maven2>   
+Browse at: <https://repo1.maven.org/maven2>  
 Search at: <https://search.maven.org>
 
-*Note that MavenCentral is quite different from Maven, the build tool and that there are a lot of other maven repositories out there like jcenter (see below).*
+_Note that MavenCentral is quite different from Maven, the build tool and that there are a lot of other maven repositories out there like jcenter (see below)._
 
 #### OSSRH
 
@@ -157,13 +157,13 @@ That was a lot!
 
 And this list is never near exhaustive. There are other repositories and the amount of third party gradle plugins is overwhelming each one supporting slightly different use cases:
 
-* Android AARs
-* Kotlin
-* Source jar generation
-* Artifact Signing
-* Javadoc generation
-* Snapshots
-* Bintray vs OSSRH (jcenter vs mavenCentral)
+- Android AARs
+- Kotlin
+- Source jar generation
+- Artifact Signing
+- Javadoc generation
+- Snapshots
+- Bintray vs OSSRH (jcenter vs mavenCentral)
 
 This last point will be the topic of the next article in this series. [Meet you there](https://proandroiddev.com/publishing-a-maven-artifact-2-3-jcenter-or-mavencentral-e0f82ba3f473) !
 

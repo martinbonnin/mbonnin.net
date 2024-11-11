@@ -72,11 +72,11 @@ namespace declaration http://schemas.android.com/tools.)
 
 All issues have:
 
-* An id ("MissingTranslation" here)
-* A Severity ("fatal", "error", "warning", "informational" or "ignore")
-* A priority between 1 and 10
-* A category
-* A default state: whether this issue is checked by default or not. Disabled issues will be marked with `NOTE: This issue is disabled by default!`
+- An id ("MissingTranslation" here)
+- A Severity ("fatal", "error", "warning", "informational" or "ignore")
+- A priority between 1 and 10
+- A category
+- A default state: whether this issue is checked by default or not. Disabled issues will be marked with `NOTE: This issue is disabled by default!`
 
 ### Configuration
 
@@ -190,7 +190,7 @@ Happy lint everyone!
 
 By [Martin Bonnin](https://medium.com/@mbonnin) on [October 20, 2019](https://medium.com/p/188c0654b29b).
 
-Photo: "Library" by [Kotomi_](https://flic.kr/p/r4TX3R)
+Photo: "Library" by [Kotomi\_](https://flic.kr/p/r4TX3R)
 
 [Canonical link](https://medium.com/@mbonnin/an-unofficial-guide-to-android-lint-188c0654b29b)
 

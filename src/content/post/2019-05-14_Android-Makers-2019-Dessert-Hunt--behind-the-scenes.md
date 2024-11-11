@@ -23,7 +23,7 @@ val completableFuture = ViewRenderable.builder().setView(context, view).build().
         val base = AnchorNode()
         base.anchor = augmentedImage.createAnchor(augmentedImage.centerPose)
 
-        // Since base is anchored, we need another node to 
+        // Since base is anchored, we need another node to
         val node = Node()
         node.setParent(base)
         // Not sure why this one is needed
@@ -40,6 +40,7 @@ val completableFuture = ViewRenderable.builder().setView(context, view).build().
     }
 }
 ```
+
 We then use a [ViewRenderable](https://developers.google.com/ar/reference/java/sceneform/reference/com/google/ar/sceneform/rendering/ViewRenderable) to display the Thumbs up 👍👍. Worth noting is that any view can be displayed in the scene. It can also be animated/interacted with, which opens a lot of possibilities. Definitely something to dig more!
 ![](../../assets/images/2019-05-14_Android-Makers-2019-Dessert-Hunt--behind-the-scenes/1*1GE-FEqxjR6EY1JEKNuxSg.png)
 
@@ -69,28 +70,28 @@ It went smoothly after that:
 
 The desserts were hidden the morning just before the conference in different locations:
 
-* Cupcake: on the cloakroom desk
-* Donut: downstairs next to room Blin and the dolls exhibition
-* Eclair: in the corridor leading to room Blin
-* Froyo: in the stairs between the lobby and 1st floor
+- Cupcake: on the cloakroom desk
+- Donut: downstairs next to room Blin and the dolls exhibition
+- Eclair: in the corridor leading to room Blin
+- Froyo: in the stairs between the lobby and 1st floor
 
 ![](../../assets/images/2019-05-14_Android-Makers-2019-Dessert-Hunt--behind-the-scenes/1*yJ9ijNuXHlyJtONDKY1eYQ.jpeg)Froyo was the last one to be found despite being in plain sight
 
-* Gingerbread: on the ceiling next to room 203
-* Honeycomb: next to the coffee machine on the 2nd floor
-* IceCreamSandwich: in the foyer-bar, next to Leboncoin
-* Jelly Bean: in the lobby, behind the plant on the left
-* KitKat: behind the curtain, next to Blablacar
-* Lollipop:1st floor, in front of Hiway, next to an extinguisher
-* Marshmallow: left side of the bar on the 1st floor
-* Nougat: behind the kakemono On the 1st Floor
+- Gingerbread: on the ceiling next to room 203
+- Honeycomb: next to the coffee machine on the 2nd floor
+- IceCreamSandwich: in the foyer-bar, next to Leboncoin
+- Jelly Bean: in the lobby, behind the plant on the left
+- KitKat: behind the curtain, next to Blablacar
+- Lollipop:1st floor, in front of Hiway, next to an extinguisher
+- Marshmallow: left side of the bar on the 1st floor
+- Nougat: behind the kakemono On the 1st Floor
 
 ![](../../assets/images/2019-05-14_Android-Makers-2019-Dessert-Hunt--behind-the-scenes/1*l9bmC6WjcdouQefAhZbIPA.jpeg)Nougat was behind a kakemono
 
 Two of them were digital:
 
-* Oreo: the now classic 7 taps on the app version
-* Pie: ask the Google Assistant!
+- Oreo: the now classic 7 taps on the app version
+- Pie: ask the Google Assistant!
 
 ### The aftermath
 
@@ -98,18 +99,18 @@ Two of them were digital:
 
 Over the two days, there were:
 
-* 265 participants
-* 899 desserts successfully scanned
-* 34 participants found all 14 desserts
+- 265 participants
+- 899 desserts successfully scanned
+- 34 participants found all 14 desserts
 
 The full data set is available in [Google Sheets](https://docs.google.com/spreadsheets/d/1CwTvh7xbiKPDr1-f5l-KuacW-wGp7LntHqTmMs2rqOM/edit#gid=1463112622). A few insights:
 
-* Cupcake was one of the first and most found. It makes sense as it was hinted in the app.
-* Froyo was the last one to be found despite being quite visible in the stairs. Mostly because no one ever stopped there.
-* The first participant found the whole 14 desserts on Tuesday \~2pm.
-* 24 participants finished their scanning in the last 2 hours. Some information sharing might have happened at that time :).
-* Some desserts were found during the party around \~11pm on Tuesday night. They were in the Google Assistant, no one broke into the beffroi!
-* Pie and Oreo were also found with difficulty. In the google assistant, scrolling right in the list of suggestions would hint at the dessert.
+- Cupcake was one of the first and most found. It makes sense as it was hinted in the app.
+- Froyo was the last one to be found despite being quite visible in the stairs. Mostly because no one ever stopped there.
+- The first participant found the whole 14 desserts on Tuesday \~2pm.
+- 24 participants finished their scanning in the last 2 hours. Some information sharing might have happened at that time :).
+- Some desserts were found during the party around \~11pm on Tuesday night. They were in the Google Assistant, no one broke into the beffroi!
+- Pie and Oreo were also found with difficulty. In the google assistant, scrolling right in the list of suggestions would hint at the dessert.
 
 ![](../../assets/images/2019-05-14_Android-Makers-2019-Dessert-Hunt--behind-the-scenes/1*ku9DE7eNoqdtEKpIIJi2EQ.png)Ask about our easter eggs!
 
@@ -117,9 +118,9 @@ The full data set is available in [Google Sheets](https://docs.google.com/spread
 
 The prize (a 2 pound chocolate bugdroid), was entirely custom made using:
 
-* a Droid Mega to serve as a model
-* food-safe silicon to make the mold
-* and a lot of Valhrona chocolate! 🍫🍫
+- a Droid Mega to serve as a model
+- food-safe silicon to make the mold
+- and a lot of Valhrona chocolate! 🍫🍫
 
 This was a long and involved process, especially tempering chocolate... That would require another post I'm afraid! Don't hesitate to use the comments section if you feel like doing your own chocolate mold!
 

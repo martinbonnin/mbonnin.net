@@ -11,7 +11,7 @@ metadata:
   title:
     default: mbonnin.net
     template: '%s'
-  description: "hiya 👋"
+  description: 'hiya 👋'
   robots:
     index: true
     follow: true

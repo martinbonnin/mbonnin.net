@@ -4,6 +4,7 @@ excerpt: '...'
 publishDate: 2022-11-24T15:00:50.448Z
 image: '~/assets/images/2022-11-24_my-life-after-afterevaluate/tjMC7JDDy.png'
 ---
+
 If you're writing Gradle build scripts, chances are you have already used `afterEvaluate {}`.
 
 This is usually the last resort solution. But in my life of Gradle scripts engineer, I found the odds of `afterEvaluate {}` actually "fixing" your issue are in effect quite high. II guess that explains while you'll still find it in [a lot of places](https://github.com/search?q=afterEvaluate&type=code).
@@ -14,10 +15,10 @@ Because `afterEvaluate {}` postpones your code's execution, it gives more time 
 
 This is very fragile though for a number of reasons:
 
-* Anyone wanting to use your code now also needs to use `afterEvaluate {}` which is not obvious at all
-* Anyone wanting to use the code that uses your code also needs to use `afterEvaluate{}` and so on, all the way down
-* It becomes even more complicated as more plugins/scripts are involved
-* More generally, it makes dependencies between plugins/scripts implicit and error prone
+- Anyone wanting to use your code now also needs to use `afterEvaluate {}` which is not obvious at all
+- Anyone wanting to use the code that uses your code also needs to use `afterEvaluate{}` and so on, all the way down
+- It becomes even more complicated as more plugins/scripts are involved
+- More generally, it makes dependencies between plugins/scripts implicit and error prone
 
 So how can we make things more solid? The good news is solutions exist!
 
@@ -45,7 +46,7 @@ open class MyPlugin: Plugin<Project> {
     val extension = target.extensions.create("myPlugin", MyExtension::class.java)
 
     // DOES NOT WORK 😞
-    // extension.personToGreet is not set here because your 
+    // extension.personToGreet is not set here because your
     // `build.gradle.kts` file is not evaluated yet
     // Your task will be named "greetnull"
     target.tasks.register("greet${extension.personToGreet}") {
@@ -71,7 +72,7 @@ open class MyExtension(val project: Project) {
   fun greeting(action: Action<GreetingOptions>) {
     val options = GreetingOptions()
     action.execute(options)
-    
+
     // WORKS 🤩
     // personToGreet is always set here
     // You have full control of the timing
@@ -142,8 +143,8 @@ In these cases, I found it useful. As it's localised to your own code and doesn'
 abstract class MyPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val extension = target.extensions.create("myPlugin", MyExtension::class.java, target)
-        
-        target.afterEvaluate { 
+
+        target.afterEvaluate {
             check(extension.setupDone) {
                 """
                     myplugin: you either need to define your greeting or use the default one with `defaultGreeting()`

@@ -4,10 +4,12 @@ excerpt: 'Not sure you should use kotlin-stdlib-jdk8...'
 publishDate: 2019-09-15T00:00:00Z
 image: '~/assets/images/2019-09-15_The-different-kotlin-stdlibs-explained/1*GH1uKZMDNnK51Shd1m1faA.jpeg'
 ---
+
 > **Edit 2022--06--30**: reworked the conclusion to highlight that the Kotlin Gradle plugin now adds the stdlib automatically
 > **Edit 2023--01--16** : Kotlin 1.8.0 dropped support for Java 1.6 and 1.7 and therefore [all artifacts are now merged](https://kotlinlang.org/docs/whatsnew18.html#updated-jvm-compilation-target)
 
 I love Kotlin as it's a concise yet powerful language with very sensible defaults and design decisions. In that regard, it adopts the Zen of Python:
+
 > There should be one-- and preferably only one --obvious way to do it.
 
 One area where this failed though is the configuration of the stdlib. This is kind of ironic as it's also one of the first thing you configure as a Kotlin newcomer.
@@ -82,13 +84,13 @@ So let's pull kotlin-stdlib-jdk8 and we'll have everything, right ? Well... not 
 
 Contains:
 
-* most of the functionality: Collections, Ranges, Math, Regex, File extensions, Locks, etc... Most of what you use daily is in kotlin-stdlib.
+- most of the functionality: Collections, Ranges, Math, Regex, File extensions, Locks, etc... Most of what you use daily is in kotlin-stdlib.
 
 ### kotlin-stdlib-jdk7
 
 Contains:
 
-* Reflection-free suppressed exceptions
+- Reflection-free suppressed exceptions
 
 [Suppressed exception](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html#suppressed-exceptions) were added in Java 7 at the same time as try-with-resources. It gives more information when an exception is thrown while releasing a resource:
 
@@ -124,7 +126,7 @@ kotlin-stdlib supports this [with reflection](https://github.com/JetBrains/kotli
 
 kotlin-stdlib-jd7 does the same [without reflection](https://github.com/JetBrains/kotlin/blob/042a8ff6a2cadd8c2e8c156970283d4a28609549/libraries/stdlib/jdk7/src/kotlin/internal/jdk7/JDK7PlatformImplementations.kt#L22).
 
-* [AutoCloseable.use{}](https://github.com/JetBrains/kotlin/blob/e253acd5fde5d192e6afaab4f25848b45fe671af/libraries/stdlib/jdk7/src/kotlin/AutoCloseable.kt#L34)
+- [AutoCloseable.use{}](https://github.com/JetBrains/kotlin/blob/e253acd5fde5d192e6afaab4f25848b45fe671af/libraries/stdlib/jdk7/src/kotlin/AutoCloseable.kt#L34)
 
 In addition to the Closeable type, Java 7 introduces [AutoCloseable](https://docs.oracle.com/javase/7/docs/api/java/lang/AutoCloseable.html). kotlin-stdlib-jdk7 adds the `use` extension function on this type as well.
 
@@ -132,15 +134,15 @@ In addition to the Closeable type, Java 7 introduces [AutoCloseable](https://doc
 
 Contains:
 
-* Java 8 stream extensions
+- Java 8 stream extensions
 
 kotlin-stdlib-jdk8 adds extension functions to convert from [java.util.Stream](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html) to kotlin.sequences.Sequence and kotlin.collections.List ([source](https://github.com/JetBrains/kotlin/blob/e3883d8d6ddd609e8c0d2ae9af9ab6fb1059dd36/libraries/stdlib/jdk8/src/kotlin/streams/Streams.kt))
 
-* Duration extensions
+- Duration extensions
 
 kotlin-stdlib-jdk8 adds extension functions to convert to/from java.time.Duration and kotlin.time.Duration ([source](https://github.com/JetBrains/kotlin/blob/ff9d2744ce9b63321504cb70cf500bb99bc59f75/libraries/stdlib/jdk8/src/kotlin/time/DurationConversions.kt#L22))
 
-* Named groups in regular expressions
+- Named groups in regular expressions
 
 kotlin-stdlib-jdk8 adds support for [named groups](https://www.regular-expressions.info/named.html).`(?<name>group)` will capture the match of group under the backreference "name".
 
@@ -154,7 +156,7 @@ if (matchResult != null) {
 
 Note that while named groups [started on Java 7](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Matcher.html#group%28java.lang.String%29), the implementation was [not complete until Java 8](https://youtrack.jetbrains.com/issue/KT-12753).
 
-* Support for [ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html)
+- Support for [ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html)
 
 kotlin-stdlib-jdk8 will default to ThreadLocalRandom for [Random.Default](https://github.com/JetBrains/kotlin/blob/695d657ca88faf42d56917cf60619aaea5035407/libraries/stdlib/src/kotlin/random/Random.kt#L242). This should remove some contention in multi-threaded scenarios ([stackoverflow](https://stackoverflow.com/questions/23396033/random-over-threadlocalrandom)) although there's a fallback on Java 6\&7 that uses ThreadLocal to emulate a ThreadLocalRandom. Again, ThreadLocalRandom also started on Java 7 but [was buggy](https://github.com/JetBrains/kotlin/commit/042a8ff6a2cadd8c2e8c156970283d4a28609549) so it is only added for Java 8.
 
@@ -194,11 +196,11 @@ internal val IMPLEMENTATIONS: PlatformImplementations = run {
 
 With Android supporting java.time.Duration with API level 26+ and the Stream API with API level 24+ ([doc](https://developer.android.com/studio/write/java8-support)), that means:
 
-* jdk8 ThreadLocalRandom won't be used on any API level.
-* jdk8 Named groups will throw at runtime on all API levels.
-* jdk8 Duration extensions will work on API level 26+.
-* jdk8 Stream extensions will work on API level 24+.
-* jdk7 reflection-free suppressed exceptions won't be used on any API level.
+- jdk8 ThreadLocalRandom won't be used on any API level.
+- jdk8 Named groups will throw at runtime on all API levels.
+- jdk8 Duration extensions will work on API level 26+.
+- jdk8 Stream extensions will work on API level 24+.
+- jdk7 reflection-free suppressed exceptions won't be used on any API level.
 
 Duration extensions are literally [two lines of experimental code](https://github.com/JetBrains/kotlin/blob/ff9d2744ce9b63321504cb70cf500bb99bc59f75/libraries/stdlib/jdk8/src/kotlin/time/DurationConversions.kt). Stream extensions are a bit more but if you're using Kotlin, you can (and certainly should) replace them with sequences or collections anyway.
 

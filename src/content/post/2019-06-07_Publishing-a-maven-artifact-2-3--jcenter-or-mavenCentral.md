@@ -5,11 +5,11 @@ publishDate: 2019-06-07T00:00:00Z
 image: '~/assets/images/2019-06-07_Publishing-a-maven-artifact-2-3--jcenter-or-mavenCentral/1*sOOz-SZyjSK5aUXcfmyKjQ.jpeg'
 ---
 
-*This is the second article in a series describing how I started distributing my android/kotlin libraries. This article focuses on choosing between jcenter and mavenCentral from the point of view of a project maintainer. It assumes you're familiar with the terms defined in article 1/3.*
+_This is the second article in a series describing how I started distributing my android/kotlin libraries. This article focuses on choosing between jcenter and mavenCentral from the point of view of a project maintainer. It assumes you're familiar with the terms defined in article 1/3._
 
-[*Part 1/3*](https://proandroiddev.com/publishing-a-maven-artifact-1-3-glossary-bc0068a440e0) focuses on terms, especially some misconceptions around maven, MavenCentral, bintray, jcenter, etc...
+[_Part 1/3_](https://proandroiddev.com/publishing-a-maven-artifact-1-3-glossary-bc0068a440e0) focuses on terms, especially some misconceptions around maven, MavenCentral, bintray, jcenter, etc...
 
-[*Part 3/3*](https://medium.com/p/bd661081645d) describes a step-by-step solution to publishing your android/kotlin project o MavenCentral.
+[_Part 3/3_](https://medium.com/p/bd661081645d) describes a step-by-step solution to publishing your android/kotlin project o MavenCentral.
 
 **Edit: oh well,** [**Jcenter is going down**](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/)**. That makes the choice even easier :)**
 
@@ -19,8 +19,8 @@ Jcenter and mavenCentral are two hugely popular repositories in the Android comm
 
 As a maintainer, you want your library to be available to as many developers as possible. Historically:
 
-* maven and sbt users default to mavenCentral
-* gradle users default to jcenter
+- maven and sbt users default to mavenCentral
+- gradle users default to jcenter
 
 Android studio used to default to mavenCentral and now defaults to jcenter for unclear reasons that seem involve [lagging HTTPS support from mavenCentral](https://twitter.com/JakeWharton/status/1073205231884910593)).
 
@@ -28,17 +28,17 @@ Ideally, you'll want your library to be available through both jcenter and maven
 
 #### 1.1 Publish to OSSRH first, promote to mavenCentral and let jcenter proxy mavenCentral
 
-* jcenter proxies mavenCentral.
-* For an example, okhttp is available [there](https://jcenter.bintray.com/com/squareup/okhttp3/okhttp/4.0.0-alpha02/) on jcenter despite being uploaded to mavenCentral [there](https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/4.0.0-alpha02/) in the first place.
-* Some confusion is caused by the fact that the listing is updated lazily so your package might not appear in the search engine even though actually trying to request the package works.
-* Also, [claiming the same groupId on jcenter would cause some synchronization issues](https://github.com/bumptech/glide/issues/544#issuecomment-495391386).
-* But overall this works well. If you publish to mavenCentral, your library should be available to both jcenter and mavenCentral users.
+- jcenter proxies mavenCentral.
+- For an example, okhttp is available [there](https://jcenter.bintray.com/com/squareup/okhttp3/okhttp/4.0.0-alpha02/) on jcenter despite being uploaded to mavenCentral [there](https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/4.0.0-alpha02/) in the first place.
+- Some confusion is caused by the fact that the listing is updated lazily so your package might not appear in the search engine even though actually trying to request the package works.
+- Also, [claiming the same groupId on jcenter would cause some synchronization issues](https://github.com/bumptech/glide/issues/544#issuecomment-495391386).
+- But overall this works well. If you publish to mavenCentral, your library should be available to both jcenter and mavenCentral users.
 
 #### 1.2 Publish to bintray first and promote to both jcenter and mavenCentral using the bintray console
 
-* The bintray console [has an option to synchronize your packages to mavenCentral](https://www.jfrog.com/confluence/display/BT/Syncing+with+Third-Party+Platforms).
-* Your package is then hosted on both platforms and therefore available for everyone to use.
-* This requires slightly more administration as you need at the same time one sonatype account and one bintray account.
+- The bintray console [has an option to synchronize your packages to mavenCentral](https://www.jfrog.com/confluence/display/BT/Syncing+with+Third-Party+Platforms).
+- Your package is then hosted on both platforms and therefore available for everyone to use.
+- This requires slightly more administration as you need at the same time one sonatype account and one bintray account.
 
 **Verdict:** draw. I would go to mavenCentral because I just don't like having multiple accounts but if you don't mind, using bintray to deploy to both at the same time seems easy enough.
 
@@ -50,17 +50,17 @@ I wrote a [kscript](https://github.com/holgerbrandl/kscript) script to compare j
 
 Conditions:
 
-* The script is available on [gist](https://gist.github.com/martinbonnin/3fc42a5bc315583a2efd1398156fdd27).
-* It downloads \~30MB of jars, sources and javadoc and measures the time it takes.
-* I made 5 dry-runs to warm up the caches before measuring the speed.
-* My home ISP is [free](https://www.free.fr/freebox/fibre-optique/). A [speed test](http://speedtest.net) gives me a download speed of roughly 900Mbps.
-* AWS is an EC2 micro instance in eu-west-3c.
-* GCP is a compute engine instance in europe-west3-c.
+- The script is available on [gist](https://gist.github.com/martinbonnin/3fc42a5bc315583a2efd1398156fdd27).
+- It downloads \~30MB of jars, sources and javadoc and measures the time it takes.
+- I made 5 dry-runs to warm up the caches before measuring the speed.
+- My home ISP is [free](https://www.free.fr/freebox/fibre-optique/). A [speed test](http://speedtest.net) gives me a download speed of roughly 900Mbps.
+- AWS is an EC2 micro instance in eu-west-3c.
+- GCP is a compute engine instance in europe-west3-c.
 
 Results (higher is better):
 
-|     Repo      |  At Home   |    AWS     |    GCP     |
-|---------------|------------|------------|------------|
+| Repo          | At Home    | AWS        | GCP        |
+| ------------- | ---------- | ---------- | ---------- |
 | MavenCentral  | 25985 kB/s | 11424 kB/s | 18335 kB/s |
 | Jcenter       | 9320 kB/s  | 7306 kB/s  | 11420 kB/s |
 | Google mirror | 5019 kB/s  | 4388 kB/s  | 6183 kB/s  |

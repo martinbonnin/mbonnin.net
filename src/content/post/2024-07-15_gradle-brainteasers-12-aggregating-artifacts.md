@@ -4,15 +4,16 @@ excerpt: 'Fun times with project isolation and dependency resolution...'
 publishDate: 2024-07-15T10:44:26.305Z
 image: '~/assets/images/2024-07-15_gradle-brainteasers-12-aggregating-artifacts/c6a866b4-e512-483d-8e3a-decefe9261c9.webp'
 ---
+
 I've been developing Gradle plugins for 7 years now. Sometimes [I love it](https://github.com/GradleUp/gratatouille), sometimes [I hate it](https://mbonnin.medium.com/actual-footage-of-different-kinds-of-gradle-configurations-9678bd681793). But even when I hate it, I love hating it!
 
 I just realized some of the Gradle APIs are like those metal wire brain teasers games:
 
-* Are they easy? No.
+- Are they easy? No.
 
-* Do you have to turn them upside down for hours (or months...) trying to understand what you're supposed to do? Yup, most probably.
+- Do you have to turn them upside down for hours (or months...) trying to understand what you're supposed to do? Yup, most probably.
 
-* Do you get a nice feeling of completion once you figure out how to untangle them? Absolutely!
+- Do you get a nice feeling of completion once you figure out how to untangle them? Absolutely!
 
 I just had a couple of "Aha!" moment very recently. This post is about the "Aha!" moment of untangling dependency resolution and project isolation.  
 A follow up one will be about input files.  
@@ -61,7 +62,7 @@ dependencies {
 
 From the documentation:
 
-> This publication model is *unsafe* and can lead to non-reproducible and hard to parallelize builds.
+> This publication model is _unsafe_ and can lead to non-reproducible and hard to parallelize builds.
 
 If the projects are evaluated concurrently then accessing the mutable `Project.tasks` is prone to race conditions.
 
@@ -177,6 +178,6 @@ With this itch gone, new opportunities for publishing arise, stay tuned!
 
 ---
 
-*PS: this only works for cases where a single root projects depends on all the other ones but modeling a more complex project graph is still itching me...*
+_PS: this only works for cases where a single root projects depends on all the other ones but modeling a more complex project graph is still itching me..._
 
-*Brainteasers pictures from* [*mtairymd*](https://www.instructables.com/member/mtairymd/) *on* [*Instructables*](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
+_Brainteasers pictures from_ [_mtairymd_](https://www.instructables.com/member/mtairymd/) _on_ [_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)

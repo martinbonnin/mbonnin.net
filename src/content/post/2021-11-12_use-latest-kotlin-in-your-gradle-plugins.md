@@ -5,9 +5,9 @@ publishDate: 2021-11-12T15:13:39.328Z
 image: '~/assets/images/2021-11-12_use-latest-kotlin-in-your-gradle-plugins/3rMt16zUJ.jpeg'
 ---
 
-*This is the story of how I got down the rabbit hole of relocating classes while trying to workaround the Gradle classloaders and fixed Kotlin runtime limitations. I'm not sure if I'd recommend trying this at home but this was an interesting journey! Read this (long) post if you're curious about what it takes to use the latest version of Kotlin in your plugins.*
+_This is the story of how I got down the rabbit hole of relocating classes while trying to workaround the Gradle classloaders and fixed Kotlin runtime limitations. I'm not sure if I'd recommend trying this at home but this was an interesting journey! Read this (long) post if you're curious about what it takes to use the latest version of Kotlin in your plugins._
 
-*If you prefer reading source code, read the* [*matching pull request in apollo-android*](https://github.com/apollographql/apollo-android/pull/3542/)
+_If you prefer reading source code, read the_ [_matching pull request in apollo-android_](https://github.com/apollographql/apollo-android/pull/3542/)
 
 **Note**: This post was written when Kotlin 1.5 was released and Gradle 7.1 was using 1.4. The same is true with Kotlin 1.7 (or any other newer versions)
 
@@ -61,7 +61,7 @@ After all, it's not such a huge deal, right? We've lived without `lowercase` for
 ```plaintext
 compileKotlin {
   kotlinOptions {
-    // Compile against 1.4 stdlib for the time being to make sure it works 
+    // Compile against 1.4 stdlib for the time being to make sure it works
     // with a wide range of Gradle versions.
     apiVersion = "1.4"
   }
@@ -140,7 +140,7 @@ Declare your dependencies:
 
 ```kotlin
 dependencies {
-  // no need to specify the version, this will use the same version as the kotlin plugin version 
+  // no need to specify the version, this will use the same version as the kotlin plugin version
   add("shade", "org.jetbrains.kotlin:kotlin-stdlib")
   // add your other dependencies here
   // Dependencies can use whatever version of Kotlin they want \o/
@@ -171,7 +171,7 @@ gr8 {
 
     // The R8 configuration
     proguardFile("rules.pro")
-    
+
     // Remove proguard rules from dependencies, we'll manage them ourselves
     exclude("META-INF/proguard/.*")
   }

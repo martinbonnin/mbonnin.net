@@ -15,8 +15,8 @@ Kotlin Scripting is explained by a KEEP (Kotlin Enhancement and Evolution Proces
 
 Kotlin Scripting is:
 
-* A way to easily compile Kotlin source files...
-* ... with a given context, i.e. a set of variables/methods accessible to the script.
+- A way to easily compile Kotlin source files...
+- ... with a given context, i.e. a set of variables/methods accessible to the script.
 
 Most of us are actually already using Kotlin Scripts in the form of `build.gradle.kts` files. These files know about the current `Project`, which is exposed as context.
 
@@ -51,16 +51,16 @@ Pretty neat right ?
 
 Kscript has **a lot of features**:
 
-* Scripts caching: Running the same script will be way faster the second time.
-* Maven dependencies: If you want to use OkHttp in your scripts, just drop `@file:DependsOn("com.squareup.okhttp3:okhttp:4.7.2")` and say goodbye to curl/wget.
-* IntelliJ support: Kscript generates an intelliJ project to edit your scripts with autocomplete.
-* Bootstrap header: To make you script install kscript automagically.
-* And a lot of other ones: See the [kscript repo](https://github.com/holgerbrandl/kscript) for the list.
+- Scripts caching: Running the same script will be way faster the second time.
+- Maven dependencies: If you want to use OkHttp in your scripts, just drop `@file:DependsOn("com.squareup.okhttp3:okhttp:4.7.2")` and say goodbye to curl/wget.
+- IntelliJ support: Kscript generates an intelliJ project to edit your scripts with autocomplete.
+- Bootstrap header: To make you script install kscript automagically.
+- And a lot of other ones: See the [kscript repo](https://github.com/holgerbrandl/kscript) for the list.
 
 And **a few drawbacks**:
 
-* It requires a local Kscript install on your machine. This is pretty easy to do thanks to [SdkMan](https://sdkman.io/) but still annoying when distributing scripts or trying to run them in your CI.
-* [Dependency resolution doesn't work with Java11](https://github.com/holgerbrandl/kscript/issues/239). You will be stuck with Java8. Again, you can have multiple JDKs installed on your machine but it's still annoying.
+- It requires a local Kscript install on your machine. This is pretty easy to do thanks to [SdkMan](https://sdkman.io/) but still annoying when distributing scripts or trying to run them in your CI.
+- [Dependency resolution doesn't work with Java11](https://github.com/holgerbrandl/kscript/issues/239). You will be stuck with Java8. Again, you can have multiple JDKs installed on your machine but it's still annoying.
 
 ### Kotlin-main-kts
 
@@ -80,14 +80,14 @@ Everything else works pretty much as you would expect, with arguments, autocompl
 
 Compared to Kscript, Kotlin-main-kts has less features but also less friction. It has the following advantages:
 
-* First party support.
-* Directly edit in intelliJ. No need for a wrapper Gradle project.
-* Only Kotlin is required, not need to install anything else.
+- First party support.
+- Directly edit in intelliJ. No need for a wrapper Gradle project.
+- Only Kotlin is required, not need to install anything else.
 
 And a few drawbacks:
 
-* No builtin bootstrap header and other nice helpers from Kscript.
-* Dependency resolution is limited.
+- No builtin bootstrap header and other nice helpers from Kscript.
+- Dependency resolution is limited.
 
 That last one is a bit annoying. [Snaphots are not resolved](https://youtrack.jetbrains.com/issue/KT-38212) and [dependency resolution will only take the first version encountered](https://youtrack.jetbrains.com/issue/KT-38006), even if another lib requires a higher one. Luckily, [the team is working on it for Kotlin 1.4](https://github.com/holgerbrandl/kscript/issues/239#issuecomment-628547025) so hopefully this will become even better soon.
 

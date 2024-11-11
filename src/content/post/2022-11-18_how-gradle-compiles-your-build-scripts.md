@@ -4,6 +4,7 @@ excerpt: '...'
 publishDate: 2022-11-18T17:14:29.144Z
 image: '~/assets/images/2022-11-18_how-gradle-compiles-your-build-scripts/jEJIB8e_7.png'
 ---
+
 _This post is inspired by a [discussion on the Gradle community slack](https://linen.dev/s/gradle-community/t/5100108/are-the-rules-for-how-gradle-parses-compiles-buildscript-and). Many thanks to `@Vampire` and `@ephemient` for their help understanding all of this_
 
 Have you ever tried to do something like this?
@@ -60,8 +61,8 @@ Gradle parses your `build.gradle.kts` file and extracts the `plugins {}` block. 
 
 So after the `plugins {}` block is evaluated, Gradle has:
 
-* the plugins used by the script and their matching jar
-* generated accessors
+- the plugins used by the script and their matching jar
+- generated accessors
 
 In a second pass, it can compile and evaluate the script, with all the plugin jars on the classpath. It all makes sense!
 
@@ -71,9 +72,9 @@ This first pass is why the syntax of the `plugins {}` block is so [constrained](
 
 `plugins {}` is the most used block but this also applies to other blocks:
 
-* `buildscript {}`
-* `pluginManagement {}`
-* `iniscript {}`
+- `buildscript {}`
+- `pluginManagement {}`
+- `iniscript {}`
 
 If you bump into errors, double check what block you're in. Chances are that your code is evaluated in a separate context.
 

@@ -45,9 +45,9 @@ In the few hours I spent writing dart, I won't pretend to be an expert. Dart is 
 
 Some quirks:
 
-* You have to write semicolons! This might sound silly but it's very frustrating after getting used to not typing them.
-* No data class, no sealed class.
-* The type system doesn't look as strong. There are some null-aware operators but that doesn't seem backed in the type system like in Kotlin.
+- You have to write semicolons! This might sound silly but it's very frustrating after getting used to not typing them.
+- No data class, no sealed class.
+- The type system doesn't look as strong. There are some null-aware operators but that doesn't seem backed in the type system like in Kotlin.
 
 **All in all**: Advantage Android. Switching to dart really feels like a step backwards compared to writing Kotlin.
 
@@ -69,9 +69,9 @@ Also, assets are not compiled/preprocessed the way android does. Identifying the
 
 This is the most painful point. Compared to Android, there are still a lot of things missing:
 
-* No strongly-typed graphql client yet. There a a [flutter_graphql package](https://pub.dartlang.org/packages/graphql_flutter) but it's not strongly typed like apollo-android.
-* No WebView JavascriptInterface yet. For a long time, WebView was not available. It is now but some functionality is still missing. Adding a [JavascriptInterface](https://developer.android.com/reference/android/webkit/JavascriptInterface) for an example is [not possible at the moment](https://github.com/fluttercommunity/flutter_webview_plugin/issues/71) in flutter.
-* It is [not possible to get the position of items currently visible in a ListView](https://github.com/flutter/flutter/issues/19941).
+- No strongly-typed graphql client yet. There a a [flutter_graphql package](https://pub.dartlang.org/packages/graphql_flutter) but it's not strongly typed like apollo-android.
+- No WebView JavascriptInterface yet. For a long time, WebView was not available. It is now but some functionality is still missing. Adding a [JavascriptInterface](https://developer.android.com/reference/android/webkit/JavascriptInterface) for an example is [not possible at the moment](https://github.com/fluttercommunity/flutter_webview_plugin/issues/71) in flutter.
+- It is [not possible to get the position of items currently visible in a ListView](https://github.com/flutter/flutter/issues/19941).
 
 The fact that I bumped into these after just a few hours of trying makes me wonder whether there are other roadblocks down the road.
 

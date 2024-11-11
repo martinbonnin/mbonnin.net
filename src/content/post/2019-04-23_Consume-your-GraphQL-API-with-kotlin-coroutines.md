@@ -7,20 +7,20 @@ image: '~/assets/images/2019-04-23_Consume-your-GraphQL-API-with-kotlin-coroutin
 
 At**Dailymotion, we like GraphQL...a lot. We started using it in 2016, we are active contributors to** [**apollo-android**](https://github.com/apollographql/apollo-android)**, we even have our own server implementation in Python named** [**Tartiflette**](https://github.com/dailymotion/tartiflette)**. When** [**kotlin coroutines**](https://kotlinlang.org/docs/reference/coroutines-overview.html)**became stable** [**at the end of last year,**](https://kotlinlang.org/docs/reference/whatsnew13.html)**we couldn't wait to use them so we added** [**the code**](https://github.com/apollographql/apollo-android/pull/1169)**to do so.**
 
-*** ** * ** ***
+---
 
 GraphQL APIs offer several advantages over traditional [REST APIs](https://developer.dailymotion.com/):
 
-* Clients only download the data they need
-* The API is introspectable and self-documented
-* Versioning is as easy as deprecating old fields and adding new ones
-* Tools like apollo-android and graphiql make a great developer experience
+- Clients only download the data they need
+- The API is introspectable and self-documented
+- Versioning is as easy as deprecating old fields and adding new ones
+- Tools like apollo-android and graphiql make a great developer experience
 
 Coroutines offer several advantages over threads/RxJava/(AsyncTasks!):
 
-* Lightweight. No threads are needed to make a suspending function
-* Code is easier to read as it is written sequentially
-* Exceptions and backtraces are also easier to read since you don't lose the original call site
+- Lightweight. No threads are needed to make a suspending function
+- Code is easier to read as it is written sequentially
+- Exceptions and backtraces are also easier to read since you don't lose the original call site
 
 ### Bringing GraphQL and coroutines together
 
@@ -53,11 +53,7 @@ dependencies {
 Also, add your API schema and GraphQL query to your project:
 
 ```graphql
-query GithubRepositories(
-  $repositoriesCount: Int!
-  $orderBy: RepositoryOrderField!
-  $orderDirection: OrderDirection!
-) {
+query GithubRepositories($repositoriesCount: Int!, $orderBy: RepositoryOrderField!, $orderDirection: OrderDirection!) {
   viewer {
     repositories(
       first: $repositoriesCount
@@ -90,13 +86,14 @@ GlobalScope.launch(Dispatchers.Main) {
             .orderDirection(OrderDirection.DESC)
             .build()
     val deferred = apolloClient.query(repositoriesQuery).toDeferred()
-    
+
     // .await() will suspend until we get the response
     val response = deferred.await()
     val repositories = response.data()?.viewer()?.repositories()?.nodes()?.map { it.fragments().repositoryFragment() } ?: emptyList()
     repositoriesAdapter.setItems(repositories)
 }
 ```
+
 Compared to [an equivalent](https://gist.github.com/martinbonnin/e3922f19f1e8f55a083cc5cf8919f42d)[RxJava](https://gist.github.com/martinbonnin/e3922f19f1e8f55a083cc5cf8919f42d)[solution](https://gist.github.com/martinbonnin/e3922f19f1e8f55a083cc5cf8919f42d), there's no need for callbacks. The compiler will generate appropriate code and suspend appropriately.
 
 ### Error handling
@@ -112,7 +109,7 @@ GlobalScope.launch(Dispatchers.Main) {
             .orderDirection(OrderDirection.DESC)
             .build()
     val response = apolloClient.query(repositoriesQuery).toDeferred().await()
-    val repositories = response.data()?.viewer()?.repositories()?.nodes()?.map { it.fragments().repositoryFragment() } 
+    val repositories = response.data()?.viewer()?.repositories()?.nodes()?.map { it.fragments().repositoryFragment() }
     repositoriesAdapter.setItems(repositories!!)
   } catch (e: ApolloException) {
     // you will end up here if .await() throws, most likely due to a transport or parsing error
@@ -132,8 +129,8 @@ GlobalScope.launch(Dispatchers.Main) {
 
 There are two sources of errors:
 
-* Transport errors will be thrown in `await`. These are most likely unrecoverable.
-* Graphql errors won't be thrown by default as some implementations might be able to recover and display partial results.
+- Transport errors will be thrown in `await`. These are most likely unrecoverable.
+- Graphql errors won't be thrown by default as some implementations might be able to recover and display partial results.
 
 In all cases, everything reads sequentially, without callbacks.
 
@@ -160,10 +157,10 @@ Apollo-android also works for any JVM project, not just Android. The samples are
 ### Wrapup
 
 Consuming your GraphQL API has never been simpler! With the addition of coroutines to handle concurrency and the existing normalized cache and strong typing, GraphQL is a very strong and mature API solution today. Which is no small feat considering the language is still quite young.
-> **If you're interested in GraphQL, help us make** [**apollo-android**](https://github.com/apollographql/apollo-android/)**and Tartiflette grow by** [**joining the community**](https://tartiflette.io/)**!**
-**Edit 2019--05--27: updated for** [**version 1.0.0**](https://github.com/apollographql/apollo-android/releases/tag/1.0.0)  
-[**Tartiflette GraphQL Python Engine · *GraphQL Server implementation built with Python 3.6+***
-GraphQL Server implementation built with Python 3.6+tartiflette.](https://tartiflette.io/ "https://tartiflette.io/")[](https://tartiflette.io/) By [Martin Bonnin](https://medium.com/@mbonnin) on [April 23, 2019](https://medium.com/p/8dcf716712b2).
+
+> **If you're interested in GraphQL, help us make** [**apollo-android**](https://github.com/apollographql/apollo-android/)**and Tartiflette grow by** [**joining the community**](https://tartiflette.io/)**!** > **Edit 2019--05--27: updated for** [**version 1.0.0**](https://github.com/apollographql/apollo-android/releases/tag/1.0.0)  
+> [**Tartiflette GraphQL Python Engine · _GraphQL Server implementation built with Python 3.6+_**
+> GraphQL Server implementation built with Python 3.6+tartiflette.](https://tartiflette.io/ 'https://tartiflette.io/')[](https://tartiflette.io/) By [Martin Bonnin](https://medium.com/@mbonnin) on [April 23, 2019](https://medium.com/p/8dcf716712b2).
 
 [Canonical link](https://medium.com/@mbonnin/consume-your-graphql-api-with-kotlin-coroutines-8dcf716712b2)
 

@@ -5,15 +5,15 @@ publishDate: 2021-05-31T00:00:00Z
 image: '~/assets/images/2021-05-31_Actual-footage-of-different-kinds-of-Gradle-Configurations/1*E-uprnrV7_n-Y-I4s12aNQ.jpeg'
 ---
 
-*The first time I heard about Gradle configurations, I thought it'd be about writing* *build.gradle**files and configuring some* *DSL**and writing* *{}**blocks. Then I started writing* [*plugins*](https://github.com/apollographql/apollo-android/tree/main/apollo-gradle-plugin)*and realized that they have a* [*configuration phase*](https://docs.gradle.org/current/userguide/build_lifecycle.html#sec:build_phases)*too that is run before execution.*
+_The first time I heard about Gradle configurations, I thought it'd be about writing_ _build.gradle\*\*files and configuring some_ _DSL\*\*and writing_ _{}\*\*blocks. Then I started writing_ [_plugins_](https://github.com/apollographql/apollo-android/tree/main/apollo-gradle-plugin)_and realized that they have a_ [_configuration phase_](https://docs.gradle.org/current/userguide/build_lifecycle.html#sec:build_phases)_too that is run before execution._
 
-*Well these are all configurations for sure... They also hide another type of configuration, which plays a center role in Gradle dependency management: the* [*Configuration API*](https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html)*.*
+_Well these are all configurations for sure... They also hide another type of configuration, which plays a center role in Gradle dependency management: the_ [_Configuration API_](https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html)_._
 
 Everytime you add a new dependency to a project, you're actually using configurations behind the scenes:
 
 ```kotlin
 dependencies {
-  // This is using the "implementation" configuration    
+  // This is using the "implementation" configuration
   implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }
 ```
@@ -79,16 +79,16 @@ dependencies.add("implementation", "com.squareup.okhttp3:okhttp:4.9.0")
 
 Running `./gradlew dependencies` will now show a lot more information. The result is too long to be displayed here, but you should see something like this (test configurations omitted for clarity):
 
-* `annotationProcessor` Annotation processors and their dependencies for source set 'main'.
-* `apiElements` - API elements for main. (n)
-* `archives` - Configuration for archive artifacts. (n)
-* `compileClasspath` - Compile classpath for source set 'main'.
-* `compileOnly` - Compile only dependencies for source set 'main'. (n)
-* `default` - Configuration for default artifacts. (n)
-* `implementation` - Implementation only dependencies for source set 'main'. (n)
-* `runtimeClasspath` - Runtime classpath of source set 'main'.
-* `runtimeElements` - Elements of runtime for main. (n)
-* `runtimeOnly` - Runtime only dependencies for source set 'main'. (n)
+- `annotationProcessor` Annotation processors and their dependencies for source set 'main'.
+- `apiElements` - API elements for main. (n)
+- `archives` - Configuration for archive artifacts. (n)
+- `compileClasspath` - Compile classpath for source set 'main'.
+- `compileOnly` - Compile only dependencies for source set 'main'. (n)
+- `default` - Configuration for default artifacts. (n)
+- `implementation` - Implementation only dependencies for source set 'main'. (n)
+- `runtimeClasspath` - Runtime classpath of source set 'main'.
+- `runtimeElements` - Elements of runtime for main. (n)
+- `runtimeOnly` - Runtime only dependencies for source set 'main'. (n)
 
 Pheewww, that's a lot! We won't be able to cover all of them in this article but we'll cover the most representative ones. Let's skip the `default` configuration that is [now deprecated](https://docs.gradle.org/current/userguide/userguide_single.html#using_default_and_archives_configurations) and put aside the `archives` and `annotationProcessor` ones for now, that leaves us with `apiElements`, `compileClasspath`, `compileOnly`, `implementation`, `runtimeClasspath`, `runtimeElements` and `runtimeOnly`.
 
@@ -123,7 +123,7 @@ configurations["implementation"].files.forEach {
 That shouldn't go too well:
 
 ```
-$ ./gradlew 
+$ ./gradlew
 
 [...]
 
@@ -146,7 +146,6 @@ Getting the list of jar files contained in the `implementation` configuration, i
 
 If you look at the earlier `./gradlew dependencies` output, you can find two resolvable configurations.
 
-
 Both these configurations **don't** have a `(n)` in front of them, meaning you **can** resolve them, Let's do this:
 
 ```
@@ -155,10 +154,10 @@ configurations["compileClasspath"].files.forEach {
 }
 ```
 
-Output: 
+Output:
 
 ```
-$ ./gradlew 
+$ ./gradlew
 
 > Configure project :
 dependency: DefaultExternalModuleDependency{group='com.squareup.okhttp3', name='okhttp', version='4.9.0', configuration='default'}
@@ -175,18 +174,18 @@ What about `runtimeClasspath` then? Well in this specific case, it's going to be
 
 In addition to the above resolvable configurations, the `java` plugin creates 2 non-resolvable, implementation-like, "bucket of dependencies", configurations:
 
-* `compileOnly` to add a dependency to `compileClasspath` only. This is typically what's used by Gradle plugins to compile against the Gradle API but not use it at runtime since it's provided by the Gradle instance that runs the plugin.
-* `runtimeOnly` to add a dependency to `runtimeClasspath` only. This is used less often but is useful in cases where multiple implementations of the same API could be made available at runtime. For an example using [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) or another mechanism. This happens with logging frameworks like [SLF4J](http://www.slf4j.org/). The project is compiled using an abstract logger. The actual implementation is being loaded at runtime but not needed during compilation.
+- `compileOnly` to add a dependency to `compileClasspath` only. This is typically what's used by Gradle plugins to compile against the Gradle API but not use it at runtime since it's provided by the Gradle instance that runs the plugin.
+- `runtimeOnly` to add a dependency to `runtimeClasspath` only. This is used less often but is useful in cases where multiple implementations of the same API could be made available at runtime. For an example using [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) or another mechanism. This happens with logging frameworks like [SLF4J](http://www.slf4j.org/). The project is compiled using an abstract logger. The actual implementation is being loaded at runtime but not needed during compilation.
 
 Using [Configuration.extendsFrom()](https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html#org.gradle.api.artifacts.Configuration:extendsFrom), Gradle can make dependencies from these configurations available to the resolvable configurations. When compileClasspath extends from compileOnly, all the files from compileOnly will be available in compileClasspath.
 
 In practice, the `java` plugin uses the following (from the [doc](https://docs.gradle.org/current/userguide/java_plugin.html#tab:configurations)):
 
-* implementation (non resolvable)
-* compileOnly (non resolvable)
-* runtimeOnly (non resolvable)
-* compileClasspath extends compileOnly, implementation
-* runtimeClasspath extends runtimeOnly, implementation
+- implementation (non resolvable)
+- compileOnly (non resolvable)
+- runtimeOnly (non resolvable)
+- compileClasspath extends compileOnly, implementation
+- runtimeClasspath extends runtimeOnly, implementation
 
 The first three are where you add dependencies. The last two are used by the JavaCompile task and runners.
 
@@ -200,8 +199,8 @@ So what are `runtimeElements` and `apiElements`?
 
 `runtimeElements` and `apiElements` are [consumable](https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:resolvable-consumable-configs)[configurations](https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:resolvable-consumable-configs). Consumable configurations are meant to be used by other projects consuming this project. I know this is very close to "resolvable". In Gradle terminology:
 
-* Resolvable is to read the files from a configuration **inside** a project
-* Consumable is to expose files to consumers **outside** the project
+- Resolvable is to read the files from a configuration **inside** a project
+- Consumable is to expose files to consumers **outside** the project
 
 It makes more sense for library projects. For some reason, it's also added for non-library projects. I'm guessing some project could consume the executable jar too. In all cases, you can get the consumable configurations with `./gradlew outgoingVariants`:
 
@@ -267,20 +266,20 @@ Output:
 ```
 implementation             resolvable=false consumable=false
 runtimeOnly                resolvable=false consumable=false
-compileOnly                resolvable=true  consumable=true 
+compileOnly                resolvable=true  consumable=true
 
 runtimeClasspath           resolvable=true  consumable=false
 compileClasspath           resolvable=true  consumable=false
 
-apiElements                resolvable=false consumable=true 
-runtimeElements            resolvable=false consumable=true 
+apiElements                resolvable=false consumable=true
+runtimeElements            resolvable=false consumable=true
 ```
 
 In this article, we've seen the three different types of configurations:
 
-* **Bucket of dependencies** ( `implementation`, `runtimeOnly`, `compileOnly`) are used by the user to declare dependencies. They are neither resolvable nor consumable... ...well, except for `compileOnly` that is both! I didn't expected that when I started writing this article. If anyone has an explanation, I'll take it\*.
-* **Resolvable configurations** ( `runtimeClasspath` and `compileClasspath`) are the resolvable configurations to be used inside the project by tasks like compileJava and compileKotlin to get the actual jar files.
-* **Consumable configurations** ( `apiElements` and `runtimeElements`): are the consumable configurations to be consumed by other projects and used by variant aware selection. You can see them with `./gradlew outgoingVariant`.
+- **Bucket of dependencies** ( `implementation`, `runtimeOnly`, `compileOnly`) are used by the user to declare dependencies. They are neither resolvable nor consumable... ...well, except for `compileOnly` that is both! I didn't expected that when I started writing this article. If anyone has an explanation, I'll take it\*.
+- **Resolvable configurations** ( `runtimeClasspath` and `compileClasspath`) are the resolvable configurations to be used inside the project by tasks like compileJava and compileKotlin to get the actual jar files.
+- **Consumable configurations** ( `apiElements` and `runtimeElements`): are the consumable configurations to be consumed by other projects and used by variant aware selection. You can see them with `./gradlew outgoingVariant`.
 
 When in doubt, always refer to the [official terminology doc](https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_component) which is super useful!
 

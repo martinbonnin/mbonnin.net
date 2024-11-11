@@ -14,8 +14,8 @@ It's about the status bar. This is what got me confused in the first place. SYST
 
 ### 2.The LAYOUT_XXX allow you to draw behind the bars
 
-* SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN will allow you to draw behind the status bar.
-* SYSTEM_UI_FLAG_LAYOUT_HID_NAVIGATION will allo you to draw behind the navigation bar.
+- SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN will allow you to draw behind the status bar.
+- SYSTEM_UI_FLAG_LAYOUT_HID_NAVIGATION will allo you to draw behind the navigation bar.
 
 It makes a lot of sense when you look at it this way.
 

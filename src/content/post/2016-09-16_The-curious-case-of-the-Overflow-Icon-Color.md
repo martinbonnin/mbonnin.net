@@ -7,13 +7,13 @@ image: '~/assets/images/2016-09-16_The-curious-case-of-the-Overflow-Icon-Color/1
 
 When it was released, I welcomed the addition of the [Support Toolbar](https://developer.android.com/reference/android/widget/Toolbar.html) with joy and happiness ! The [ActionBar](https://developer.android.com/reference/android/app/ActionBar.html) API has always been a bit cumbersome. With the support Toolbar, things are much easier. On top of my head:
 
-* Toolbars are normal Views so you can decouple them from your Activities, making the code much more modular.
-* It is much easier to manipulate the Toolbar programmatically. You have access to the Menu so you can add/remove [OnMenuItemClickListener](https://developer.android.com/reference/android/view/MenuItem.OnMenuItemClickListener.html)s very easily.
-* You can set individual MenuItems visibility individually without having to invalidate the whole menu with invalidateOptionsMenu().
+- Toolbars are normal Views so you can decouple them from your Activities, making the code much more modular.
+- It is much easier to manipulate the Toolbar programmatically. You have access to the Menu so you can add/remove [OnMenuItemClickListener](https://developer.android.com/reference/android/view/MenuItem.OnMenuItemClickListener.html)s very easily.
+- You can set individual MenuItems visibility individually without having to invalidate the whole menu with invalidateOptionsMenu().
 
 All in all, the design is much much better except for one thing: **Theming**. I have spent countless hours trying to change the color of the overflow icon. Looking at the stack overflow questions, I think I'm not alone. Below is my journey.
 
-*** ** * ** ***
+---
 
 ### Pitfall #1: there is no (simple) programmatic solution
 
@@ -98,7 +98,7 @@ So if there is no setOverflowIconColor(), surely there must be a XML attribute r
     android:id="@+id/editToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:overflowIconTint="@android:color/white" />  
+    android:overflowIconTint="@android:color/white" />
            ^^^^^^^^^^^^^^^^^^^^^^
             That won't work :-(
 ```
@@ -111,12 +111,12 @@ You can't. Period.
 It comes from the support libs: [abc_ic_menu_overflow_material.xml#22](https://chromium.googlesource.com/android_tools/+/1a05e6e0c759f1bb95f1c698150fa17a986d7619/sdk/extras/android/support/v7/appcompat/res/drawable/abc_ic_menu_overflow_material.xml#22), deep down in the vector drawable itself.
 
 ```xml
-<vector xmlns:android="http://schemas.android.com/apk/res/android" 
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
        android:width="24dp"
        android:height="24dp"
-       android:viewportWidth="24.0" 
+       android:viewportWidth="24.0"
        android:viewportHeight="24.0"
-       android:tint="?attr/colorControlNormal">    
+       android:tint="?attr/colorControlNormal">
 
     <path android:pathData="M12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2c-1.1,0 -2,0.9 -2,2S10.9,8 12,8zM12,10c-1.1,0 -2,0.9 -2,2s0.9,2 2,2c1.1,0 2,-0.9 2,-2S13.1,10 12,10zM12,16c-1.1,0 -2,0.9 -2,2s0.9,2 2,2c1.1,0 2,-0.9 2,-2S13.1,16 12,16z"            android:fillColor="@android:color/white"/>
 </vector>
@@ -124,28 +124,28 @@ It comes from the support libs: [abc_ic_menu_overflow_material.xml#22](https://c
 
 See the ?attr/colorControlNormal ? This will be looked up directly in the theme. That really feels strange to me. If we agree that:
 
-* Themes are global to the app.
-* Styles are used on a specific widget.
+- Themes are global to the app.
+- Styles are used on a specific widget.
 
 Then, this way of doing things is completely bypassing the style. There is just no way to customize your widget without defining or reusing an existing theme. That sounds like reverse thinking to me.
 
-Instead of having**XML** *fallbacks to* **Style** *fallbacks to* **Theme**, we are now stuck with just themes. And it's not like it's very old legacy code we are talking about, this was all introduced in Lollipop so it's not that old.
+Instead of having**XML** _fallbacks to_ **Style** _fallbacks to_ **Theme**, we are now stuck with just themes. And it's not like it's very old legacy code we are talking about, this was all introduced in Lollipop so it's not that old.
 
 ### Pitfall #3: the Appcompat themes are really confusing
 
 Appcompat defines a bunch of Themes but it is really hard to know what's happening behind the scenes:
 
-* Themes and Styles are syntactically identical although they behave differently. Nothing prevents you to put all your themes in styles.xml.
-* Themes have implicit and explicit inheritance. So even if your Theme has no "parent" XML attribute, it might still inherit from something. "Theme.AppCompat.Light.NoActionBar" inherits from "Theme.AppCompat.Light". That took me a while. See the [aapt source code](https://android.googlesource.com/platform/frameworks/base/+/master/tools/aapt/ResourceTable.cpp#1527) for the gory details.
-* There are ThemeOverlays. The simple fact that those exist sounds like there was something wrong in the first place. Why introducing another concept when we already had Themes and Styles ?
-* Last but not least, there is almost no documentation about what the themes actually do. CSS is another very complicated styling system but at least they have documentation.
+- Themes and Styles are syntactically identical although they behave differently. Nothing prevents you to put all your themes in styles.xml.
+- Themes have implicit and explicit inheritance. So even if your Theme has no "parent" XML attribute, it might still inherit from something. "Theme.AppCompat.Light.NoActionBar" inherits from "Theme.AppCompat.Light". That took me a while. See the [aapt source code](https://android.googlesource.com/platform/frameworks/base/+/master/tools/aapt/ResourceTable.cpp#1527) for the gory details.
+- There are ThemeOverlays. The simple fact that those exist sounds like there was something wrong in the first place. Why introducing another concept when we already had Themes and Styles ?
+- Last but not least, there is almost no documentation about what the themes actually do. CSS is another very complicated styling system but at least they have documentation.
 
 ### What do we do now ?
 
 There are good clues here: <https://chris.banes.me/2014/11/12/theme-vs-style/>
 
 ```xml
-<Toolbar  
+<Toolbar
     android:layout_height="?android:attr/actionBarSize"
     android:layout_width="match_parent"
     android:background="?android:attr/colorPrimaryDark"
@@ -187,11 +187,12 @@ So I still haven't found the solution to this. I guess I could change colorPrima
 ### One last thing...
 
 As the blog post above mentions:
+
 > One thing to note is that android:theme in Lollipop propogates to all children declared in the layout
 
 So by putting the theme in the XML attributes, we actually achieved more than what we wanted to do (or less, depends on your point of view...). Changing the theme has side effects. Which might be something you want or something you don't want.
 
-*** ** * ** ***
+---
 
 ### Conclusion
 

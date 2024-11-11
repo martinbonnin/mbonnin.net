@@ -4,14 +4,15 @@ excerpt: '...'
 publishDate: 2021-11-17T15:22:18.030Z
 image: '~/assets/images/2021-11-17_kotlin-compatibility-quicksheet/c10XKUx5y.jpeg'
 ---
+
 > **Edit:** Blog post updated for Kotlin 1.7, see the last paragraph for details.
 
 Kotlin 1.6 has just been released 🎉 ([blog post](https://kotlinlang.org/docs/whatsnew16.html)). This is great news for everyone in the Kotlin ecosystem. As with every feature release, there are new features, new deprecations and other changes that might (but hopefully not too much) break your code.
 
 The [Kotlin documentation](https://kotlinlang.org/docs/) has two awesome pages to go into the implications of new feature releases:
 
-* The [Kotlin evolution - compatibility tools](https://kotlinlang.org/docs/kotlin-evolution.html#compatibility-tools) page
-* The [Compatibility modes](https://kotlinlang.org/docs/compatibility-modes.html) page
+- The [Kotlin evolution - compatibility tools](https://kotlinlang.org/docs/kotlin-evolution.html#compatibility-tools) page
+- The [Compatibility modes](https://kotlinlang.org/docs/compatibility-modes.html) page
 
 Additionally, a lot of additional information can be found in the [Kotlin issue tracker](https://youtrack.jetbrains.com/issues), like [this issue about Kotlin native compatibility](https://youtrack.jetbrains.com/issue/KT-42293)
 
@@ -30,8 +31,8 @@ _If you prefer reading code than blog posts, the source for this post is availab
 
 ```text
 e: /Users/mbonnin/git/kotlin-compatibility/lib-1-6/build/libs/lib-1-6.jar!
-/META-INF/lib-1-6.kotlin_module: Module was compiled with an 
-incompatible version of Kotlin. 
+/META-INF/lib-1-6.kotlin_module: Module was compiled with an
+incompatible version of Kotlin.
 The binary version of its metadata is 1.6.0, expected version is 1.1.16.
 ```
 
@@ -49,8 +50,8 @@ Here, the 1.3 compiler cannot read the 1.6 metadata which sounds expected. Let's
 ```text
 > Task :app-1-4:compileKotlin FAILED
 e: /Users/mbonnin/git/kotlin-compatibility/lib-1-6/build/libs/lib-1-6.jar!
-/META-INF/lib-1-6.kotlin_module: Module was compiled with an 
-incompatible version of Kotlin. 
+/META-INF/lib-1-6.kotlin_module: Module was compiled with an
+incompatible version of Kotlin.
 The binary version of its metadata is 1.6.0, expected version is 1.4.2.
 ```
 
@@ -81,7 +82,7 @@ Now let's assume that we are a library author and we want our new shiny lib to u
 - `libLanguageVersion=1.3`
 
 ```text
-e: Language version 1.3 is no longer supported; please, use version 
+e: Language version 1.3 is no longer supported; please, use version
 1.4 or greater.
 ```
 
@@ -101,8 +102,8 @@ That doesn't say anything about `languageVersion`(Update: Starting with 1.7, `la
 ```text
 e: /Users/mbonnin/git/kotlin-compatibility/lib-1-6-api-1-3-language-1-6
 /build/libs/lib-1-6-api-1-3-language-1-6.jar!/META-INF
-/lib-1-6-api-1-3-language-1-6.kotlin_module: Module was compiled 
-with an incompatible version of Kotlin. The binary version of its 
+/lib-1-6-api-1-3-language-1-6.kotlin_module: Module was compiled
+with an incompatible version of Kotlin. The binary version of its
 metadata is 1.6.0, expected version is 1.1.16.
 ```
 
@@ -128,12 +129,12 @@ BUILD SUCCESSFUL in 1s
 As a library author wanting to use Kotlin 1.6, my current understanding is that:
 
 - if your users are compiling against your lib with Kotlin 1.n
-  
+
   - `languageVersion` should be set to n+1: `languageVersion=1.(n+1)`
   - `apiVersion` doesn't really matter as `kotlin-stdlib` should be resolved to `1.6`, which is backward compatible with any previous `kotlin-stdlib`
 
 - if your users run your lib with a fixed `kotlin-stdlib:1.p` at runtime ([like Gradle](https://blog.mbonnin.net/use-kotlin-15-in-your-gradle-plugins))
-  
+
   - `apiVersion` should be set to n: `apiVersion=1.p`
 
 If you bump to `1.6` without configuring anything else, your consumers will have to update to Kotlin 1.5.
@@ -144,6 +145,6 @@ If you bump to `1.6` without configuring anything else, your consumers will have
 
 The same is still true. If you bump to Kotlin 1.7 in your lib, your consumers are forced into compiling with 1.6 by default (including for native).
 
-You can keep compatibility with the 1.5 compiler with `languageVersion="1.5"` but that will only go so far because `kotlin-stdlib` itself contains 1.7 metadata so unless you're going to great length to *not* expose `kotlin-stdlib:1.7` transitively, setting the languageVersion is most likely not going to change much.
+You can keep compatibility with the 1.5 compiler with `languageVersion="1.5"` but that will only go so far because `kotlin-stdlib` itself contains 1.7 metadata so unless you're going to great length to _not_ expose `kotlin-stdlib:1.7` transitively, setting the languageVersion is most likely not going to change much.
 
 **Picture**: [way down](https://flic.kr/p/ogzxmg) by [Romain L](https://www.flickr.com/photos/mr-l/)

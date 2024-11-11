@@ -9,10 +9,10 @@ image: '~/assets/images/2017-05-19_Android-myth-2-2--config-change-and-restoring
 
 It's something every Android developer bumps into at some point.
 
-* You write your activity. Everything goes well.
-* The device orientation changes.
-* The activity is destroyed and re-created.
-* You lose all your state :-(.
+- You write your activity. Everything goes well.
+- The device orientation changes.
+- The activity is destroyed and re-created.
+- You lose all your state :-(.
 
 That sucks !
 
@@ -20,9 +20,9 @@ That sucks !
 
 There's [a lot of documentation](https://developer.android.com/guide/topics/resources/runtime-changes.html) about how to handle this. Usually the recommendation is to save the state somewhere:
 
-* in the Bundle.
-* in retained fragments.
-* in [Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) `LiveData` objects as announced recently at Google IO
+- in the Bundle.
+- in retained fragments.
+- in [Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) `LiveData` objects as announced recently at Google IO
 
 These are indeed solutions but theyrequires significant effort. Serializing everything to a Bundle is especially cumbersome. Keeping retained objects is a bit better but forces you to keep that in mind all the time and handle `Loaders` or other objects which lifecycle you have to handle too.
 
@@ -34,15 +34,15 @@ Your activity won't be restarted and you can continue your business as usual. Th
 
 ### The objections
 
-* "you cannot use orientation-dependant resources"
+- "you cannot use orientation-dependant resources"
 
 While technically true, I find this to actually be an advantage. Having one XML layout for landscape and another one for portrait duplicates a lot of code. It duplicates some XML code obviously but most likely some java code too. Changing a resource id in one will require the same resource id to be used in the other one without compile time safety. This is super dangerous.
 
-* "you still need to handle configuration changes or else your users are going to be super upset"
+- "you still need to handle configuration changes or else your users are going to be super upset"
 
 I'm a bit confused by this one. Most of the usual config changes can be handled by just re-requesting a layout. The only alternate resources I use are for strings. So changing the phone language will restart the activity but I believe it does not happen that often.
 
-* "There are some cases where progress is critical and you can't afford to lose it for any reason"
+- "There are some cases where progress is critical and you can't afford to lose it for any reason"
 
 This is completely true for a given category of apps. Productivity apps are an example, you don't want to lose all your precious notes. Games are another example where you don't want to restart on level 1 every time. But while this is true, this is also completely unrelated to configuration changes. These kind of apps usually save their progress in the cloud or on a local database, outside the whole Android lifecycle mambo.
 

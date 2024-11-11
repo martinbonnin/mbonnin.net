@@ -13,13 +13,13 @@ I'll pass quickly over the process of setting up a Sonatype Account and uploadin
 
 Instead, this article focuses on all the little different steps needed for publication like:
 
-* Configuring repositories
-* Creating publications
-* Configuring sources \& javadoc
-* Configuring signatures
-* Avoiding split repositories
-* Publishing artifacts from different CI jobs.
-* Automating the release process
+- Configuring repositories
+- Creating publications
+- Configuring sources \& javadoc
+- Configuring signatures
+- Avoiding split repositories
+- Publishing artifacts from different CI jobs.
+- Automating the release process
 
 Some are optional, some are mandatory. Depending whether you want to publish JVM libraries, Android, Gradle plugins, multiplatform libraries or maybe something else, the use cases can be a little bit different and the configuration matrix quickly becomes huge.
 
@@ -55,8 +55,8 @@ MavenCentral is included in a lot of builds already so it makes sense to upload 
 ```shell
 curl -v -u $USERNAME:$PASSWORD --upload-file artifact-1.0.jar http://localhost:8081/nexus/service/local/staging/deploymaven2/com/mycompany/artifact/1.0/artifact-1.0.jar`
 ```
-This is all the [maven-publish](https://docs.gradle.org/current/userguide/publishing_maven.html)[plugin](https://docs.gradle.org/current/userguide/publishing_maven.html) does behind the scenes. You still need to tell it where to upload as you usually don't want to upload to localhost:
 
+This is all the [maven-publish](https://docs.gradle.org/current/userguide/publishing_maven.html)[plugin](https://docs.gradle.org/current/userguide/publishing_maven.html) does behind the scenes. You still need to tell it where to upload as you usually don't want to upload to localhost:
 
 ```kotlin
 publishing {
@@ -76,7 +76,7 @@ publishing {
       }
 
       maven {
-        // Sonatype also hosts SNAPSHOTs for you 
+        // Sonatype also hosts SNAPSHOTs for you
         // If you ever try to upload a SNPASHOT to OSSStaging, you will get an error
         name = "OSSSnapshots"
         // If you signed up on Sonatype recently, you might have a url like
@@ -149,7 +149,7 @@ It's not a lot of code but some plugins like `com.vanniktech.maven.publish` auto
 
 #### Avoiding split repositories
 
-**Heads up:** *This is where things become Sonatype specific. While the maven file layout and signatures apply to any maven repository/publication, interacting with a* [*Nexus repository*](https://www.sonatype.com/products/repository-pro)*such as the one powering MavenCentral is 100% Sonatype/MavenCentral specific. (In other terms, Maven != MavenCentral)*
+**Heads up:** _This is where things become Sonatype specific. While the maven file layout and signatures apply to any maven repository/publication, interacting with a_ [_Nexus repository_](https://www.sonatype.com/products/repository-pro)_such as the one powering MavenCentral is 100% Sonatype/MavenCentral specific. (In other terms, Maven != MavenCentral)_
 
 If you've done everything until here, you can now upload your artifacts to OSS Staging:
 
@@ -165,7 +165,7 @@ This is what I call split staging repository and happens because the sonatype se
 To mitigate this, the `io.github.gradle-nexus.publish-plugin` creates an explicit staging repository id where to upload your artifacts and POST your artifact to that specific url, making sure the repository is always used:
 
 ```
-# Will upload to 
+# Will upload to
 "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/${repositoryId}/"
 # instead of
 "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -199,9 +199,8 @@ As described above, this process will fail if you have multiple open repositorie
 
 Over time, multiple plugins were built to help with the above. I tried to list them, hopefully not forgetting any:
 
-
 | Id                                             | Github                                 | Depends on                                   | Publishes            | Configures Repositories | Adds sources | Adds javadoc | Adds signatures | Single Staging Repo                                                                                          | Close And Release | Description                                                                     |
-|------------------------------------------------|----------------------------------------|----------------------------------------------|----------------------|-------------------------|--------------|--------------|-----------------|--------------------------------------------------------------------------------------------------------------|-------------------|---------------------------------------------------------------------------------|
+| ---------------------------------------------- | -------------------------------------- | -------------------------------------------- | -------------------- | ----------------------- | ------------ | ------------ | --------------- | ------------------------------------------------------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------------------- |
 | `maven-publish`                                | builtin                                | nothing                                      | yes                  | no                      | no           | no           | no              | no                                                                                                           | no                | The new builtin gradle solution for publishing to a maven repository            |
 | `io.github.gradle-nexus.publish-plugin`        | gradle-nexus/publish-plugin            | `maven-publish`                              | with `maven-publish` | yes                     | no           | no           | no              | yes                                                                                                          | yes               | The merge of `io.codearte.nexus-staging` and `de.marcphilipp.nexus-publish`     |
 | `com.vanniktech.maven.publish`                 | vanniktech/gradle-maven-publish-plugin | `maven-publish`, `dokka`                     | with `maven-publish` | yes                     | yes          | yes          | yes             | yes ([if a staging repo already exists](https://github.com/vanniktech/gradle-maven-publish-plugin/pull/200)) | yes               | Configures Dokka and the different publications for Android and other projects. |
@@ -220,7 +219,7 @@ All in all, you will most likely always need `maven-publish` as it is the base p
 
 That's it! It's still a lot of details and I'm hoping this process could be improved. For an example removing the requirement for javadocs, making closeAndRelease only one step or standardizing the signature process. But there's already been a lot of improvements over the past months and since the adoption of `maven-publish`. There's also more and more resources online so now is a good time to start publishing your libs!
 
-💙 *Many thanks to* [*Romain Boisselle*](https://twitter.com/romainbsl)*and* [*Louis CAD*](https://twitter.com/louis_cad?lang=en)*for their advices and proofreading*💙
+💙 _Many thanks to_ [_Romain Boisselle_](https://twitter.com/romainbsl)_and_ [_Louis CAD_](https://twitter.com/louis_cad?lang=en)*for their advices and proofreading*💙
 
 By [Martin Bonnin](https://medium.com/@mbonnin) on [June 21, 2021](https://medium.com/p/a2f04bba6f13).
 

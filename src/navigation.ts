@@ -1,10 +1,10 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getBlogPermalink } from './utils/permalinks';
 
 export const headerData = {
   links: [
     {
       text: 'Blog',
-      href: getBlogPermalink()
+      href: getBlogPermalink(),
     },
     {
       text: 'About',
@@ -19,8 +19,9 @@ export const headerData = {
 };
 
 export const footerData = {
+  links: [],
   secondaryLinks: [
-    { text: 'Contact', href: "mailto:webmaster@mbonnin.net" },
-    { text: 'Public key', href: "/public_key" },
+    { text: 'Contact', href: 'mailto:webmaster@mbonnin.net' },
+    { text: 'Public key', href: '/public_key' },
   ],
 };
