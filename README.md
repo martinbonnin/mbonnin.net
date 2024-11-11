@@ -1,9 +1,14 @@
-You need python3 installed.
-To generate:
+Dev:
 
 ```
-./scripts/generate.py skeleton out
-cd out
-python3 -m http.server 8080 
+npm ci
+npm run dev
 ```
 
+Deploy:
+
+```
+npm ci
+npm run build
+firebase deploy --only hosting
+```

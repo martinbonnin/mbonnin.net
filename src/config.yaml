@@ -1,0 +1,54 @@
+site:
+  name: mbonnin.net
+  site: 'http://localhost:4321/'
+  base: '/'
+  trailingSlash: false
+
+  googleSiteVerificationId: ''
+
+# Default SEO metadata
+metadata:
+  title:
+    default: mbonnin.net
+    template: '%s'
+  description: "hiya 👋"
+  robots:
+    index: true
+    follow: true
+
+i18n:
+  language: en
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 10
+
+    post:
+      isEnabled: true
+      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      robots:
+        index: true
+
+    category:
+      isEnabled: false
+
+    tag:
+      isEnabled: false
+
+    isRelatedPostsEnabled: false
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # or "G-XXXXXXXXXX"
+
+ui:
+  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"

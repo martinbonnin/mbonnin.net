@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>favicon</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#FFFF00" cx="8" cy="8" r="8"></circle>
+        <polyline id="Path" stroke="#179000" points="0 8 4.54908961 8 4.54908961 3.55068832 10.0760705 8 16 8"></polyline>
+        <polyline id="Path-2" stroke="#179000" points="4.54908961 8 4.54908961 12.5290446 10.0760705 8"></polyline>
+        <line x1="11.5472448" y1="8" x2="11.5472448" y2="2.9984156" id="Path-3" stroke="#179000"></line>
+        <path d="M11.5472448,13.0346288 L11.5472448,8 L11.5472448,13.0346288 Z" id="Path-3" stroke="#179000"></path>
+    </g>
+</svg>

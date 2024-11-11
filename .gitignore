@@ -1,4 +1,17 @@
-out
-/site
-/ssl
-*.pyc
+.firebase
+.firebaserc
+firebase.json
+
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# macOS-specific files
+.DS_Store
+
+.astro
+.idea
+credentials.json
