@@ -1,6 +1,6 @@
 site:
   name: mbonnin.net
-  site: 'http://localhost:4321/'
+  site: 'https://mbonnin.net/'
   base: '/'
   trailingSlash: false
 
