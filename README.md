@@ -18,5 +18,10 @@ Features:
 - everything is markdown
 - image resizing
 - RSS feed
-- (broken) mobile UI
+- mobile UI
+- dark mode
 
+Missing:
+
+- anchor links
+- admonitions
