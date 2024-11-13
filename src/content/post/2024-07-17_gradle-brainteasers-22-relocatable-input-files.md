@@ -107,10 +107,10 @@ Using `ConfigurableFileCollection`, we get all the information about our files, 
 
 It's a very convenient API that non only allows resolving dependencies (`Configurations` are `FileCollections`) and filtering (`FileTree.include()`) and do so in a [lazy](https://docs.gradle.org/current/userguide/lazy_configuration.html) way but most importantly, they make it possible to model input files without breaking cache relocation! SUCCESS!
 
-!\[\](https://cdn.hashnode.com/res/hashnode/image/upload/v1721037893936/f23ea5e9-1bd2-4b6e-8d08-13312133e60b.webp align="center")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1721037893936/f23ea5e9-1bd2-4b6e-8d08-13312133e60b.webp)
 
 Looking ahead, [Gratatouille](https://github.com/GradleUp/gratatouille) will not allow simple \`File\` inputs to model the fact that task inputs also have a name (even if empty). Hopefully that will make the task of writing Gradle tasks easier!
 
 ---
 
-_Brainteasers pictures from _[_mtairymd_](https://www.instructables.com/member/mtairymd/)_ on _[_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
+Brainteasers pictures from _[_mtairymd_](https://www.instructables.com/member/mtairymd/)_ on [_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
