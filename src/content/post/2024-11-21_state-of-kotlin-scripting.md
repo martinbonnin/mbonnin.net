@@ -5,7 +5,7 @@ publishDate: 2024-21-17T08:41:15.615Z
 image: '~/assets/images/2024-11-21_state-of-kotlin-scripting/pen.jpg'
 ---
 
-Jetbrains recently published a blog post about [the current state of Kotlin scripting](https://blog.jetbrains.com/kotlin/2024/11/state-of-kotlin-scripting-2024/).
+JetBrains recently published a blog post about [the current state of Kotlin scripting](https://blog.jetbrains.com/kotlin/2024/11/state-of-kotlin-scripting-2024/).
 
 This sparked a series of reactions that Kotlin scripting was ["not recommended"](https://x.com/androiddevnotes/status/1859061750567407652), ["dead"](https://www.reddit.com/r/Kotlin/comments/1gv4j8j/comment/ly06lyj/) or just [general questions](https://bsky.app/profile/gakisstylianos.bsky.social/post/3lbd4jvmycc2i) about what the post really meant for the future of Kotlin scripting.
 
