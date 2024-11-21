@@ -88,9 +88,13 @@ CSVReader(File(args[0]).bufferedReader()).minBy {
 }
 ```
 
-Good luck doing the same in shell... 
+Good luck doing all of that in shell...
 
-`*.main.kts` is a simple, efficient to run Kotlin with just a simple file today.
+Oh! And did I mention you can debug your scripts?
+
+![debug.png](../../assets/images/2024-11-21_state-of-kotlin-scripting/debug.png)
+
+Modern syntax, autocomplete, debugging, huge ecosystem with JavaDoc accessible from your IDE and more, using `*.main.kts` is a simple, efficient to run Kotlin with just a simple file today.
 
 # `*.main.kts` can replace your shell scripts
 
