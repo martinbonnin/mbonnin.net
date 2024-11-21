@@ -17,7 +17,7 @@ I believe the future of Kotlin scripting is bright. Despite some of the initial 
 
 I myself wrote about the [Kotlin scripting back in May 2020](https://mbonnin.medium.com/may-2020-the-state-of-kotlin-scripting-99cb6cc57db1). To this day, this is one of my most read blog post so this felt like the perfect opportunity to make a small refresher.
 
-Let's see how you can use `*.main.kts` files today, in November 2024! 
+Let's see how you can use `*.main.kts` today, in November 2024! 
 
 And what's in stock for the future!
 
