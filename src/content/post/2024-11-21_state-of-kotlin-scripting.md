@@ -5,7 +5,7 @@ publishDate: 2024-21-17T08:41:15.615Z
 image: '~/assets/images/2024-11-21_state-of-kotlin-scripting/pen.jpg'
 ---
 
-Jetbrains recently published a blog post about [the current state of Kotlin multiplatform](https://blog.jetbrains.com/kotlin/2024/11/state-of-kotlin-scripting-2024/).
+Jetbrains recently published a blog post about [the current state of Kotlin scripting](https://blog.jetbrains.com/kotlin/2024/11/state-of-kotlin-scripting-2024/).
 
 This sparked a series of reactions that Kotlin scripting was ["not recommended"](https://x.com/androiddevnotes/status/1859061750567407652), ["dead"](https://www.reddit.com/r/Kotlin/comments/1gv4j8j/comment/ly06lyj/) or just [general questions](https://bsky.app/profile/gakisstylianos.bsky.social/post/3lbd4jvmycc2i) about what the post really meant for the future of Kotlin scripting.
 
@@ -98,7 +98,7 @@ helpful for simple automation tasks.
 We have plans to extend its functionality and streamline IDE support.
 ```
 
-[GitHub actions supports Kotlin scripting out of the box](https://github.com/actions/runner-images/issues/3687) making them perfect candidates for one-off tasks in CI. Kotlin scripts can even help you write [typesafe GitHub actions](https://github.com/typesafegithub/github-workflows-kt/)!
+[GitHub actions supports Kotlin scripting out of the box](https://github.com/actions/runner-images/issues/3687) making them perfect candidates for one-off tasks in CI. Kotlin scripts can even help you write [typesafe GitHub actions workflows](https://github.com/typesafegithub/github-workflows-kt/)!
 
 Every time you want to write a bash script (or zsh? beware the incompatibilities!), I'd say it can be written in Kotlin and leverage a modern language with sensible syntax and escaping rules, a huge ecosystem of libraries and state of the art IDE support. Not to forget, one less language to learn and remember!
 
