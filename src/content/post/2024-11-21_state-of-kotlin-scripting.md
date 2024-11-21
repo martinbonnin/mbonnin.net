@@ -72,20 +72,22 @@ What's more, the IDE can help your brain find and remember Kotlin patterns much 
 
 ![autocomplete.png](../../assets/images/2024-11-21_state-of-kotlin-scripting/autocomplete.png)
 
-Want to parse a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) file? No problem either, the [JVM ecosystem has everything](https://central.sonatype.com/artifact/com.opencsv/opencsv) for you:
+Want to parse a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) file? No problem either, the [JVM ecosystem has everything](https://central.sonatype.com/artifact/org.jetbrains.kotlinx/dataframe/0.14.1/overview) for you:
 
 ```kotlin
 #!/usr/bin/env kotlin
 
-@file:DependsOn("com.opencsv:opencsv:5.9")
+@file:DependsOn("org.jetbrains.kotlinx:dataframe:0.14.1")
 
-import com.opencsv.CSVReader
-import java.io.File
+import org.jetbrains.kotlinx.dataframe.DataFrame
+// ...
 
-// Find the minimum value of column #1
-CSVReader(File(args[0]).bufferedReader()).minBy {
-  it[1].toInt()
-}
+val df = DataFrame.read("toto.csv")
+
+val price by column<Int>()
+val name by column<String>()
+
+val cheapestProduct = df.minBy(price)[name]
 ```
 
 Good luck doing all of that in shell...
