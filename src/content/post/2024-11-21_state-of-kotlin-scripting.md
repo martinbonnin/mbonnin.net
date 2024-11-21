@@ -19,7 +19,7 @@ I wrote about the [state of Kotlin scripting in May 2020](https://mbonnin.medium
 
 # What are `*.main.kts` scripts?
 
-[`*.main.kts`](https://github.com/Kotlin/kotlin-script-examples/blob/master/jvm/main-kts/MainKts.md) files are a first-party solution to run Kotlin code without having to use a full build system such as Amper/Gradle/Maven. 
+[`*.main.kts`](https://github.com/Kotlin/kotlin-script-examples/blob/master/jvm/main-kts/MainKts.md) files are a first-party solution to run Kotlin code without having to use a full build system such as Amper/Gradle/Maven.
 
 Just create a `hello.main.kts` file:
 
@@ -30,6 +30,7 @@ println("Hello ${args[0]}!")
 ```
 
 Make it executable and run it:
+
 ```
 $ chmod +x hello.main.kts
 $ ./hello.main.kts world
@@ -42,20 +43,21 @@ Pretty cool right? If your file ends with `.main.kts`, `kotlin` knows that it's 
 - IDE support
 - Dependencies: `@file:DependsOn` and `@file:Repository`
 
-If you don't want to use a [shebang line](https://en.wikipedia.org/wiki/Shebang_(Unix)), you can also call your script explicitly:
+If you don't want to use a [shebang line](<https://en.wikipedia.org/wiki/Shebang_(Unix)>), you can also call your script explicitly:
 
 ```
 $ kotlin hello.main.kts world
 Hello world!
 ```
+
 Want to replace text using a regex in some of your files? Use your favorite Kotlin constructs:
 
 ```kotlin
 #!/usr/bin/env kotlin
 
-File(args[0]).walk().filter { 
+File(args[0]).walk().filter {
   it.isFile && it.name.startsWith("MyPrefix")
-}.forEach { 
+}.forEach {
   it.writeText(it.readText().replace(myRegex, myReplacement))
 }
 ```
@@ -73,7 +75,7 @@ Want to parse a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) file
 
 @file:DependsOn("com.opencsv:opencsv:5.9")
 
-import com.opencsv.CSVReader 
+import com.opencsv.CSVReader
 import java.io.File
 
 // Find the minimum value of column #1
@@ -91,8 +93,8 @@ For the last 4 years or so, I've been using `*.main.kts` scripts [quite happily]
 JetBrains is planning to improve `*.main.kts` files. From the [aforementioned blog post](https://blog.jetbrains.com/kotlin/2024/11/state-of-kotlin-scripting-2024/#main.kts):
 
 ```
-We will continue to develop the `.main.kts` script type, which is already 
-helpful for simple automation tasks. 
+We will continue to develop the `.main.kts` script type, which is already
+helpful for simple automation tasks.
 We have plans to extend its functionality and streamline IDE support.
 ```
 
@@ -107,29 +109,30 @@ For the sake of completeness, and despite being a huge fan, I'll mention the cur
 1. Initial compile time may take several seconds (subsequent runs are faster).
 2. [Including scripts from other scripts has issues](https://youtrack.jetbrains.com/issue/KT-42101).
 3. [The resolver does not understand Gradle metadata](https://youtrack.jetbrains.com/issue/KT-42775/Kotlin-Scripts-Gradle-metadata-support-for-dependencies-resolution).
-4. You have to manually reload the dependencies when adding/removing them. 
+4. You have to manually reload the dependencies when adding/removing them.
 
-I'm quite happy with the kotlin vs shell tradeoff at the moment and the lost time in compile time is more than made up with Kotlin syntax and IDE support. 
+I'm quite happy with the kotlin vs shell tradeoff at the moment and the lost time in compile time is more than made up with Kotlin syntax and IDE support.
 
 Can this be improved? Sure. But the value proposition of `*.main.kts` scripts is already quite good in my opinion.
 
 # So what is the post about?
 
-Alright so if `*.main.kts` is great and there are plans to make it even better, if `build.gradle.kts` and Notebooks are here to stay, then what is it all about? 
+Alright so if `*.main.kts` is great and there are plans to make it even better, if `build.gradle.kts` and Notebooks are here to stay, then what is it all about?
 
 If I'm reading right and trying to summarize, it's mostly about:
-1. REPL is going away, replaced by scratch files and Notebooks.
-   * This includes [`Tools > Kotlin > Kotlin REPL` in IntelliJ](https://youtrack.jetbrains.com/issue/KTIJ-30898/Kotlin-REPL-item-not-visible-in-Tools-Kotlin-menu-when-K2-mode-is-enabled#focus=Comments-27-11098359.0-0) as well as the interactive `kotlinc` [REPL mode](https://www.jetbrains.com/help/idea/kotlin-repl.html#kotlin-repl).
-   * Scratch files are not working yet in K2 mode, making the timing of the post unfortunate but [they will be supported in the future](https://youtrack.jetbrains.com/issue/KTIJ-30385)).
-3. `JSR-223 support`, `KotlinScriptMojo`, `kotlin-scripting-ide-services` are also going away.
-4. [Custom scripting APIs](https://kotlinlang.org/docs/custom-script-deps-tutorial.html) are staying experimental. Those are the APIs powering the `build.gradle.kts` files.
 
-While the interactive Kotlin REPL console could be handy, I have always preferred scratch files for full IDE support so I don't mind too much there. 
+1. REPL is going away, replaced by scratch files and Notebooks.
+   - This includes [`Tools > Kotlin > Kotlin REPL` in IntelliJ](https://youtrack.jetbrains.com/issue/KTIJ-30898/Kotlin-REPL-item-not-visible-in-Tools-Kotlin-menu-when-K2-mode-is-enabled#focus=Comments-27-11098359.0-0) as well as the interactive `kotlinc` [REPL mode](https://www.jetbrains.com/help/idea/kotlin-repl.html#kotlin-repl).
+   - Scratch files are not working yet in K2 mode, making the timing of the post unfortunate but [they will be supported in the future](https://youtrack.jetbrains.com/issue/KTIJ-30385)).
+2. `JSR-223 support`, `KotlinScriptMojo`, `kotlin-scripting-ide-services` are also going away.
+3. [Custom scripting APIs](https://kotlinlang.org/docs/custom-script-deps-tutorial.html) are staying experimental. Those are the APIs powering the `build.gradle.kts` files.
+
+While the interactive Kotlin REPL console could be handy, I have always preferred scratch files for full IDE support so I don't mind too much there.
 
 I have never used `JSR-223 support`, `KotlinScriptMojo`, `kotlin-scripting-ide-services` and won't be missing them.
 
 Custom scripting APIs are unchanged. For all matters, stable features such as `build.gradle.kts` can be built on top of experimental APIs. KSP is another great example where experimental APIs allow faster innovation while another layer provides stability.
 
-Most importantly, `*.main.kts`, `build.gradle.kts` and Notebooks are going to get more focus, which is in my opinion a great news. 
+Most importantly, `*.main.kts`, `build.gradle.kts` and Notebooks are going to get more focus, which is in my opinion a great news.
 
 I'm looking forward to the next 25 years of Kotlin scripting!

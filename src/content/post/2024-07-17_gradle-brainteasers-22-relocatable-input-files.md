@@ -113,4 +113,4 @@ Looking ahead, [Gratatouille](https://github.com/GradleUp/gratatouille) will not
 
 ---
 
-Brainteasers pictures from _[_mtairymd_](https://www.instructables.com/member/mtairymd/)_ on [_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
+Brainteasers pictures from _[\_mtairymd_](https://www.instructables.com/member/mtairymd/)_ on [\_Instructables_](https://www.instructables.com/Metal-Wire-Puzzle-Solutions/)
