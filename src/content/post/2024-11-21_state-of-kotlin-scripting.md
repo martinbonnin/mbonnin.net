@@ -96,7 +96,7 @@ Good luck doing the same in shell...
 
 For the last 4 years or so, I've been using `*.main.kts` scripts [quite happily](https://github.com/martinbonnin/kscripts). One of my favorite scripts [updates my SIEVE email spam filters](https://gist.github.com/martinbonnin/b24d4d536952d6083139ea04b63cf4b4) from a GitHub action. Goodbye spammers 👋
 
-I use it at Apollo to [run our benchmarks in Firebase test labs](https://github.com/apollographql/apollo-kotlin/blob/fc9e9412ec7b084c6d03ecc14002d6748ed93231/scripts/run-benchmarks.main.kts) or [keep the Kotlin shadow branch in sync](https://github.com/apollographql/apollo-kotlin/blob/fc9e9412ec7b084c6d03ecc14002d6748ed93231/scripts/bump-kotlin-nightlies.main.kts).
+I use Kotlin scripts at Apollo to [run our benchmarks in Firebase test labs](https://github.com/apollographql/apollo-kotlin/blob/fc9e9412ec7b084c6d03ecc14002d6748ed93231/scripts/run-benchmarks.main.kts) or [keep the Kotlin shadow branch in sync](https://github.com/apollographql/apollo-kotlin/blob/fc9e9412ec7b084c6d03ecc14002d6748ed93231/scripts/bump-kotlin-nightlies.main.kts).
 
 [GitHub actions supports Kotlin scripting out of the box](https://github.com/actions/runner-images/issues/3687) making them perfect candidates for one-off tasks in CI. Kotlin scripts can even help you write [typesafe GitHub actions workflows](https://github.com/typesafegithub/github-workflows-kt/)!
 
@@ -108,7 +108,9 @@ helpful for simple automation tasks.
 We have plans to extend its functionality and streamline IDE support.
 ```
 
-Every time you want to write a bash script (or zsh? beware the incompatibilities!), I'd say it can be written in Kotlin and leverage a modern language with sensible syntax and escaping rules, a huge ecosystem of libraries and state of the art IDE support. Not to forget, one less language to learn and remember!
+Every time I want to write a bash script (or zsh? beware the incompatibilities!), I'd say it can be written in Kotlin and leverage a modern language with sensible syntax and escaping rules, a huge ecosystem of libraries and state of the art IDE support. 
+
+Not to forget, one less language to learn and remember!
 
 # What's missing in `*.main.kts`?
 
