@@ -5,6 +5,8 @@ publishDate: 2020-05-25T00:00:00Z
 image: '~/assets/images/2020-05-25_May-2020--The-state-of-Kotlin-Scripting/1*anaWfkE-LuvgmEabzQgDOQ.jpeg'
 ---
 
+## Edit: For a newer version of this blog post, read https://mbonnin.net/2024-11-21_state-of-kotlin-scripting/
+
 I am a huge Kotlin fan. I'm using Kotlin daily for Android development, sometimes a little bit of macOS and occasionally on the backend to power a small API. Lately, I started replacing my Bash and Python scripts with Kotlin and I'm loving Kotlin even more!
 
 I won't go into the many advantages of using the same language for everything and avoiding context changes or the great tooling that comes with a strongly typed language like Kotlin. If you ever had to read a perl script written by someone else, you'll know what I mean. Instead, I'll try to explain where Kotlin scripting is coming from, what's possible today and what still remains to be done.
