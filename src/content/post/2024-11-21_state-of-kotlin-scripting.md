@@ -9,7 +9,7 @@ Jetbrains recently published a blog post about [the current state of Kotlin mult
 
 This sparked a series of reactions that Kotlin scripting was ["not recommended"](https://x.com/androiddevnotes/status/1859061750567407652), ["dead"](https://www.reddit.com/r/Kotlin/comments/1gv4j8j/comment/ly06lyj/) or just [general questions](https://bsky.app/profile/gakisstylianos.bsky.social/post/3lbd4jvmycc2i) about what the post really meant for the future of Kotlin scripting.
 
-I believe the future of Kotlin is bright. Despite some of the initial impressions, I believe (or want to believe?) the post is really about shifting focus to where Kotlin scripting really matters:
+I believe the future of Kotlin is bright. Despite some of the initial impressions, I believe the post is really about shifting focus to where Kotlin scripting really matters:
 
 - `*.main.kts`
 - `build.gradle.kts`
@@ -115,7 +115,7 @@ Can this be improved? Sure. But the value proposition of `*.main.kts` scripts is
 
 # So what is the post about?
 
-Alright so if `*.main.kts` is great and there are plans to make it even better. If `build.gradle.kts` and Notebooks are here to stay, then what is it all about? 
+Alright so if `*.main.kts` is great and there are plans to make it even better, if `build.gradle.kts` and Notebooks are here to stay, then what is it all about? 
 
 If I'm reading right and trying to summarize, it's mostly about:
 1. REPL is going away, replaced by scratch files and Notebooks.
