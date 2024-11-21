@@ -123,7 +123,7 @@ If I'm reading right and trying to summarize, it's mostly about:
 
 1. REPL is going away, replaced by scratch files and Notebooks.
    - This includes [`Tools > Kotlin > Kotlin REPL` in IntelliJ](https://youtrack.jetbrains.com/issue/KTIJ-30898/Kotlin-REPL-item-not-visible-in-Tools-Kotlin-menu-when-K2-mode-is-enabled#focus=Comments-27-11098359.0-0) as well as the interactive `kotlinc` [REPL mode](https://www.jetbrains.com/help/idea/kotlin-repl.html#kotlin-repl).
-   - Scratch files are not working yet in K2 mode, making the timing of the post unfortunate but [they will be supported in the future](https://youtrack.jetbrains.com/issue/KTIJ-30385)).
+   - Scratch files are not working yet in K2 mode, making the timing of the post unfortunate but [they will be supported in the future](https://youtrack.jetbrains.com/issue/KTIJ-30385).
 2. `JSR-223 support`, `KotlinScriptMojo`, `kotlin-scripting-ide-services` are also going away.
 3. [Custom scripting APIs](https://kotlinlang.org/docs/custom-script-deps-tutorial.html) are staying experimental. Those are the APIs powering the `build.gradle.kts` files.
 
