@@ -126,7 +126,7 @@ For the sake of completeness, and despite being a huge fan, I'll mention the cur
 2. [Including scripts from other scripts has issues](https://youtrack.jetbrains.com/issue/KT-42101).
 3. [The resolver does not understand Gradle metadata](https://youtrack.jetbrains.com/issue/KT-42775/Kotlin-Scripts-Gradle-metadata-support-for-dependencies-resolution).
 4. You have to manually reload the dependencies when adding/removing them.
-5. Process redirection is a bit awkward. 
+5. Process redirection and signal handling is a bit awkward. 
 
 I'm quite happy with the kotlin vs shell tradeoff at the moment and the lost time in compile time and writing `ProcessBuilders` is more than made up with Kotlin syntax and IDE support.
 
