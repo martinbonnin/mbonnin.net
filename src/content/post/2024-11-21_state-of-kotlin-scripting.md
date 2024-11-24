@@ -1,7 +1,7 @@
 ---
 title: 'November 2024: the state of Kotlin scripting'
 excerpt: '*.main.kts files can replace most of your shell scripts'
-publishDate: 2024-21-17T08:41:15.615Z
+publishDate: 2024-11-21T08:41:15.615Z
 image: '~/assets/images/2024-11-21_state-of-kotlin-scripting/pen.jpg'
 ---
 
