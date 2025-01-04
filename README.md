@@ -25,3 +25,4 @@ Missing:
 
 - anchor links
 - admonitions
+- table of contents
