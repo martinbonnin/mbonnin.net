@@ -27,3 +27,4 @@ Missing:
 - admonitions
 - site map (left column)
 - table of contents (right column)
+- social card previews
