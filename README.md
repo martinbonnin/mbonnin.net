@@ -25,4 +25,5 @@ Missing:
 
 - anchor links
 - admonitions
-- table of contents
+- site map (left column)
+- table of contents (right column)
