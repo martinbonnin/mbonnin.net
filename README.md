@@ -20,6 +20,7 @@ Features:
 - RSS feed
 - mobile UI
 - dark mode
+- "edit on GitHub"
 
 Missing:
 
