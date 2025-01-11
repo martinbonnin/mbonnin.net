@@ -15,7 +15,7 @@ firebase deploy --only hosting
 
 Features:
 
-- everything is markdown
+- everything is markdown with codeblocks support
 - image resizing
 - RSS feed
 - mobile UI
