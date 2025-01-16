@@ -110,9 +110,9 @@ Content-Type: application/graphql-response+json
 }
 ```
 
-Because the Content-Type is now `application/graphql-response+json`, the frontend can now safely parse the `data` and `errors` parts. And have the warm fuzzy feeling that their response is indeed coming from their origin GraphQL server. The server can use the HTTP status code of their liking. No more memes!
+Because the Content-Type is now `application/graphql-response+json`, the frontend can now safely parse the `data` and `errors` parts. And have the warm fuzzy feeling that their response is indeed coming from their origin GraphQL server. No more memes!
 
-Because your server can now use any HTTP status code, it can reuse all the existing tooling and internet infrastructure while still allowing your clients to make informed decisions. It's win-win 🙌
+Because your server can now use relevant HTTP status codes, it can reuse all the existing tooling and internet infrastructure while still allowing your clients to make informed decisions. It's win-win 🙌
 
 ![](../../assets/images/2025-01-13_graphql-errors/success.jpg)
 
