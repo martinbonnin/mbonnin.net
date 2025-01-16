@@ -112,7 +112,7 @@ Content-Type: application/graphql-response+json
 
 Because the Content-Type is now `application/graphql-response+json`, the frontend can now safely parse the `data` and `errors` parts. And have the warm fuzzy feeling that their response is indeed coming from their origin GraphQL server. No more memes!
 
-Because your server can now use relevant HTTP status codes, it can reuse all the existing tooling and internet infrastructure while still allowing your clients to make informed decisions. It's win-win 🙌
+Because your server can now use [relevant HTTP status codes](https://graphql.github.io/graphql-over-http/draft/#sec-application-graphql-response-json), it can reuse all the existing tooling and internet infrastructure while still allowing your clients to make informed decisions. It's win-win 🙌
 
 ![](../../assets/images/2025-01-13_graphql-errors/success.jpg)
 
@@ -127,3 +127,5 @@ If your server/client doesn't support it, open an issue, it's high time to fix t
 In a future post, I'll talk about partial error handling. This is another area where best practices are evolving and where the new year brings a couple welcome improvements.
 
 Stay tuned and happy 2025!
+
+_PS: Many thanks to [benjie](https://github.com/benjie) and the [GraphQL over HTTP working group](https://github.com/graphql/graphql-over-http/) for reviewing this post_ 
