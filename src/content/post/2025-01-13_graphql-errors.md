@@ -128,4 +128,6 @@ In a future post, I'll talk about partial error handling. This is another area w
 
 Stay tuned and happy 2025!
 
+---
+
 _PS: Many thanks to [benjie](https://github.com/benjie) and the [GraphQL over HTTP working group](https://github.com/graphql/graphql-over-http/) for reviewing this post_ 
