@@ -17,7 +17,7 @@ I believe the future of Kotlin scripting is bright. Despite some of the initial 
 
 I myself wrote about [Kotlin scripting back in May 2020](https://mbonnin.medium.com/may-2020-the-state-of-kotlin-scripting-99cb6cc57db1). To this day, this is one of my most read blog post so this felt like the perfect opportunity to make a small refresher.
 
-Let's see how you can use `*.main.kts` today, in November 2024! 
+Let's see how you can use `*.main.kts` today, in November 2024!
 
 And what's in stock for the future!
 
@@ -114,7 +114,7 @@ helpful for simple automation tasks.
 We have plans to extend its functionality and streamline IDE support.
 ```
 
-Every time I want to write a bash script (or zsh? beware the incompatibilities!), I'd say it can be written in Kotlin and leverage a modern language with sensible syntax and escaping rules, a huge ecosystem of libraries and state of the art IDE support. 
+Every time I want to write a bash script (or zsh? beware the incompatibilities!), I'd say it can be written in Kotlin and leverage a modern language with sensible syntax and escaping rules, a huge ecosystem of libraries and state of the art IDE support.
 
 Not to forget, one less language to learn and remember!
 
@@ -126,7 +126,7 @@ For the sake of completeness, and despite being a huge fan, I'll mention the cur
 2. [Including scripts from other scripts has issues](https://youtrack.jetbrains.com/issue/KT-42101).
 3. [The resolver does not understand Gradle metadata](https://youtrack.jetbrains.com/issue/KT-42775/Kotlin-Scripts-Gradle-metadata-support-for-dependencies-resolution).
 4. You have to manually reload the dependencies when adding/removing them.
-5. Process redirection and signal handling is a bit awkward. 
+5. Process redirection and signal handling is a bit awkward.
 
 I'm quite happy with the kotlin vs shell tradeoff at the moment and the lost time in compile time and writing `ProcessBuilders` is more than made up with Kotlin syntax and IDE support.
 

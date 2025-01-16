@@ -68,13 +68,13 @@ Let's assume your CDN goes down for some reason and your clients start seeing re
 
 See the problem?
 
-How can the client know whether the body is valid GraphQL response that it can parse or some other error introduced by a network node in the infrastructure? 
+How can the client know whether the body is valid GraphQL response that it can parse or some other error introduced by a network node in the infrastructure?
 
 It can't.
 
 The best it can do is display a generic error.
 
-The community tried to avoid this case as much as possible. To do so, [the typical solution is to always return a `200 OK` status code](https://graphql.github.io/graphql-over-http/draft/#note-ba11a), even if there is an error (because it would be very evil of an intermediate node to modify a successful response). 
+The community tried to avoid this case as much as possible. To do so, [the typical solution is to always return a `200 OK` status code](https://graphql.github.io/graphql-over-http/draft/#note-ba11a), even if there is an error (because it would be very evil of an intermediate node to modify a successful response).
 
 This solution was an opportunity for some [nice memes](https://x.com/iamdevloper/status/1384074981840097289), [interesting GitHub comments](https://github.com/rmosolgo/graphql-ruby/issues/1130#issuecomment-347373937) and other [funny reddit posts](https://www.reddit.com/r/ProgrammerHumor/comments/q4g93s/why/):
 
@@ -86,7 +86,7 @@ This is funny and all... Until you have to deal with it in production.
 
 In 2025, clients supporting [the current GraphQL over HTTP draft](https://graphql.github.io/graphql-over-http/draft/) may now accept `application/graphql-response+json` as a Content-Type:
 
-``` 
+```
 POST /graphql HTTP/2
 Accept: application/graphql-response+json, application/json
 ...
@@ -94,7 +94,7 @@ Accept: application/graphql-response+json, application/json
 
 If the server supports it, it'll respond with an `application/graphql-response+json` body:
 
-``` 
+```
 HTTP/2 503
 Content-Type: application/graphql-response+json
 
@@ -118,16 +118,12 @@ Because your server can now use any HTTP status code, it can reuse all the exist
 
 ## Conclusion
 
-`application/graphql-response+json` is great. 
+`application/graphql-response+json` is great.
 
-If you're not using it already, you should! 
+If you're not using it already, you should!
 
 If your server/client doesn't support it, open an issue, it's high time to fix this issue in 2025 (and find a new source of memes too 😁)!
 
-In a future post, I'll talk about partial error handling. This is another area where best practices are evolving and where the new year brings a couple welcome improvements. 
+In a future post, I'll talk about partial error handling. This is another area where best practices are evolving and where the new year brings a couple welcome improvements.
 
 Stay tuned and happy 2025!
-
-
-
-
