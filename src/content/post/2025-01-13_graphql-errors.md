@@ -130,4 +130,4 @@ Stay tuned and happy 2025!
 
 ---
 
-_PS: Many thanks to [benjie](https://github.com/benjie) and the [GraphQL over HTTP working group](https://github.com/graphql/graphql-over-http/) for reviewing this post_ 
+_PS: Many thanks to [benjie](https://github.com/benjie) and the [GraphQL over HTTP working group](https://github.com/graphql/graphql-over-http/) for reviewing this post_
