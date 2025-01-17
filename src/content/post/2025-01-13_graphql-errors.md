@@ -1,7 +1,7 @@
 ---
 title: '2025 is the year of GraphQL error handling!'
 excerpt: 'Lots of exciting things are happening in the GraphQL space this year!'
-publishDate: 2025-01-01T00:00:00Z
+publishDate: 2025-01-17T00:00:00Z
 image: '~/assets/images/2025-01-13_graphql-errors/thumbnail.jpg'
 ---
 
