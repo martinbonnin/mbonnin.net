@@ -1,7 +1,7 @@
 ---
 title: '`@InputDirectory` is a lie'
-excerpt: 'It's always files'
-publishDate: 2025-01-17T00:00:00Z
+excerpt: "It's always files!"
+publishDate: 2025-01-27T00:00:00Z
 image: '~/assets/images/2025-01-22_input_directory_is_a_lie/thumbnail.jpg'
 ---
 
