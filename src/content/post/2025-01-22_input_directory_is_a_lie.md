@@ -7,17 +7,15 @@ image: '~/assets/images/2025-01-22_input_directory_is_a_lie/thumbnail.jpg'
 
 Do you have a compiler that takes source files and compile them? 
 
-In those cases, it's tempting to use [`@InputDirectory`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputDirectory.html). A single annotation, just feed the whole directory to your task. 
-
-Simple.
+In those cases, it's tempting to use [`@InputDirectory`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputDirectory.html). A single annotation, just feed the whole directory to your task. Simple.
 
 Or is it? 
 
-After years of fighting against the system, I have just realized that `@InputDirectory` is pretty much a footgun. In most of the cases, you should use [`@InputFiles`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) and a [`ConfigurableFileCollection`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html).
+After years of fighting against the system, I have just realized that `@InputDirectory` is pretty much a footgun. 
+
+In best cases, it lacks flexibility. In worst cases, it's a source of bugs. In most cases, you should use [`@InputFiles`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) and a [`ConfigurableFileCollection`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) instead.
 
 Why? Let's dive in!
-
-![](../../assets/images/2025-01-22_input_directory_is_a_lie/thumbnail.jpg)
 
 ## It's all files
 
@@ -33,11 +31,11 @@ This is where Gradle [`@PathSensitive`](https://docs.gradle.org/current/javadoc/
 
 ```java
 /**
- * Annotates a task file property, specifying which part of the file paths should be considered 
- * during up-to-date checks.
+ * Annotates a task file property, specifying which part of the file 
+ * paths should be considered during up-to-date checks.
  *
- * <p>If a {@link org.gradle.api.Task} declares a file property without this annotation, the default 
- * is {@link PathSensitivity#ABSOLUTE}.</p>
+ * <p>If a {@link org.gradle.api.Task} declares a file property without 
+ * this annotation, the default is {@link PathSensitivity#ABSOLUTE}.</p>
  *
  */
 @Target({ElementType.METHOD, ElementType.FIELD})
@@ -46,7 +44,7 @@ public @interface PathSensitive {
 }
 ```
 
-`@PathSensitive` tells Gradle how to hash the path of each file. It may take 4 values:
+`@PathSensitive` tells Gradle how to hash the path of each file. It can take different values:
 * `NONE`: Ignore file paths and directories altogether.
 * `NAME_ONLY`: Consider only the name of files and directories.
 * `RELATIVE`: Use the location of the file related to a hierarchy.
@@ -66,7 +64,7 @@ If you have a `com/example` hierarchy in your `build/generated/root` directory, 
 build/generated/root
 ```
 
-But in fact, you're really passing a list of `(file contents, relative path)`:
+But in fact, what you're really passing is a list of `(file contents, relative path)`:
 
 ```
 contents1, "com/example/file1"
@@ -109,7 +107,7 @@ sourceFiles.from(fileTree().apply {
   from("inputDir3")
   include("**/*.foo")
 })
-// Add the output of a taskProvider, carrying task dependency if any (Lazy API)
+// Add the output of a taskProvider, carrying task dependency lazily
 sourceFiles.from(fileTree().apply {
   from("inputDir3")
   include("**/*.foo")
@@ -135,9 +133,9 @@ No more having to walk a directory, assuming you would do it just like Gradle wo
 
 For this reason, [Gratatouille forbids input directories](https://github.com/GradleUp/gratatouille/blob/main/gratatouille-runtime/src/main/kotlin/gratatouille/api.kt#L132) and only has files.
 
-## One last thing: what about `@OutputDirectory`?
+## What about `@OutputDirectory`?
 
-If you've read so far, you might think everything is a file, and therefore we might as well model the task outputs as `FileCollection` symmetrically. But that would be too easy 🤓. Inputs and outputs are fundamentally asymmetric.
+If you've read so far, you might think everything is a file, and therefore we might as well model the task outputs as `FileCollection` symmetrically. But that would be too easy. Inputs and outputs are fundamentally asymmetrical.
 
 Inputs are owned by the caller and need to provide flexibility to accommodate for different cases and may overlap.
 
@@ -149,4 +147,4 @@ Furthermore, using `@OutputDirectory` for outputs may allow to display generated
 
 Use `@InputFiles` and `@OutputDirectories` and save yourself a lot of troubles.
 
-There might be a proper use case for input directories, but I haven't found one. If someone finds one, please reach out!
+There might be a proper use case for input directories, but I haven't found one yet. If someone finds one, please reach out!
