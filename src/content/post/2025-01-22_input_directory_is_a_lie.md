@@ -108,10 +108,7 @@ sourceFiles.from(fileTree().apply {
   include("**/*.foo")
 })
 // Add the output of a taskProvider, carrying task dependency lazily
-sourceFiles.from(fileTree().apply {
-  from("inputDir3")
-  include("**/*.foo")
-})
+sourceFiles.from(taskProvider)
 ```
 
 You're not limited to a single directory anymore. The user of your task has full control over what is being wired. 
