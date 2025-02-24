@@ -125,32 +125,39 @@ plugins {
   id("java-gradle-plugin")
   // You can use `kotlin-dsl`too, it's going to set apiLevel="1.4" automatically
   id("kotlin-dsl")
-  id("com.gradleup.gr8-plugin").version("0.2")
+  id("com.gradleup.gr8").version("0.11.2")
 }
 ```
 
-Create a `"shade"` configuration that will contain all the dependencies to shadow (including `kotlin-stdlib.jar`):
+Create a `"shadowedDependencies"` configuration that will contain all the dependencies to shadow (including `kotlin-stdlib.jar`):
 
-```plaintext
-// Configuration dependencies that will be shadowed
-val shadeConfiguration = configurations.create("shade")
+```kotlin
+val shadowedDependencies = configurations.create("shadowedDependencies")
+```
+
+Create a separate `"compileOnlyDependencies"` to resolve the `compileOnly` dependencies (without the other one, like `compileClasspath` does):
+
+```kotlin
+val compileOnlyDependencies: Configuration = configurations.create("compileOnlyDependencies") {
+  attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, project.objects.named<Usage>(Usage.JAVA_API))
+  }
+}
+compileOnlyDependencies.extendsFrom(configurations.getByName("compileOnly"))
 ```
 
 Declare your dependencies:
 
 ```kotlin
 dependencies {
-  // no need to specify the version, this will use the same version as the kotlin plugin version
-  add("shade", "org.jetbrains.kotlin:kotlin-stdlib")
-  // add your other dependencies here
-  // Dependencies can use whatever version of Kotlin they want \o/
-  add("shade", "com.squareup.okio:okio:3.0.0")
-  // ...
-
   // Add gradleApi() as a compile-only dependency, not shadowed
-  compileOnly(gradleApi())
+  add("compileOnly", gradleApi())
   // Alternatively, you can use Nokee distributions
-  compileOnly("dev.gradleplugins:gradle-api:7.2")
+  add("compileOnly", "dev.gradleplugins:gradle-api:7.2")
+
+  // Add dependencies you want to shadow here
+  add(shadowedDependencies.name, "com.squareup.okhttp3:okhttp:4.9.0")
+  // Add more dependencies...
 }
 ```
 
@@ -166,31 +173,30 @@ Now configure the `GR8` plugin:
 
 ```kotlin
 gr8 {
-  val shadowedJar = create("shadow") {
-    configuration("shade")
+  val shadowedJar = create("default") {
+    addProgramJarsFrom(shadowedDependencies)
+    addProgramJarsFrom(tasks.getByName("jar"))
+    // classpath jars are only used by R8 for analysis but are not included in the
+    // final shadowed jar.
+    addClassPathJarsFrom(compileOnlyDependencies)
 
-    // The R8 configuration
     proguardFile("rules.pro")
-
-    // Remove proguard rules from dependencies, we'll manage them ourselves
-    exclude("META-INF/proguard/.*")
   }
 
   // If you're using the `java-gradle-plugin` plugin. It will add `gradleApi` to the API configuration
   // We don't want that, we want to control what's going out
   removeGradleApiFromApi()
 
-  // Needed for the plugin to compile
-  configurations.named("compileOnly").configure {
-    extendsFrom(shadeConfiguration)
-  }
-  // Needed for the tests to compile
-  configurations.named("testImplementation").configure {
-    extendsFrom(shadeConfiguration)
-  }
-
-  // When publishing, publish the shadowed Jar
+  // Optional: replace the regular jar with the shadowed one in the publication
   replaceOutgoingJar(shadowedJar)
+
+  // Or if you prefer the shadowed jar to be a separate variant in the default publication
+  // The variant will have `org.gradle.dependency.bundling = shadowed`
+  addShadowedVariant(shadowedJar)
+
+  // Allow to compile the module without exposing the shadowedDependencies downstream
+  configurations.getByName("compileOnly").extendsFrom(shadowedDependencies)
+  configurations.getByName("testImplementation").extendsFrom(shadowedDependencies)
 }
 ```
 
