@@ -142,6 +142,9 @@ Furthermore, using `@OutputDirectory` for outputs may allow to display generated
 
 ## Conclusion
 
-Use `@InputFiles` and `@OutputDirectories` and save yourself a lot of troubles.
+If all the files in your directory as well as their relative path to your directory are relevant to your task, then `@InputDirectory` saves you a few lines of code. 
 
-There might be a proper use case for input directories, but I haven't found one yet. If someone finds one, please reach out!
+On the other hand, if your task only considers the name of your files and/or take files from several directories, `@InputFiles` allows to model with a lot more granularity. And the above case can also be modeled with `@InputFiles`.
+
+All in all, `@InputFiles` is a lot more flexible and explicit than `@InputDirectory`. I'll use that moving forward and you should too!
+
