@@ -21,6 +21,7 @@ Features:
 - mobile UI
 - dark mode
 - "edit on GitHub"
+- Youtube/Bluesky embeds, .mdx support
 
 Missing:
 
