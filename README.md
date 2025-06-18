@@ -22,6 +22,7 @@ Features:
 - dark mode
 - "edit on GitHub"
 - Youtube/Bluesky embeds, .mdx support
+- social card previews
 
 Missing:
 
@@ -29,4 +30,4 @@ Missing:
 - admonitions
 - site map (left column)
 - table of contents (right column)
-- social card previews
+- comments (mastodon integration? like on https://www.liutikas.net/2025/01/10/Conservative-Librarian.html)
