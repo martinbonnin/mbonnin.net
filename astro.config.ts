@@ -88,6 +88,6 @@ export default defineConfig({
     },
   },
   redirects: {
-    "/compatibility": "https://gist.github.com/martinbonnin/6176817859c61ecccee435bd9dd4204a",
-  }
+    '/compatibility': 'https://gist.github.com/martinbonnin/6176817859c61ecccee435bd9dd4204a',
+  },
 });
