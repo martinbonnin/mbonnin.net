@@ -1,0 +1,152 @@
+---
+title: 'Nmcp 1.0.0 and the "other 90%"'
+excerpt: 'Open-source has peculiar maths where everything adds up to 180%.'
+publishDate: 2025-07-05T00:00:00Z
+image: '~/assets/images/2025-07-05_nmcp_and_the_other_90_percent/thumbnail.png'
+---
+
+At KotlinConf 2025, Ekaterina Petrova told us [what it took to bring Compose multiplatform to iOS](https://youtu.be/F5NaqGF9oT4?t=2519).
+
+On a much smaller scale, [Nmcp](https://github.com/GradleUp/nmcp/) has a similar story.
+
+I started the project in February, when Sonatype announced its [new Central Portal API](https://central.sonatype.org/publish/publish-portal-api/).
+
+This was the perfect occasion to:
+
+1. learn more about the new Portal API.
+2. try to wrap my head around Gradle [isolated projects](https://docs.gradle.org/current/userguide/isolated_projects.html).
+
+The new Portal API, instead of uploading file by file, like the previous Nexus API, requires a big zip with all your artifacts, metadata, signatures and checksums.
+
+Aggregating files across different projects in Gradle [isn't trivial](https://github.com/gradle/gradle/issues/29037), especially when isolated projects come into the picture.
+
+Thankfully, there are [solutions](https://www.liutikas.net/2024/12/11/Together-In-Isolation.html) now (even if [unperfect](https://github.com/gradle/gradle/issues/29037)), and Nmcp was the perfect use case: just aggregate all publications from all projects and publish them all at once to the Portal API.
+
+Simple goal, helpful feature, narrow scope. Sounded like the perfect hobby project!
+
+Version `0.0.0` was built in a single evening and fulfilled 90% (100%?) of the requirements:
+
+```
+./gradlew publishAggregatedPublicationToCentralPortal
+BUILD SUCCESSFUL
+```
+
+That's it. You could publish your libs to the new Maven Central API in a single task 🎉
+
+Job's done!
+
+I published the plugin, gave myself a little pat on the back. Finally a side project that was actually getting released!
+
+Of course this was just the beginning... 😄
+
+## The other 90%
+
+`0.0.0` is when the real work starts. Since `0.0.0`, the plugin has received more than 50 issues and 500 commits.
+
+Most importantly it has received tons of really important feedback from the community to improve its usability, documentation and makes sure it works for most of the use cases out there.
+
+Special thanks in particular to [Vladimir Sitnikov](https://github.com/vlsi), [Simon Marquis](https://github.com/simonmarquis), [Jendrik Johannes](https://github.com/jjohannes) and [Stylianos Gakis](https://github.com/StylianosGakis) for all the awesome discussions and contributions!
+
+So what did it take to bring Nmcp to 1.0.0? Let's dive in.
+
+### Support for snapshots
+
+In February, there were no SNAPSHOTs on the Central Portal. My understanding at that time was that SNAPSHOTs created a lot of traffic and Sonatype wanted to stop supporting them.
+
+No feature -> no problem!
+
+Since then, [Sonatype added them back](https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/) (I'm guessing from community feedback but I don't think this was communicated?).
+
+But the way the SNAPSHOTs work is with the "old", file-by-file API. [`maven-publish`](https://docs.gradle.org/current/userguide/publishing_maven.html) can upload there but that means you now have to configure your credentials in two places:
+
+```kotlin
+// configure Nmcp for the "new" releases
+nmcpAggregation {
+  centralPortal {
+    username = TODO()
+    password = TODO()
+  }
+}
+
+// Duplicate configuration here for the "old" snapshots 😞
+publishing {
+  repositories {
+    // And you also need to look up that url
+    maven("https://central.sonatype.com/repository/maven-snapshots/") {
+      credentials {
+        username = TODO()
+        password = TODO()
+      }
+    }
+  }
+}
+// Task names are different now
+```
+
+This works but this is not super satisfying from an [API design](#api-design) standpoint. Also the `maven-publish` APIs [are not lazy yet](https://github.com/gradle/gradle/issues/26374), which is something that has been itching me for a while.
+
+To make snapshots easier to use and offer a consistent API, Nmcp now includes [its own implementation of a Maven publisher](https://github.com/gradleup/nmcp/blob/5ef32aa1522ddd3c8bf4eac766f54dbc9137e37b/nmcp/src/main/kotlin/nmcp/transport/publishFileByFile.kt#L15).
+
+Needless to say, this sent me into a rabbit hole of trying to understand the behaviour of Maven. Turns out a [repository is not a "write-only" directory](https://github.com/GradleUp/nmcp/issues/73#issuecomment-2880629557) as I initially thought it was (and as the releases use).
+
+Instead, the SNAPSHOTs repository is a remote state. When writing new data, the client must also update the `maven-metadata.xml` files. That means getting the current metadata, extracting the last build number, adding one to that build number, patching all files and then uploading everything. And same thing for the [artifact level metadata](https://maven.apache.org/repositories/metadata.html).
+
+_Note this is fundamentally racy. What happens if you publish 2 snapshots at the same time? Not clear. But this is a problem for another time..._
+
+That small addition is now most of the Nmcp source code. It was a fun trip but definitely not something I initially planned for.
+
+### Quality of life improvements
+
+It's all about the details! For Nmcp, this meant:
+
+- Meaningful deployment name.
+  - The deployments are shown in the Portal UI and being able to recognize the deployments is useful.
+  - Nmcp parses the contents of the zip file and tries to guess a sensible name from the group/artifacts/versions, even when multiple artifacts are present.
+  - If the default doesn't work, the deployment name is configurable.
+- Helpful log messages.
+  - Some operations may take a long time and it's important to give feedback along the way.
+  - For debugging, being able to list the files being uploaded is also helpful.
+- Timeouts and retries.
+  - The Portal API may be slow and/or fail and getting good defaults there makes sure your release builds all go ✅ in your CI console.
+
+That last part is still [under discussion](https://github.com/GradleUp/nmcp/issues/86) and still needs a bit of love.
+
+### API design
+
+People like to think software is different from hardware because it's soft and easy to modify. It's not!
+
+When your open source software starts getting usage, changing it is a lot harder than remodelling your kitchen!
+
+I won't say the current API is perfect (it never is) but at least it's been used by multiple users, and, in my opinion, offers a good balance between simplicity and configurability.
+
+Compared to `0.0.0`, `1.0.0`:
+
+- splits the plugin in two different plugins: `com.gradleup.nmcp` and `com.gradleup.nmcp.aggregation`. For a better separation of concerns.
+- renames `publishAggregatedPublicationToCentralPortal` to `publishAggregationToCentralPortal`: the aggregation is technically not a publication in the `maven-publish` sense and smaller names are easier to remember.
+- [drops support for publishing a single publication](https://github.com/GradleUp/nmcp/issues/84). Using this was usually a red herring that something was wrong in the publication workflow and this allowed simplifying the code a lot. Nmcp is now about aggregations.
+  - this also means we can break free of the `maven-publish` legacy.
+  - this will have important consequences later, stay tuned!
+- adds `publishAllProjectsProbablyBreakingProjectIsolation()` for "easy" configuration if you don't want to list all your projects. There is also a [settings plugin](https://github.com/gradleup/nmcp/blob/5ef32aa1522ddd3c8bf4eac766f54dbc9137e37b/nmcp/src/main/kotlin/nmcp/plugins.kt#L22) to do the same thing from your settings.
+
+The project now also includes [BCV](https://github.com/Kotlin/binary-compatibility-validator) to make sure those APIs do not break moving forward.
+
+### Documentation
+
+Same as API design, documentation is never perfect. But thanks to all the feedbacks and contributions 💙, many of my initial typos and omissions are now fixed!
+
+The README now also lists clearly the prerequisites and alternatives. For batteries included publication, [vanniktech/gradle-maven-publish-plugin](https://github.com/vanniktech/gradle-maven-publish-plugin) is often a simpler solution.
+
+Finally, all the public API has been documented using [dokka](https://github.com/Kotlin/dokka) and is [browsable in the GitHub pages](https://gradleup.com/nmcp/kdoc/nmcp/index.html).
+
+## Are we at 180% yet?
+
+The journey is not over. There are currently [10 opened issues](https://github.com/GradleUp/nmcp/issues) in the repository, mostly about validation, retries and better ergonomics.
+
+But with [OSSRH now being officially sunset](https://central.sonatype.org/news/20250326_ossrh_sunset/) and Nmcp being used in a [bunch](https://github.com/leboncoin/spark-android/) [of](https://github.com/apollographql/apollo-kotlin) [projects](https://github.com/elastic/elasticsearch-hadoop), now feels like a good time to release [1.0.0](https://github.com/GradleUp/nmcp/issues/87).
+
+Try it out and let us know how that goes!
+
+
+----
+
+_"180% picture" from the [KotlinConf 2025 opening keynote](https://www.youtube.com/watch?v=F5NaqGF9oT4)_ 

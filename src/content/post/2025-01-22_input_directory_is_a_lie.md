@@ -5,13 +5,13 @@ publishDate: 2025-01-27T00:00:00Z
 image: '~/assets/images/2025-01-22_input_directory_is_a_lie/thumbnail.jpg'
 ---
 
-Do you have a compiler that takes source files and compile them? 
+Do you have a compiler that takes source files and compile them?
 
 In those cases, it's tempting to use [`@InputDirectory`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/InputDirectory.html). A single annotation, just feed the whole directory to your task. Simple.
 
-Or is it? 
+Or is it?
 
-After years of fighting against the system, I have just realized that `@InputDirectory` is pretty much a footgun. 
+After years of fighting against the system, I have just realized that `@InputDirectory` is pretty much a footgun.
 
 In best cases, it lacks flexibility. In worst cases, it's a source of bugs. In most cases, you should use [`@InputFiles`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) and a [`ConfigurableFileCollection`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) instead.
 
@@ -25,16 +25,16 @@ Unlike older build systems like [GNU Make](https://www.gnu.org/software/make/man
 
 If your input is a file, Gradle reads all its contents and hashes it. If your input is a directory, Gradle reads each file recursively and hashes the contents.
 
-But unlike a flat file, a directory also has a structure. That structure may be important to your compile task. Typically, the name of the directories are important. 
+But unlike a flat file, a directory also has a structure. That structure may be important to your compile task. Typically, the name of the directories are important.
 
 This is where Gradle [`@PathSensitive`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/PathSensitive.html) comes into play:
 
 ```java
 /**
- * Annotates a task file property, specifying which part of the file 
+ * Annotates a task file property, specifying which part of the file
  * paths should be considered during up-to-date checks.
  *
- * <p>If a {@link org.gradle.api.Task} declares a file property without 
+ * <p>If a {@link org.gradle.api.Task} declares a file property without
  * this annotation, the default is {@link PathSensitivity#ABSOLUTE}.</p>
  *
  */
@@ -45,10 +45,11 @@ public @interface PathSensitive {
 ```
 
 `@PathSensitive` tells Gradle how to hash the path of each file. It can take different values:
-* `NONE`: Ignore file paths and directories altogether.
-* `NAME_ONLY`: Consider only the name of files and directories.
-* `RELATIVE`: Use the location of the file related to a hierarchy.
-* `ABSOLUTE`: Consider the full path of files and directories.
+
+- `NONE`: Ignore file paths and directories altogether.
+- `NAME_ONLY`: Consider only the name of files and directories.
+- `RELATIVE`: Use the location of the file related to a hierarchy.
+- `ABSOLUTE`: Consider the full path of files and directories.
 
 Note how the `ABSOLUTE` default completely prevents any kind of remote build cache. You should definitely switch your default to `RELATIVE`.
 
@@ -75,11 +76,11 @@ contents3, "com/example/file3"
 
 This has several problems:
 
-* Your compiler may want to compile files from different directories.
-* Your compiler may want to compile a subset of the files in a given directory (for an example, only the files with a given extension).
-* Your compiler and Gradle need to agree on how to compute the relative path. If not, weird caching issues will happen.
+- Your compiler may want to compile files from different directories.
+- Your compiler may want to compile a subset of the files in a given directory (for an example, only the files with a given extension).
+- Your compiler and Gradle need to agree on how to compute the relative path. If not, weird caching issues will happen.
 
-To make things worse, this is all implicit. It took me way too much time to understand what was going on under the hood and I wasted many hours trying to reimplement Gradle normalization for no good reason. 
+To make things worse, this is all implicit. It took me way too much time to understand what was going on under the hood and I wasted many hours trying to reimplement Gradle normalization for no good reason.
 
 ## Entering `ConfigurableFileCollection`
 
@@ -93,7 +94,7 @@ As we've seen most tasks work with file inputs, not directories.
   abstract val sourceFiles: ConfigurableFileCollection
 ```
 
- `ConfigurableFileCollection` allows for a lot more flexibility:
+`ConfigurableFileCollection` allows for a lot more flexibility:
 
 ```kotlin
 // Adding a single file
@@ -102,7 +103,7 @@ sourceFiles.from("inputFile1.foo")
 sourceFiles.from(fileTree().from("inputDir1"))
 // Adding a second directory recursively
 sourceFiles.from(fileTree().from("inputDir2"))
-// Only add the `.foo` files in `inputDir3` 
+// Only add the `.foo` files in `inputDir3`
 sourceFiles.from(fileTree().apply {
   from("inputDir3")
   include("**/*.foo")
@@ -111,7 +112,7 @@ sourceFiles.from(fileTree().apply {
 sourceFiles.from(taskProvider)
 ```
 
-You're not limited to a single directory anymore. The user of your task has full control over what is being wired. 
+You're not limited to a single directory anymore. The user of your task has full control over what is being wired.
 
 It is now explicit that your task works with files.
 
@@ -119,7 +120,7 @@ To consume the files, use `asFileTree`:
 
 ```kotlin
 sourceFiles.asFileTree.visit {
-  // You can use the file contents here  
+  // You can use the file contents here
   file.readText()
   // And access the normalized file path (used for caching) too!
   println(path)
@@ -138,13 +139,12 @@ Inputs are owned by the caller and need to provide flexibility to accommodate fo
 
 Outputs are owned by the task and need to provide predictability and structure. They must not overlap.
 
-Furthermore, using `@OutputDirectory` for outputs may allow to display generated directories using a separate icon in the IDE. For UI purposes, making the difference between a file and a directory is useful!   
+Furthermore, using `@OutputDirectory` for outputs may allow to display generated directories using a separate icon in the IDE. For UI purposes, making the difference between a file and a directory is useful!
 
 ## Conclusion
 
-If all the files in your directory as well as their relative path to your directory are relevant to your task, then `@InputDirectory` saves you a few lines of code. 
+If all the files in your directory as well as their relative path to your directory are relevant to your task, then `@InputDirectory` saves you a few lines of code.
 
 On the other hand, if your task only considers the name of your files and/or take files from several directories, `@InputFiles` allows to model with a lot more granularity. And the above case can also be modeled with `@InputFiles`.
 
 All in all, `@InputFiles` is a lot more flexible and explicit than `@InputDirectory`. I'll use that moving forward and you should too!
-
