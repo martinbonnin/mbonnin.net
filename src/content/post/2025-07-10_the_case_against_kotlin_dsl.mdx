@@ -15,7 +15,7 @@ After more than 5 years of writing Gradle plugins in Kotlin, I keep getting into
 
 Better late than never, this post is an attempt at listing everything that I dislike about `kotlin-dsl`. Hopefully it can also convince some of you to switch to `org.jetbrains.kotlin.jvm`.
 
-_Note: This post is specifically about `kotlin-dsl`. There are a lot of things to be said about the Gradle Kotlin runtime but this has been discussed a lot already and is not the focus here._
+_Note: This post is specifically about `kotlin-dsl`. There are a lot of things to be said about the Gradle Kotlin runtime, but this has been discussed a lot already and is not the focus here._
 
 ## What is `kotlin-dsl`?
 
@@ -36,7 +36,7 @@ Unfortunately, that deal comes with a lot of fine print. I stopped using it long
 
 ### It's a bad name
 
-When it comes to Kotlin and Gradle everything is "Kotlin DSL". But what "DSL" means exactly? I'm unclear.
+When it comes to Kotlin and Gradle everything is "Kotlin DSL". But what "DSL" means exactly? It's unclear.
 
 Kotlin has `@DslMarker` ([doc](https://kotlinlang.org/docs/type-safe-builders.html#scope-control-dslmarker)) to define scopes. You would think the Gradle Kotlin DSL uses it.
 
@@ -54,7 +54,7 @@ testing {
 }
 ```
 
-Similarly, you would think DSL has some declarative aspect to it but it's mostly programmatic under the hood. The order of your blocks may be important.
+Similarly, you would think DSL has some declarative aspect to it but it's mostly programmatic under the hood. The order of your blocks is important.
 
 ```kotlin
 dependencies {
@@ -73,13 +73,15 @@ In the example above, your `foo` configuration only exists when that code is exe
 
 The Gradle Kotlin DSL tries very hard to make the syntax look declarative, but [it's all imperative under the hood](https://www.youtube.com/watch?v=dxZnAaPpk4M).
 
-Of course a declarative approach would be nice and allow us to clearly separate concerns. I hope [Declarative Gradle](https://blog.gradle.org/declarative-gradle) will fix this situation. But for I like to think **Kotlin build scripts** are well defined. **Kotlin DSL** is a bit in between.
+This is why I like to talk about **Kotlin build scripts**. Kotlin build scripts are great. But what exactly is the **Kotlin DSL**? The line between imperative and declarative is blurred.
+
+Of course a declarative approach would be nice and allow us to clearly separate concerns. I hope [Declarative Gradle](https://blog.gradle.org/declarative-gradle) will fix this situation.
 
 ### It fragments the ecosystem
 
 By introducing things like [sam-with-receiver](https://kotlinlang.org/docs/sam-with-receiver-plugin.html) and [assignment](https://github.com/JetBrains/kotlin/tree/master/plugins/assign-plugin) compiler plugins, your code is not regular Kotlin anymore, it needs some context.
 
-If you copy/paste your code to someone who doesn't have those plugins enabled, it's just going to fail:
+If you copy/paste some internet code without those plugins enabled, it's just going to fail:
 
 ```kotlin
   // This doesn't compile
@@ -91,7 +93,9 @@ If you copy/paste your code to someone who doesn't have those plugins enabled, i
   }
 ```
 
-This is because `publication` signature is `void publications(Action<PublicationContainer> configure)`. The `sam-with-receiver` plugin turns the `Action<>` type parameter into a receiver. But without the plugin, you need to reference the parameter:
+This is because `publication` signature is `void publications(Action<PublicationContainer> configure)`. The `sam-with-receiver` plugin turns the `Action<>` type parameter into a receiver. 
+
+Without the plugin, you need to reference the parameter:
 
 ```kotlin
   // This does compile
@@ -107,9 +111,9 @@ Same is true for the assignment compiler plugin.
 
 If you want to talk with someone else, that someone else needs to know about all of these. You're not all talking Kotlin anymore, you're talking 2 dialects of Kotlin.
 
-This wouldn't be an issue if the dialect was required to write Gradle plugins. I come from [Occitania](https://en.wikipedia.org/wiki/Occitania) and enjoy a good regional dialect. After all, everyone shares Jetpack Compose code happily. `@Composable` is vocabulary you need to have to talk Compose Kotlin. But you also can't really do Jetpack Compose without the Compose compiler plugin.
+This wouldn't be an issue if the dialect was required to write Gradle plugins. Coming from [Occitania](https://en.wikipedia.org/wiki/Occitania), I enjoy a good regional dialect. After all, everyone shares Jetpack Compose code happily. `@Composable` is vocabulary you need to have to talk Compose Kotlin. But you also can't really do Jetpack Compose without the Compose compiler plugin.
 
-A lot of folks write Gradle plugins without the `sam-with-receiver` and `assignment` plugins ([Gradle included](https://github.com/gradle/gradle/blob/a38669984339a6d3eef1a4ce1bfeb573be2e9b47/platforms/core-configuration/kotlin-dsl-plugins/src/main/kotlin/org/gradle/kotlin/dsl/plugins/dsl/KotlinDslPlugin.kt#L42-L41)). So now `kotlin-dsl` just makes it harder to share knowledge with other people in the community.
+A lot of folks write Gradle plugins without the `sam-with-receiver` and `assignment` plugins, [Gradle included](https://github.com/gradle/gradle/blob/a38669984339a6d3eef1a4ce1bfeb573be2e9b47/platforms/core-configuration/kotlin-dsl-plugins/src/main/kotlin/org/gradle/kotlin/dsl/plugins/dsl/KotlinDslPlugin.kt#L42-L41). So now `kotlin-dsl` just makes it harder to share knowledge with other people in the community.
 
 Every time you share a snippet, you also need to share the surrounding context. This makes communication harder.
 
@@ -140,7 +144,7 @@ I like the later, others will like the typesafe illusion of the former. But the 
 
 ### It's slow
 
-`kotlin-dsl` is slower due to "precompiled script plugins". Generating the accessor, etc.. adds up.
+`kotlin-dsl` is slower due to "precompiled script plugins". Generating the accessor, etc... This all adds up.
 
 At the end of the day, [Now In Android configuration time went from 12.724s to 0.765s](https://github.com/android/nowinandroid/pull/38#issuecomment-1136775681) by removing the precompiled script plugins.
 
@@ -148,7 +152,7 @@ At the end of the day, [Now In Android configuration time went from 12.724s to 0
 
 `kotlin-dsl` by default forces you on the same KGP and kotlinc version that your Gradle version is using.
 
-This is not needed. [You can use newer tools and have them target older version](https://blog.alllex.me/posts/2023-11-03-liberal-library-tooling/).
+This is not needed. [You can use newer tools and have them target older versions](https://blog.alllex.me/posts/2023-11-03-liberal-library-tooling/).
 
 Forcing an older version of KGP/kotlinc is the [toolchain problem](https://jakewharton.com/gradle-toolchains-are-rarely-a-good-idea/) all over again. Just because you want to target an older runtime doesn't mean you need to use an older tool.
 
@@ -162,9 +166,9 @@ Back to my initial point about [fragmenting the ecosystem](#it-fragments-the-eco
 
 ### It's doing too many things
 
-Overall, `kotlin-dsl` is making a lot of decisions for you. Some of them you might be comfortable with (Do you need the `java-gradle-plugin` applied? Probably?) some maybe not (Are the Kotlin plugin compilers really mandatory?) while some of them are not so clear (Do I need `-java-parameters`? Maybe?).
+Overall, `kotlin-dsl` is making a lot of decisions for you. Some of them you might be comfortable with (Do you need the `java-gradle-plugin` applied? Probably?) some maybe not (Are the Kotlin compilers plugin really mandatory? Personal preference?) while some of them are not so clear (Do I need `-java-parameters`? Maybe?).
 
-Not everything is bad but because it's all bundled together, it makes it hard to adopt only the parts that you need (and using an older compiler is definitely a part you don't need).
+Not everything is bad but because it's all bundled together, it makes it hard to adopt only the parts that you need. And using an older compiler is definitely a part you don't need!
 
 ## So what? (conclusion)
 
