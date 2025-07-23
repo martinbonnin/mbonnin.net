@@ -86,7 +86,9 @@ To make things worse, this is all implicit. It took me way too much time to unde
 
 As we've seen most tasks work with file inputs, not directories.
 
-[`ConfigurableFileCollection`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) is the main class to represent a lazy collection of files. You can use it in your tasks like so:
+[`ConfigurableFileCollection`](https://docs.gradle.org/current/javadoc/org/gradle/api/file/ConfigurableFileCollection.html) is the main class to represent a lazy collection of `File` (as it turns out, it may contain both regular files and directories, more on that later).
+
+You can use `ConfigurableFileCollection` in your tasks like so:
 
 ```kotlin
   @get:InputFiles
@@ -100,9 +102,9 @@ As we've seen most tasks work with file inputs, not directories.
 // Adding a single file
 sourceFiles.from("inputFile1.foo")
 // Adding a directory recursively
-sourceFiles.from(fileTree().from("inputDir1"))
+sourceFiles.from(fileTree("inputDir1"))
 // Adding a second directory recursively
-sourceFiles.from(fileTree().from("inputDir2"))
+sourceFiles.from(fileTree("inputDir2"))
 // Only add the `.foo` files in `inputDir3`
 sourceFiles.from(fileTree().apply {
   from("inputDir3")
@@ -120,12 +122,16 @@ To consume the files, use `asFileTree`:
 
 ```kotlin
 sourceFiles.asFileTree.visit {
-  // You can use the file contents here
-  file.readText()
-  // And access the normalized file path (used for caching) too!
-  println(path)
+  if (file.isFile) {
+    // You can use the file contents here
+    file.readText()
+    // And access the normalized file path (used for caching) too!
+    println(path)
+  }
 }
 ```
+
+_Note: as you can see above, `ConfigurableFileCollection` may still contain directories, for an example if created from `fileTree()`. The meaning of a directory of up-to-date checks isn't 100% clear to me. Do you need to know if there is an empty directory? I usually don't and just filter the directories out._
 
 No more having to walk a directory, assuming you would do it just like Gradle would do it. It's all files. Always has been.
 
