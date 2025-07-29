@@ -164,6 +164,18 @@ Why is it `gradleKotlinDsl()` and not something like `org.gradle.kotlin:kotlin-d
 
 Back to my initial point about [fragmenting the ecosystem](#it-fragments-the-ecosystem), how would you consume these symbols if you are not using Gradle? Or even if you are using a different version of Gradle? I don't know.
 
+`kotlin-dsl` also [configures the Kotlin compatibility flags for the current version of Gradle](https://github.com/gradle/gradle/blob/e16096755271f495a1e4c4a9a1cbe13c104c03ac/platforms/core-configuration/kotlin-dsl-plugins/src/main/kotlin/org/gradle/kotlin/dsl/plugins/dsl/KotlinDslCompilerPlugins.kt#L54). If you want to target an older version of Gradle, with an older embedded Kotlin version, you need to override this configuration:
+
+```kotlin
+tasks.withType<KotlinCompile>().configureEach {
+  compilerOptions {
+    // overidded the `kotlin-dsl` defaults for compatibility with Gradle 8.0
+    apiVersion.set(KotlinVersion.KOTLIN_1_8)
+    languageVersion.set(KotlinVersion.KOTLIN_1_8)
+  }
+}
+```
+
 ### It's doing too many things
 
 Overall, `kotlin-dsl` is making a lot of decisions for you. Some of them you might be comfortable with (Do you need the `java-gradle-plugin` applied? Probably?) some maybe not (Are the Kotlin compilers plugin really mandatory? Personal preference?) while some of them are not so clear (Do I need `-java-parameters`? Maybe?).
