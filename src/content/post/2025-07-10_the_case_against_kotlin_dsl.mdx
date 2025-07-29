@@ -169,7 +169,7 @@ Back to my initial point about [fragmenting the ecosystem](#it-fragments-the-eco
 ```kotlin
 tasks.withType<KotlinCompile>().configureEach {
   compilerOptions {
-    // overidded the `kotlin-dsl` defaults for compatibility with Gradle 8.0
+    // overide the `kotlin-dsl` defaults for compatibility with Gradle 8.0
     apiVersion.set(KotlinVersion.KOTLIN_1_8)
     languageVersion.set(KotlinVersion.KOTLIN_1_8)
   }
