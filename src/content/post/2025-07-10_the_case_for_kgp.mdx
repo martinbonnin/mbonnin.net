@@ -125,14 +125,17 @@ dependencies {
 
 ## Convention plugins
 
-If you are building convention plugins from an included build, you control your Gradle version. You can skip the Nokee redistributed artifacts and use `gradleApi()` directly.
+If you are building convention plugins, the setup is the same. No need for `kotlin-dsl`. The main difference, especially if your plugin is an included build, is that you control your Gradle version. 
+
+You can skip the Nokee redistributed artifacts and use the default `gradleApi()`.
 
 You can also use `kotlinEmbeddedVersion` to use the version of Kotlin that is bundled with your Gradle distribution:
 
 ```kotlin
 compatPatrouille {
   java(17)
-  // Use the version of Kotlin based bundled with your Gradle version.
+  // Target the version of Kotlin bundled with your Gradle version.
+  // No need to look up the compatibility matrix.
   kotlin(embeddedKotlinVersion)
 }
 
