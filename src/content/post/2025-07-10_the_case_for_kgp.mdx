@@ -5,17 +5,17 @@ publishDate: 2025-08-10T00:00:00Z
 image: '~/assets/images/2025-08-10_the_case_for_kgp/thumbnail.jpg'
 ---
 
-This is a follow up to [my previous post about `kotlin-dsl`](../2025-07-10_the_case_against_kotlin_dsl).
+This is a follow-up to [my previous post about `kotlin-dsl`](../2025-07-10_the_case_against_kotlin_dsl).
 
 If you want to learn all the reasons **not** to use `kotlin-dsl`, you should read that first. 
 
 If you don't want all the gory details but just something that works, read on as I share my current preferred setup for writing Gradle plugins. 
 
-As with everything Gradle, there are many ways to do it but after five years of writing Gradle plugins in Kotlin, I have settled on a few habits that I think work well. They work for convention plugins or redistributed plugins. I hope they can work for you too! 
+As with everything Gradle, there are many ways to do it, but after five years of writing Gradle plugins in Kotlin, I have settled on a few habits that I think work well. They work for convention plugins or redistributed plugins. I hope they can work for you too! 
 
 # The setup
 
-My main build file is really simple, uses the latest version of [Kotlin Gradle Plugin](https://kotlinlang.org/docs/gradle-configure-project.html) (KGP for shorts, latest version is `2.2.0` at the time of writing) and a small plugin, [compat-patrouille](https://github.com/GradleUp/compat-patrouille/), I wrote to help with compatibility.
+My main build file is really simple, uses the latest version of [Kotlin Gradle Plugin](https://kotlinlang.org/docs/gradle-configure-project.html) (KGP for shorts, the latest version is `2.2.0` at the time of writing) and a small plugin, [compat-patrouille](https://github.com/GradleUp/compat-patrouille/), I wrote to help with compatibility.
 
 Here is a `build.gradle.kts` for a plugin compatible with Gradle 8.0+ and Java 17:
 
@@ -72,7 +72,7 @@ dependencies {
 }
 ```
 
-Most of the build script is self-explanatory but that last bit is a bit more subtle. 
+Most of the build script is self-explanatory, but that last bit is a bit more subtle. 
 
 `"java-gradle-plugin"` is [doing a lot of things under the hood](https://docs.gradle.org/current/userguide/java_gradle_plugin.html). Especially, it's adding `gradleApi()` automatically to the `api` configuration. 
 
@@ -84,7 +84,7 @@ By adding the [Nokee redistributed artifacts](https://docs.nokee.dev/manual/grad
 
 This is really the gist of it. 
 
-No `kotlin-dsl`, no precompiled script plugins, no sam-with-receiver, no special compiler flags. Just a plain Kotlin JVM project with a small twist to support "java-gradle-plugin".
+No `kotlin-dsl`, no precompiled script plugins, no sam-with-receiver, no special compiler flags. Just a plain Kotlin JVM project with a small twist to support "java-gradle-plugin."
 
 # Improvements
 
@@ -151,7 +151,7 @@ compatPatrouille {
 
 ## Checking transitive dependencies
 
-Configuring `compat-patrouille` works great for your own code but doesn't check your plugins dependencies.
+Configuring `compat-patrouille` works great for your own code but doesn't check your plugin dependencies.
 
 `compat-patrouille` has tools to help you check your plugin dependencies are also compatible:
 
