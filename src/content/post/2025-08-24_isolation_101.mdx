@@ -1,0 +1,205 @@
+---
+title: 'Classloader isolation 101'
+excerpt: 'Separation of concerns for your Gradle plugins'
+publishDate: 2025-08-24T00:00:00Z
+image: '~/assets/images/2025-08-24_isolation_101/thumbnail.jpg'
+---
+
+If you're building an Android or Kotlin app, you must surely be using a bunch Gradle plugins. Plugins are reusable pieces of code that define how your build behaves.  
+
+Plugins are generally a good thing. Just like regular libraries, they make it easier to develop build logic without having to reinvent the wheel! This is good! 
+
+Unlike regular Android or Kotlin libraries, there's a bit of magic involved. As I wrote [back in 2019](https://mbonnin.net/2019-11-26_loading-gradle-plugins-in-2019/), there are a lot of different ways to load your plugins.
+
+To simplify [the complex classloader hierarchy](https://dev.to/autonomousapps/a-crash-course-in-classpaths-build-l08), you are probably using [`apply(false)`](https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl) or another trick to ensure your plugins are loaded in a [single, central classloader](https://github.com/gradle/gradle/issues/1370).
+
+But even with the `apply(false)` trick and a central classpath, you may still bump into two issues:
+
+* Dependency conflicts.
+  * This is [your usual dependency hell problem](https://youtu.be/oyLBGkS5ICk?t=2510), a widespread and long-standing issue of any software stack, just made slightly worse by plugins having some illusion of isolation and relying on unstable dependencies more easily.
+* Unnecessary build invalidation.
+  * This one is a bit more subtle and more specific to Gradle. Because you have a single classpath for all your plugins where all the work is executed, all the build needs to be invalidated whenever you change something in this classpath, which slows down your debugging loop and CI. 
+
+This is where classloader isolation helps.
+
+## Isolation to the rescue
+
+By isolating your plugin work in a separate classloader, you can avoid both these issues.
+
+Note that it's about isolating the plugin _work_, not the plugin itself. 
+
+At the end of the day, your build needs to interact with your plugin's API and therefore needs to access it. But your build logic doesn't really need to know anything about `antlr`, `kotlinpoet` or `kotlin-compiler-embeddable`.
+
+By moving your work to a separate classloader, you avoid both the aforementioned issues.
+
+* You do not risk dependency conflicts anymore.
+* You can update your work without invalidating your whole build. 
+
+As a bonus, you may even be able to update your build without invalidating your work ([but that's another story](https://github.com/gradle/gradle/issues/31482#issuecomment-3031761784)).
+
+How do we achieve this? I'll share two different solutions, one more traditional, which you will come across most often. Another one I have been working on, which I believe has interesting properties.
+
+Let's dive in.
+
+### Classloader isolation using Workers
+
+In Gradle 5, [Gradle introduced the Worker API](https://docs.gradle.org/5.0/userguide/custom_tasks.html#worker_api).
+
+The Worker API was introduced in order to allow:
+
+* running Tasks in parallel (it's [now possible with configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html#config_cache:intro), but wasn't the case back then).
+* using classloader isolation.
+* using process isolation.
+
+I'll defer to the [official documentation](https://docs.gradle.org/current/userguide/worker_api.html) for the details, but the gist of it is this:
+
+```kotlin
+interface CookingParameters : WorkParameters {
+  val recipe: RegularFileProperty
+  val ingredients: RegularFileProperty
+  val outputFile: RegularFileProperty
+}
+
+abstract class CookingAction : WorkAction<CookingParameters> {
+  override fun execute() {
+    val recipe = parameters.recipe.get().asFile
+    val ingredients = parameters.ingredients.get().asFile
+
+    val meal = cook(recipe, ingredients)
+    outputFile.get().asFile.writeText(meal)
+  }
+}
+
+abstract class CookingTask : DefaultTask() {
+  @get:InputFile
+  abstract val recipe: RegularFileProperty
+
+  @get:InputFile
+  abstract val ingredients: RegularFileProperty
+
+  @get:OutputFile
+  abstract val outputFile: RegularFileProperty
+
+  @get:InputFiles
+  abstract val myClasspath: ConfigurableFileCollection
+
+  @get:Inject
+  abstract fun getWorkerExecutor(): WorkerExecutor
+
+  @TaskAction
+  fun cook() {
+    val workQueue = getWorkerExecutor().classLoaderIsolation {
+      classpath.from(myClasspath)
+    }
+
+    workQueue.submit(MyWorkAction::class.java) {
+      parameters.recipe.set(recipe)
+      parameters.ingredients.set(ingredients)
+      parameters.outputFile.set(outputFile)
+    }
+  }
+}
+```
+
+This works pretty well and is what you will most often while browsing the internet. It also has a few drawbacks:
+
+* there is a bunch of passing around the same input/outputs from the `Task` to the `WorkAction`.
+* the isolation is not 100% effective. Some of your main build classpath is still present in the `WorkAction` classloader. The embedded version of `kotlin-stdlib` too, meaning you can't use [a newer version of Kotlin in your plugin work](https://github.com/gradle/gradle/issues/16345).
+* managing the different classloaders properly requires some non-trivial `compileOnly` and [Configuration](https://github.com/autonomousapps/gradle-glossary?tab=readme-ov-file#configuration) manipulations in your build scripts (not shown here). 
+* [it may leak sometimes](https://github.com/gradle/gradle/issues/18313).
+
+### Classloader isolation using Gratatouille
+
+[Gratatouille](https://github.com/GradleUp/gratatouille/) is a framework to build Gradle plugins in Kotlin. It uses KSP to generate tasks and workers from pure Kotlin functions.
+
+In addition to that, it provides a [classloader isolation mode](https://github.com/GradleUp/gratatouille/?tab=readme-ov-file#classloader-isolation-optional) by creating brand new classloaders for your plugin work and caching them in a shared `BuildService`.
+
+To do this, Gratatouille requires that you publish two different artifacts for your plugin:
+
+* `my-plugin-wiring` contains the Gradle plugin and wiring and should have very few dependencies.
+* `my-plugin-tasks` contains the work, and may have any number of dependencies, including `kotlin-stdlib`.
+
+Define your work using a `@GTask` function:
+
+```kotlin
+@GTask
+internal fun cook(
+    recipe: GInputFile,
+    ingredients: GInputFile,
+    outputFile: GOutputFile
+) { 
+  outputFile.writeText(cook(recipe, ingredients))
+}
+```
+
+Use the `com.gradleup.gratatouille.tasks` plugin to generate the Gradle tasks and workers:
+
+```kotlin
+// my-plugin-tasks/build.gradle.kts
+plugins {
+  id("com.gradleup.gratatouille.tasks")
+}
+
+dependencies {
+  // Add dependencies needed to do your task work
+  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.2.0")
+  // do **not** add gradleApi() here
+}
+
+gratatouille {
+  // Enable code generation
+  codeGeneration {
+    // Enables classloader isolation
+    classLoaderIsolation()
+  }
+}
+```
+
+In a separate module, you can now depend on your work using the `gratatouille` configuration:
+
+
+```kotlin
+// my-plugin-wiring/build.gradle.kts
+plugins {
+    id("com.gradleup.gratatouille.wiring")
+}
+
+dependencies {
+  gratatouille(project(":my-plugin-tasks"))
+  
+  // Add the version of Gradle you want to compile against 
+  compileOnly("dev.gradleplugins:gradle-api:8.0")
+}
+```
+
+You can now use your generated tasks from your plugin code:
+
+```kotlin
+abstract class MyPlugin : Plugin<Project> {
+  override fun apply(project: Project) {
+    project.registerCookTask(
+      recipe = TODO(),
+      ingredients = TODO()
+    ) 
+  }
+}
+```
+
+With Gratatouille, you can: 
+
+* avoid the boilerplate coming with the `Worker` API.
+* use the version of `kotlin-stdlib` you'd like in your plugin work.
+* write plugin work as regular Gradle projects.
+
+There is a bit of initial setup work, but in the long run, you have the guarantee that all your plugin code is run isolated from the rest of your build and won't trigger unnecessary invalidations.
+
+## Closing thoughts
+
+Whether you're using the Worker API or Gratatouille, I would recommend isolating your plugin work.
+
+The more plugins isolate their work, the less likely you are to run into dependency conflicts. 
+
+Bundled with [central classpath management](https://github.com/gradle/gradle/issues/1370), this could ultimately lead to true plugin isolation and safer and faster build systems for everyone. 
+
+---
+Photo from [Rob Mowe](https://www.pexels.com/photo/alpine-ski-touring-in-trentino-south-tyrol-29022012/)
