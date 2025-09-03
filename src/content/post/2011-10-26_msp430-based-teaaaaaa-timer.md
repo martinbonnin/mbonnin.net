@@ -5,7 +5,7 @@ publishDate: 2011-10-26T00:00:00Z
 image: '~/assets/images/2011-10-26_msp430-based-teaaaaaa-timer/thumbnail.jpg'
 ---
 
-My [last project](http://mbonnin.net/2011/01/05/bwaaaaaaaaaaaaaaalarm-clock/) was fun but a bit overkill. Embedding a beagle board to make a speaking alarm clock is sure very flexible and evolutive but does not make the cheapest clock ever... It's been some time I wanted to learn about microcontrollers so I decided it was high time to start and make the next project a bit more optimized.
+My [last project](http://mbonnin.net/2011-01-05_bwaaaaaaaaaaaaaaalarm-clock/) was fun but a bit overkill. Embedding a beagle board to make a speaking alarm clock is sure very flexible and evolutive but does not make the cheapest clock ever... It's been some time I wanted to learn about microcontrollers so I decided it was high time to start and make the next project a bit more optimized.
 TI having released a 4,30$ dev board last year (shipping and USB cable included !), my choice went to the MSP430 line of MCUs. I have never used an ATmega or a PIC before but I can say I am quite happy with the MSP430. Architecture is lean and clean, there's a large range of devices available and power consumption is impressively low. Below are the major steps of the project. You'll find source code and schematics [here](http://mbonnin.net/wp-content/uploads/2011/09/timer.tar.gz) or a bit later with the explanations.
 Of course, this project had to involve a rabbit somewhere...
 
