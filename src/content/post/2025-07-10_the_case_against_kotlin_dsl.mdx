@@ -150,9 +150,9 @@ At the end of the day, [Now In Android configuration time went from 12.724s to 0
 
 ### It comes with incompatible defaults
 
-`kotlin-dsl`, by adding `gradleApi()` to your dependencies, always compiles your plugin against the version of Gradle that you are using, instead of using the [version of Gradle that you are targeting](https://github.com/gradle/gradle/issues/1835). 
+`kotlin-dsl`, by adding `gradleApi()` to your dependencies, always compiles your plugin against the version of Gradle that you are using, instead of using the [version of Gradle that you are targeting](https://github.com/gradle/gradle/issues/1835).
 
-Want your plugin to be usable with Gradle 8? It's on you to make sure you're not calling any unavailable API.  
+Want your plugin to be usable with Gradle 8? It's on you to make sure you're not calling any unavailable API.
 
 `kotlin-dsl` also [configures the Kotlin compatibility flags for the current version of Gradle](https://github.com/gradle/gradle/blob/e16096755271f495a1e4c4a9a1cbe13c104c03ac/platforms/core-configuration/kotlin-dsl-plugins/src/main/kotlin/org/gradle/kotlin/dsl/plugins/dsl/KotlinDslCompilerPlugins.kt#L54). If you want to target an older version of Gradle, with an older embedded Kotlin version, you need to override this configuration:
 
