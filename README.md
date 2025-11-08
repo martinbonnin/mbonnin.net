@@ -1,16 +1,22 @@
 Dev:
 
-```
+```shell
 npm ci
 npm run dev
 ```
 
 Deploy:
 
-```
+```shell
 npm ci
 npm run build
 firebase deploy --only hosting
+```
+
+Fix formatting:
+
+```shell
+npm run fix:prettier
 ```
 
 Features:
