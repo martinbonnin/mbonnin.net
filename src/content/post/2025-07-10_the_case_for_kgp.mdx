@@ -7,11 +7,11 @@ image: '~/assets/images/2025-08-10_the_case_for_kgp/thumbnail.jpg'
 
 This is a follow-up to [my previous post about `kotlin-dsl`](../2025-07-10_the_case_against_kotlin_dsl).
 
-If you want to learn all the reasons **not** to use `kotlin-dsl`, you should read that first. 
+If you want to learn all the reasons **not** to use `kotlin-dsl`, you should read that first.
 
-If you don't want all the gory details but just something that works, read on as I share my current preferred setup for writing Gradle plugins. 
+If you don't want all the gory details but just something that works, read on as I share my current preferred setup for writing Gradle plugins.
 
-As with everything Gradle, there are many ways to do it, but after five years of writing Gradle plugins in Kotlin, I have settled on a few habits that I think work well. They work for convention plugins or redistributed plugins. I hope they can work for you too! 
+As with everything Gradle, there are many ways to do it, but after five years of writing Gradle plugins in Kotlin, I have settled on a few habits that I think work well. They work for convention plugins or redistributed plugins. I hope they can work for you too!
 
 # The setup
 
@@ -21,7 +21,7 @@ Here is a `build.gradle.kts` for a plugin compatible with Gradle 8.0+ and Java 1
 
 ```kotlin
 plugins {
-  // Creates plugin descriptors, markers and publications 
+  // Creates plugin descriptors, markers and publications
   id("java-gradle-plugin")
   // Latest version of KGP
   id("org.jetbrains.kotlin.jvm").version("2.2.0")
@@ -34,10 +34,10 @@ compatPatrouille {
   // Feel free to bump it if your JAVA_HOME is higher.
   java(17)
   // Target the version of Kotlin based on desired Gradle compatibility.
-  // The [Gradle-Kotlin compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html#kotlin) 
-  // explains the mapping. 
-  // 
-  // For example, if you want to support Gradle 8.0+, 
+  // The [Gradle-Kotlin compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html#kotlin)
+  // explains the mapping.
+  //
+  // For example, if you want to support Gradle 8.0+,
   // you should use Kotlin 1.8.0.
   kotlin("1.8.0")
 }
@@ -47,8 +47,8 @@ gradlePlugin {
     create("com.example.my-plugin") {
       id = "com.example.my-plugin"
       implementationClass = "com.example.MyPlugin"
-      // No need to set description or displayName, this is only used by 
-      // the Gradle publish plugin. 
+      // No need to set description or displayName, this is only used by
+      // the Gradle publish plugin.
       // description = "A plugin to do awesome things"
       // displayName = "Awesome Plugin"
     }
@@ -57,32 +57,32 @@ gradlePlugin {
 
 // And now for the less obvious part
 
-// Remove gradleApi() from the dependencies as you typically want to 
-// target a different Gradle version that the one you are using to 
+// Remove gradleApi() from the dependencies as you typically want to
+// target a different Gradle version that the one you are using to
 // build your plugin.
 configurations.get("api").dependencies.removeIf {
   it is FileCollectionDependency
 }
 
 // Add the version of the Gradle API you are targeting.
-// Note it's a compileOnly dependency as the runtime version is decided 
+// Note it's a compileOnly dependency as the runtime version is decided
 // by your consumers.
 dependencies {
   compileOnly("dev.gradleplugins:gradle-api:8.0")
 }
 ```
 
-Most of the build script is self-explanatory, but that last bit is a bit more subtle. 
+Most of the build script is self-explanatory, but that last bit is a bit more subtle.
 
-`"java-gradle-plugin"` is [doing a lot of things under the hood](https://docs.gradle.org/current/userguide/java_gradle_plugin.html). Especially, it's adding `gradleApi()` automatically to the `api` configuration. 
+`"java-gradle-plugin"` is [doing a lot of things under the hood](https://docs.gradle.org/current/userguide/java_gradle_plugin.html). Especially, it's adding `gradleApi()` automatically to the `api` configuration.
 
-This is dangerous because it makes it easy to use newer symbols than the one you want to be compatible with, for an example the `ConfigurationContainer.resolvable()`, only [available in Gradle 8.4+](https://docs.gradle.org/current/javadoc/org/gradle/api/artifacts/ConfigurationContainer.html#resolvable(java.lang.String)_).
+This is dangerous because it makes it easy to use newer symbols than the one you want to be compatible with, for an example the `ConfigurationContainer.resolvable()`, only [available in Gradle 8.4+](<https://docs.gradle.org/current/javadoc/org/gradle/api/artifacts/ConfigurationContainer.html#resolvable(java.lang.String)_>).
 
 What's more, this dependency is only used at compile time. Making it an `api` dependency leaks it downstream.
 
 By adding the [Nokee redistributed artifacts](https://docs.nokee.dev/manual/gradle-plugin-development.html#sec:gradle-dev-redistributed-gradle-api) as a `compileOnly` dependency, we can ensure that we are not using newer symbols and that the dependency will not leak.
 
-This is really the gist of it. 
+This is really the gist of it.
 
 No `kotlin-dsl`, no precompiled script plugins, no sam-with-receiver, no special compiler flags. Just a plain Kotlin JVM project with a small twist to support "java-gradle-plugin."
 
@@ -117,7 +117,7 @@ nmcpAggregation {
 
 dependencies {
   // Add ourselves as a dependency on the aggregation.
-  // It's a bit awkward in a single project build but makes more sense 
+  // It's a bit awkward in a single project build but makes more sense
   // once you start adding more projects.
   nmcpAggregation(project)
 }
@@ -125,7 +125,7 @@ dependencies {
 
 ## Convention plugins
 
-If you are building convention plugins, the setup is the same. No need for `kotlin-dsl`. The main difference, especially if your plugin is an included build, is that you control your Gradle version. 
+If you are building convention plugins, the setup is the same. No need for `kotlin-dsl`. The main difference, especially if your plugin is an included build, is that you control your Gradle version.
 
 You can skip the Nokee redistributed artifacts and use the default `gradleApi()`.
 
@@ -155,20 +155,19 @@ Configuring `compat-patrouille` works great for your own code but doesn't check 
 
 `compat-patrouille` has tools to help you check your plugin dependencies are also compatible:
 
-
 ```kotlin
 compatPatrouille {
-  // This guarantees our plugin classes do not use > 1.8.0 symbols 
+  // This guarantees our plugin classes do not use > 1.8.0 symbols
   // or metadata.
   // But it doesn't say anything about dependencies.
   kotlin("1.8.0")
-  
+
   // Fail the build if any dependency exposes incompatible Kotlin metadata.
   // Thanks to Kotlin n + 1 forward compatibility, this is any library compiled
   // Kotlin 2.0+ in this example
   checkApiDependencies(Severity.ERROR)
   // Fail the build if any dependency relies on an incompatible kotlin-stdlib version.
-  // This is any library relying on kotlin-stdlib:1.9.0+ in this example. 
+  // This is any library relying on kotlin-stdlib:1.9.0+ in this example.
   checkRuntimeDependencies(Severity.ERROR)
 }
 ```
@@ -193,7 +192,7 @@ Execution failed for task ':build-logic:compatPatrouilleCheckmainRuntimeDependen
 
 That's it! We can probably find more things to tweak, but the above should give you good foundations to start building your own Gradle plugins.
 
-There are many ways to write Gradle plugins. At the end of the day, do what works for you. If you end up using anything described here, feedback is very welcome! 
+There are many ways to write Gradle plugins. At the end of the day, do what works for you. If you end up using anything described here, feedback is very welcome!
 
 ---
 
