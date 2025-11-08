@@ -15,7 +15,7 @@ Let's dive in!
 
 ## Investigating your build with breakpoints
 
-I have used this extensively during my [multiple](https://github.com/adamko-dev/dokkatoo/issues/165) [journeys](https://github.com/GradleUp/shadow/issues/1540#issuecomment-3144686596) in the [Gradle variant aware dependency resolution algorithm](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm) ([source code](https://github.com/gradle/gradle/blob/cb0c615fb8e3690971bb7f89ad80f58943360624/platforms/software/dependency-management/src/main/java/org/gradle/api/internal/attributes/matching/MultipleCandidateMatcher.java#L71)). Breakpoints allow you to inspect exactly what is happening in your build at runtime.
+I have used this extensively during my [multiple](https://github.com/adamko-dev/dokkatoo/issues/165) [journeys](https://github.com/GradleUp/shadow/issues/1540#issuecomment-3144686596) in the [Gradle variant aware dependency resolution algorithm](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm) ([source code](https://github.com/gradle/gradle/blob/cb0c615fb8e3690971bb7f89ad80f58943360624/platforms/software/dependency-management/src/main/java/org/gradle/api/internal/attributes/matching/MultipleCandidateMatcher.java#L71)). Breakpoints allow you to inspect exactly what is happening in your build at runtime in the Gradle code.
 
 Start by cloning the Gradle repository and checkout the version you want to debug:
 
@@ -94,7 +94,7 @@ When [Aurimas](https://androiddev.social/@Aurimas/) said [configuration time sho
 
 To benchmark performance, I needed more than breakpoints or heap dumps. I needed a profiler.
 
-Like described in [Aurimas profiling blog post](https://www.liutikas.net/2022/06/01/Profiling-The-Good-Kind.html), I turned to [gradle-profiler](https://github.com/gradle/gradle-profiler/) for nice flame charts. Unlike Aurimas, I used to `async_profiler` instead of yourkit. I've read [things about it not being biased](https://psy-lob-saw.blogspot.com/2016/02/why-most-sampling-java-profilers-are.html), but to be honest, I'm not 100% sure why. If you have opinions there, please share!
+Like described in [Aurimas profiling blog post](https://www.liutikas.net/2022/06/01/Profiling-The-Good-Kind.html), I turned to [gradle-profiler](https://github.com/gradle/gradle-profiler/) for nice flame charts. Unlike Aurimas, I used  `async_profiler` instead of yourkit. I've read [things about it not being biased](https://psy-lob-saw.blogspot.com/2016/02/why-most-sampling-java-profilers-are.html), but to be honest, I'm not 100% sure why. If you have opinions there, please share!
 
 In all cases, the setup is very similar.
 
