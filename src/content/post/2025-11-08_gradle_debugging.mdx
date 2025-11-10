@@ -9,7 +9,7 @@ Gradle builds can be intimidating at first. But if you ever debugged a JVM or An
 
 Below is a collection of recipes for how I typically debug and profile my Gradle builds, from easiest to more advanced. I hope they can serve you well.
 
-We'll learn how to set breakpoints, make a heap dump and a flame graph of a build, each time starting from a real life question. And even build your very own Gradle distribution!
+We'll learn how to set breakpoints, make a heap dump and a flame graph of a build, each time starting from a real-life question. And even build your very own Gradle distribution!
 
 Let's dive in!
 
@@ -26,6 +26,8 @@ cd gradle
 # At the time of writing, the latest version of Gradle is 9.2.0
 git checkout v9.2.0
 ```
+
+_Note: In some cases you don't need to download the Gradle code and you can just debug your current task in your main build. I find that the setup where you download the Gradle codebase is more reliable. Plus being able to navigate the codebase you put the breakpoints in is helpful._
 
 Open the Gradle project in IntelliJ. Wait for the IDE sync to happen (might take a bit of time) and create a "remote debug" run configuration with the default parameters:
 
@@ -80,7 +82,7 @@ Start the build and once prompted for it, start VisualVM (download it [here](htt
 
 ![visualvm](../../assets/images/2025-11-08-gradle_debugging/visualvm.png)
 
-From there you can do all kind of fun investigations such as monitoring the heap and [Metaspace](https://wiki.openjdk.org/display/HotSpot/Metaspace) (useful for debugging [classloader leaks](https://github.com/gradle/gradle/issues/18313#issuecomment-3289476588)).
+From there you can do all kinds of fun investigations such as monitoring the heap and [Metaspace](https://wiki.openjdk.org/display/HotSpot/Metaspace) (useful for debugging [classloader leaks](https://github.com/gradle/gradle/issues/18313#issuecomment-3289476588)).
 
 You can also dump your heap by clicking "Heap Dump".
 
@@ -126,7 +128,7 @@ After some time, profiling finished and produces nice flame charts in the `profi
 
 ![flamechart](../../assets/images/2025-11-08-gradle_debugging/flamechart.jpg)
 
-That was surprising. The transform didn't really run. Just computing the transform chains was taking a lot of time. Thankfully, [Anze](https://www.linkedin.com/in/an%C5%BEe-sodja-00381019b/overlay/about-this-profile/), from the Gradle slack [recognized the pattern immediately](https://www.linen.dev/s/gradle-community/t/32683414/i-m-https-bsky-app-profile-mbonnin-net-post-3m4sm2pn5hc2l-pr#aa9557b4-e434-42b1-b0e4-23a1bf10a8cb). This issue was just [fixed in Gradle 9.2.0](https://github.com/gradle/gradle/pull/34836) a couple of months ago and I hadn't updated yet.
+That was surprising. The transform didn't really run. Just computing the transform chains was taking a lot of time. Thankfully, [Anze](https://www.linkedin.com/in/an%C5%BEe-sodja-00381019b/overlay/about-this-profile/), from the Gradle slack [recognized the pattern immediately](https://www.linen.dev/s/gradle-community/t/32683414/i-m-https-bsky-app-profile-mbonnin-net-post-3m4sm2pn5hc2l-pr#aa9557b4-e434-42b1-b0e4-23a1bf10a8cb). This issue was just [fixed in Gradle 9.2.0](https://github.com/gradle/gradle/pull/34836) a couple of months ago, and I hadn't updated yet.
 
 Once updated, my configuration time went down from ~1s per project to ~350ms per project. Much better! All thanks to flamegraphs.
 
