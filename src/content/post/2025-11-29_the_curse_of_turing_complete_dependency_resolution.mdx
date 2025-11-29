@@ -68,7 +68,7 @@ a `runtimeElements` variant. More complex libraries like Android or KMP librarie
 
 Each variant has attributes.
 
-Attributes 
+Attributes
 allow ["variant-aware" dependency resolution](https://docs.gradle.org/current/userguide/variant_aware_resolution.htm).
 
 The consumer may decide to download a single "variant" of the library. In the example above, the Kotlin compiler needs
@@ -78,14 +78,14 @@ needed at compile time (but are needed at runtime).
 
 This is great! As a library author, you can now expose several variants of your libraries and the consumer can choose:
 
-* `api` vs `runtime` (similar to
+- `api` vs `runtime` (similar to
   Maven [scopes](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope))
-* Java version
-* Gradle version
-* Kotlin version
-* Packaging (shadowed, external, embedded)
-* sources vs. bytecode
-* etc. — the sky is the limit!
+- Java version
+- Gradle version
+- Kotlin version
+- Packaging (shadowed, external, embedded)
+- sources vs. bytecode
+- etc. — the sky is the limit!
 
 ## The attributes jungle
 
@@ -106,11 +106,11 @@ things get a little bit more interesting.
 
 The `org.gradle.usage` attribute may take multiple values:
 
-* `java-api`
-* `java-runtime`
-* `kotlin-metadata`
-* `kotlin-api`
-* `kotlin-runtime`
+- `java-api`
+- `java-runtime`
+- `kotlin-metadata`
+- `kotlin-api`
+- `kotlin-runtime`
 
 The Kotlin Gradle Plugin (KGP) reused the `org.gradle.usage` attribute and put custom values. Is that allowed? Probably. Will that break
 some consumer somewhere that wasn't expecting that new value? Hopefully not.
@@ -126,7 +126,7 @@ This is probably my main gripe against Gradle Metadata.
 The attributes also
 have [disambiguation and compatibility rules](https://docs.gradle.org/current/userguide/variant_attributes.html#sec:attribute-matching).
 They are useful to fall back to a compatible library in case no exact match is found. For example, an Android app may
-consume a JVM library. 
+consume a JVM library.
 
 The problem is that because any plugin may add their own attributes, any plugin may also add their rules. This is code shipped inside plugins, that may change with different versions of the plugins.
 
@@ -148,16 +148,15 @@ Putting aside the disambiguation and compatibility rules, the resolution algorit
 
 It's detailed in [the docs](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm). The algorithm contains 6 steps, 7 "for" loops, and ~20 "if" conditions. (Someone please compute the [Cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity) 🙏)
 
-The fact that missing attributes are considered as "compatible" trips me up every time. Same for the `Candidates that lack the extra attribute are preferred.` part.  
+The fact that missing attributes are considered as "compatible" trips me up every time. Same for the `Candidates that lack the extra attribute are preferred.` part.
 
+Following that algorithm and trying to determine the result of dependency resolution in a KMP module requires a lot of effort. It took more than a year before we landed on a solution for a [resolution error in the Dokka plugin](https://github.com/adamko-dev/dokkatoo/issues/165).
 
-Following that algorithm and trying to determine the result of dependency resolution in a KMP module requires a lot of effort. It took more than a year before we landed on a solution for a [resolution error in the Dokka plugin](https://github.com/adamko-dev/dokkatoo/issues/165). 
-
-To this day, I'm not 100% confident that the solution won't trigger another weird edge case when used with an exotic combination of plugins...  
+To this day, I'm not 100% confident that the solution won't trigger another weird edge case when used with an exotic combination of plugins...
 
 ## Interop is (almost) impossible
 
-Because of everything mentioned above, it's borderline impossible to implement variant‑aware dependency resolution outside Gradle. 
+Because of everything mentioned above, it's borderline impossible to implement variant‑aware dependency resolution outside Gradle.
 
 The algorithm is complex, and there are lots of attributes. Even if you manage to get that part right, you need to replicate all the ever‑changing logic scattered across every Gradle plugin out there.
 
