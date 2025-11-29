@@ -1,0 +1,178 @@
+---
+title: 'Is Gradle Metadata a better POM?'
+excerpt: 'The curse of Turing complete dependency resolution'
+publishDate: 2025-11-30T00:00:00Z
+image: '~/assets/images/2025-11-29_the_curse_of_turing_complete_dependency_resolution/thumbnail.jpg'
+---
+
+The Maven [POM format](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html) has been around for a
+very long time. If you wonder why your local repository is called `~/.m2`, it's because it was introduced with Maven 2,
+more than [20 years ago](https://maven.apache.org/docs/history.html)! That's quite an achievement. All that time,
+Sonatype and Maven Central have been serving the JVM
+community ([from a single machine up until 2011](https://www.sonatype.com/blog/2011/07/central-grows-up-see-the-history)!)
+using the same package format.
+
+Is that package format still good in 2025? For some use cases yes, for
+others [no](https://www.liutikas.net/2025/06/12/Pom-Pom-Pom.html).
+
+Gradle metadata is a package
+format [introduced by Gradle in 2019](https://discuss.gradle.org/t/feedback-needed-gradle-module-metadata/30842). It's
+considerably newer. Is it better? Let's see.
+
+## Gradle metadata
+
+Gradle metadata work with `.module` files. By default Gradle will use it instead of the `.pom` file if it's present.
+
+The `.module` format is itself
+specified [here](https://github.com/gradle/gradle/blob/master/platforms/documentation/docs/src/docs/design/gradle-module-metadata-1.0-specification.md).
+
+If you take a look at the [Gratatouille](https://github.com/GradleUp/gratatouille/) `.module`
+file ([Maven Central](https://repo1.maven.org/maven2/com/gradleup/gratatouille/gratatouille-gradle-plugin/0.1.3/gratatouille-gradle-plugin-0.1.3.module)),
+you'll find a JSON file like so:
+
+```json5
+// gratatouille-gradle-plugin-0.1.3.module
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.gradleup.gratatouille",
+    "module": "gratatouille-gradle-plugin",
+    "version": "0.1.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        ...
+      ]
+      "files": [
+        {
+          "name": "gratatouille-gradle-plugin-0.1.3.jar",
+// ...
+```
+
+It contains the Maven coordinates and variants. You can see the `apiElements` variant above. The full file also contains
+a `runtimeElements` variant. More complex libraries like Android or KMP libraries will contain a lot more (one variant per platform, etc...).
+
+Each variant has attributes.
+
+Attributes 
+allow ["variant-aware" dependency resolution](https://docs.gradle.org/current/userguide/variant_aware_resolution.htm).
+
+The consumer may decide to download a single "variant" of the library. In the example above, the Kotlin compiler needs
+the `apiElements` variant when building against your library. At runtime, though, you'll need to use the `runtimeElements`
+variant. The `runtimeElements` variant typically contains more jars since all your "implementation" dependencies are not
+needed at compile time (but are needed at runtime).
+
+This is great! As a library author, you can now expose several variants of your libraries and the consumer can choose:
+
+* `api` vs `runtime` (similar to
+  Maven [scopes](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope))
+* Java version
+* Gradle version
+* Kotlin version
+* Packaging (shadowed, external, embedded)
+* sources vs. bytecode
+* etc. — the sky is the limit!
+
+## The attributes jungle
+
+Because the sky is the limit, it's tempting to add or modify the attributes. So much freedom!
+
+In the example above, most of the attributes are in the `org.gradle` namespace
+and [specified by Gradle](https://docs.gradle.org/current/userguide/variant_attributes.html#sec:standard-attributes).
+I'd argue it could use a bit more detail, but it's there.
+
+There's also an `org.jetbrains.kotlin.platform.type` attribute added by the Kotlin Gradle Plugin. The closest to a
+specification is
+the [KDoc for KotlinPlatformType](https://kotlinlang.org/api/kotlin-gradle-plugin/kotlin-gradle-plugin-api/org.jetbrains.kotlin.gradle.plugin/-kotlin-platform-type/),
+which is quite good, but you still have to do a little bit of exploration.
+
+If you look at a [KMP
+`.module` file](https://repo1.maven.org/maven2/com/apollographql/apollo/apollo-api/5.0.0-alpha.3/apollo-api-5.0.0-alpha.3.module),
+things get a little bit more interesting.
+
+The `org.gradle.usage` attribute may take multiple values:
+
+* `java-api`
+* `java-runtime`
+* `kotlin-metadata`
+* `kotlin-api`
+* `kotlin-runtime`
+
+The Kotlin Gradle Plugin (KGP) reused the `org.gradle.usage` attribute and put custom values. Is that allowed? Probably. Will that break
+some consumer somewhere that wasn't expecting that new value? Hopefully not.
+
+And what about all the other attributes? To this day, I have no idea what `org.gradle.jvm.environment` is used for...
+
+It's really hard to look at a `.module` file and understand what each part does.
+
+## Turing completeness
+
+This is probably my main gripe against Gradle Metadata.
+
+The attributes also
+have [disambiguation and compatibility rules](https://docs.gradle.org/current/userguide/variant_attributes.html#sec:attribute-matching).
+They are useful to fall back to a compatible library in case no exact match is found. For example, an Android app may
+consume a JVM library. Those rules are implemented by plugins.
+
+Yup, you read that right. Dependency resolution may behave differently across builds depending on the set of
+installed plugins. This makes resolution
+errors [really hard to debug and understand](https://github.com/gradle/gradle/issues/12126).
+
+Something [adds a compatibility rule that breaks your dependency resolution](https://github.com/GradleUp/shadow/issues/1540#issuecomment-3144686596)?
+Good luck figuring that out.
+
+Want to understand what KGP does with the `kotlin-runtime` above? You'll have to dig into
+the [source code of the Kotlin Gradle Plugin](https://github.com/Jetbrains/kotlin/blob/0cf9a6b21e315fb8825cdc1b220db36d14907d5b/libraries/tools/kotlin-gradle-plugin/src/common/kotlin/org/jetbrains/kotlin/gradle/plugin/mpp/KotlinUsages.kt#L191).
+
+Of course, none of this is specified; it's all implementation details spread across multiple repos.
+
+## Algorithm
+
+Putting aside the disambiguation and compatibility rules, the resolution algorithm itself is complex.
+
+It's detailed in [the docs](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm): the algorithm contains 6 steps, 7 "for" loops, and ~20 "if" conditions.
+
+Following that algorithm and trying to determine the result of dependency resolution in a KMP module requires a lot of effort. It took more than a year before we landed on a solution for a [resolution error in the Dokka plugin](https://github.com/adamko-dev/dokkatoo/issues/165). 
+
+To this day, I'm not 100% confident that the solution won't trigger another weird edge case when used with an exotic combination of plugins...  
+
+## Interop is (almost) impossible
+
+Because of everything mentioned above, it's borderline impossible to implement variant‑aware dependency resolution outside Gradle. 
+
+The algorithm is complex, and there are lots of attributes. Even if you manage to get that part right, you need to replicate all the ever‑changing logic scattered across every Gradle plugin out there.
+
+The Amper team has a [Gradle‑metadata‑aware resolver](https://github.com/JetBrains/amper/blob/45b8ce9f1ed8d652b7ce9742b85bbbc8422d0022/sources/dependency-resolution/src/org/jetbrains/amper/dependency/resolution/resolver.kt#L86), but I doubt it supports all the possible edge cases. 
+
+The Bazel team gave up and wrapped [Gradle in a separate process](https://github.com/bazel-contrib/rules_jvm_external/pull/1357) 
+
+Overall, unlike Maven POMs, which are natively supported by Maven, Bazel, Gradle, and probably many other build systems, Gradle Metadata is much harder to interoperate with.
+
+## What now?
+
+I wish I had a simple call to action to close this post, but unfortunately, I don't. POM is too simple. Gradle Metadata
+is too complex. How do we design something in between? I don't know.
+
+At a very high level, this is the same "declarative vs. imperative" age‑old question. POM is declarative and lacks
+flexibility. Gradle Metadata is flexible but too complex. On the build systems front, we seem to be leaning back into "declarative"
+again with initiatives such as [Amper](https://amper.org/) or [Declarative Gradle](https://declarative.gradle.org/).
+
+Shall we try to do the same for our package managers?
+
+---
+
+Photo from [Priscilla Du Preez 🇨🇦](https://unsplash.com/photos/one-red-apple-CoqJGsFVJtM)
