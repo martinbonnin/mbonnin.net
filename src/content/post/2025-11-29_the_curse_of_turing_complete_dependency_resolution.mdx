@@ -126,7 +126,9 @@ This is probably my main gripe against Gradle Metadata.
 The attributes also
 have [disambiguation and compatibility rules](https://docs.gradle.org/current/userguide/variant_attributes.html#sec:attribute-matching).
 They are useful to fall back to a compatible library in case no exact match is found. For example, an Android app may
-consume a JVM library. Those rules are implemented by plugins.
+consume a JVM library. 
+
+The problem is that because any plugin may add their own attributes, any plugin may also add their rules. This is code shipped inside plugins, that may change with different versions of the plugins.
 
 Yup, you read that right. Dependency resolution may behave differently across builds depending on the set of
 installed plugins. This makes resolution
@@ -140,11 +142,14 @@ the [source code of the Kotlin Gradle Plugin](https://github.com/Jetbrains/kotli
 
 Of course, none of this is specified; it's all implementation details spread across multiple repos.
 
-## Algorithm
+## Complex algorithms
 
 Putting aside the disambiguation and compatibility rules, the resolution algorithm itself is complex.
 
-It's detailed in [the docs](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm): the algorithm contains 6 steps, 7 "for" loops, and ~20 "if" conditions.
+It's detailed in [the docs](https://docs.gradle.org/current/userguide/variant_aware_resolution.html#sec:abm-algorithm). The algorithm contains 6 steps, 7 "for" loops, and ~20 "if" conditions. (Someone please compute the [Cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity) 🙏)
+
+The fact that missing attributes are considered as "compatible" trips me up every time. Same for the `Candidates that lack the extra attribute are preferred.` part.  
+
 
 Following that algorithm and trying to determine the result of dependency resolution in a KMP module requires a lot of effort. It took more than a year before we landed on a solution for a [resolution error in the Dokka plugin](https://github.com/adamko-dev/dokkatoo/issues/165). 
 
@@ -156,9 +161,9 @@ Because of everything mentioned above, it's borderline impossible to implement v
 
 The algorithm is complex, and there are lots of attributes. Even if you manage to get that part right, you need to replicate all the ever‑changing logic scattered across every Gradle plugin out there.
 
-The Amper team has a [Gradle‑metadata‑aware resolver](https://github.com/JetBrains/amper/blob/45b8ce9f1ed8d652b7ce9742b85bbbc8422d0022/sources/dependency-resolution/src/org/jetbrains/amper/dependency/resolution/resolver.kt#L86), but I doubt it supports all the possible edge cases. 
+The Amper team has a [Gradle‑metadata‑aware resolver](https://github.com/JetBrains/amper/blob/45b8ce9f1ed8d652b7ce9742b85bbbc8422d0022/sources/dependency-resolution/src/org/jetbrains/amper/dependency/resolution/resolver.kt#L86), but I doubt it supports all the possible edge cases. (Please prove me wrong!)
 
-The Bazel team gave up and wrapped [Gradle in a separate process](https://github.com/bazel-contrib/rules_jvm_external/pull/1357) 
+The Bazel team gave up and instead is wrapping [Gradle in a separate process, just for dependency resolution](https://github.com/bazel-contrib/rules_jvm_external/pull/1357).
 
 Overall, unlike Maven POMs, which are natively supported by Maven, Bazel, Gradle, and probably many other build systems, Gradle Metadata is much harder to interoperate with.
 
