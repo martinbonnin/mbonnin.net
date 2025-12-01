@@ -12,7 +12,7 @@ export const headerData = {
     },
   ],
   socialLinks: [
-    { ariaLabel: 'Bluesky', icon: 'tabler:brand-bluesky', href: 'https://bsky.app/profile/hcmartin.bsky.social' },
+    { ariaLabel: 'Bluesky', icon: 'tabler:brand-bluesky', href: 'https://bsky.app/profile/mbonnin.net' },
     { ariaLabel: 'Mastodon', icon: 'tabler:brand-mastodon', href: 'https://mastodon.mbonnin.net/@mb' },
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/martinbonnin/' },
   ],
