@@ -1,0 +1,156 @@
+---
+title: 'GraphQL-over-REST'
+excerpt: 'The best of both worlds'
+publishDate: 2025-12-15T00:00:00Z
+image: '~/assets/images/2025-12-15_graphql_over_rest/thumbnail.jpg'
+---
+
+[GraphQL](http://graphql.org) is 10 years old!
+
+In those ten years, the technology has been compared to [REST](https://en.wikipedia.org/wiki/REST) countless times. Here are a few examples:
+
+* [GraphQL vs. REST in the real world](https://www.reddit.com/r/graphql/comments/144esgy/graphql_vs_rest_in_the_real_world/) - Reddit
+* [What’s the Difference Between GraphQL and REST?](https://aws.amazon.com/compare/the-difference-between-graphql-and-rest/) - Amazon
+* [GraphQL, tRPC, REST and more - Pick Your Poison](https://www.youtube.com/watch?v=ZfccwYUD8H0) - Theo - t3.gg
+* [GraphQL vs REST: What's the Difference and When Should You Use Each?](https://www.youtube.com/watch?v=2wz19HOyu1w) - Postman
+* and many, many more, the list goes on...
+
+If you are with fellow API developers and start lacking topics of discussion, this topic never disappoints. Ask the question and people will start taking sides and debate which one is better. REST is simpler! GraphQL is more type-safe! etc... Fun times!
+
+What if they supplemented each other, though? 
+
+What if, instead of working against each other, both technologies could work hand in hand for a better, more secure and more performant API future? What if GraphQL was the perfect tool to build your REST APIs?
+
+You may say I'm a dreamer? I hope I'm not the only one.
+
+## 🥊 GraphQL vs REST 
+
+Let's do the typical comparison exercise. For the sake of simplicity, I won't go into every detail like BFFs, type safety, etc.. At a high level, it'll look something like this:
+
+| Trait          | REST                                               | GraphQL                                                                             |
+|----------------|----------------------------------------------------|-------------------------------------------------------------------------------------|
+| Predictability | 🏆 high (only a finite set of requests to monitor) | low (potentially infinite combinations)                                             |
+| Cacheability   | 🏆 high (`GET` requests)                           | low (`POST` requests)                                                               |
+| Observability  | 🏆 high (standard HTTP methods and status codes)   | low ([200 ok memes](https://www.reddit.com/r/ProgrammerHumor/comments/q4g93s/why/)) |
+| Friction       | high (every UI change requires a backend change)   | 🏆 low (clients can request data)                                                   | 
+| Latency        | high (multiple roundtrips)                         | 🏆 low (single rountrip)                                                            |
+| Lifecycle      | per-resource (`/api/v1/user`)                      | 🏆 per-field                                                                        |
+
+The attentive reader will notice I completely skimmed over "complexity". Being a frontend developer myself, it is **a lot** easier for me to write an [implementation first](https://jordaneldredge.com/implementation-first/) server using something like [Apollo Kotlin Execustion](https://github.com/apollographql/apollo-kotlin-execution) than trying to serialize things using Jackson and Spring. I'd say GraphQL is a lot easier for me. But I understand different people will have different points of views here, and this deserves a separate post.
+
+**REST wins at**:
+* Predictability
+* Cacheability
+* Observability 
+
+**GraphQL wins at**:
+* Lower friction
+* Lower latency 
+* Lifecycle management
+
+
+Interestingly, their forces and weakness are almost orthogonal. 
+
+If you're building a system for millions of users, it's easy to see how cacheability and predictability win over friction. 
+
+Sure, it's a bit more friction for your frontend team. They'll have to request new fields being added to the server, hope that the documentation is updated in time and then parse the resources, making sure to do null check on every field. Sure it's a bit cumbersome. But that's better than your backend going in flames for black Friday! 
+
+> Sacrifice the frontend devs developer experience for additional revenue. That sounds like a good deal. After all, this is their job, right? 
+
+It doesn't have to be that way. 
+
+## 🤝 GraphQL-over-REST (a.k.a. persisted queries)
+
+Enter [persisted queries](https://www.apollographql.com/docs/kotlin/advanced/persisted-queries)!
+
+Persisted queries premise is very simple: it makes no sense for every client to send the same query over and over again.
+
+Take a simple GraphQL query that gets a list of sessions for the Confetti conference app (try it [here](https://confetti-app.dev/sandbox/?explorerURLState=N4IgJg9gxgrgtgUwHYBcQC4QEcYIE4CeABAOIIoDKCAztQJYRLVHAA6SRR1N9j1AFADM6eainREAjAAZpAShbtOnJBDA1FHZZxR0UAGwRLtXFAEM8KagEEUxzgF9jTpA5AAaEADcLdMwCNDagwQNi1WECQzRAiJJBh9fXY3TwALBDN1URC2EChGQXxkKCMMCLA8CDowfKR-fH06JAAmaWaAVgi3ByA)):
+
+```graphql
+query GetSessions {
+  sessions(first: 100) {
+    nodes {
+      title
+      startsAt
+    }
+  }
+}
+```
+
+Sending this to your server requires a `POST` request:
+
+
+```
+POST /graphql
+host: confetti-app.dev
+content-length: 170
+content-type: application/json
+
+{"query":"query GetSessions {\n  sessions(first: 100) {\n    nodes {\n      title\n      startsAt\n    }\n  }\n}","variables":{"name":null},"operationName":"GetSessions"}
+```
+
+This is bad for several reasons:
+
+* It uses `POST`, making the request almost impossible to cache in any standard CDN.
+* It sends 170 bytes over the network over and over again.
+* Those 170 bytes also need to be part of your app bundle.
+* Your server has to parse and validate the query every single time.
+
+Persisted queries solve all of that by registering your queries at build time and just sending an id instead of the whole document:
+
+```
+GET /graphql
+host: confetti-app.dev
+content-length: 108
+content-type: application/json
+
+{"operationName":"GetSessions","documentId": "sha256:d7cd52f794595d1c5ca180ac76036462cff132314c821d9e30c47d3725213034"}
+```
+
+This solves **all** problems. 
+
+* Because it uses GET, your requests are now cacheable at the edge. 
+* Because only a predefined list of queries are registered, your system is a lot more predictable. No more random internet user trying to send a GraphQL queries with 50 nested fragments. 
+* Because it uses regular HTTP verbs and the response uses the [`application/graphql-response+json` content-type](https://graphql.github.io/graphql-over-http/draft/#sec-Status-Codes), you can now use your existing HTTP tooling with GraphQL.
+
+If we make our table again, it'll now look like this 🤩:
+
+| Trait          | REST         | GraphQL   | GraphQL-over-REST |
+|----------------|--------------|-----------|-------------------|
+| Predictability | high         | low       | 🏆 high           |
+| Cacheability   | high         | low       | 🏆 high           |
+| Observability  | high         | low       | 🏆 high           |
+| Friction       | high         | low       | 🏆 low            | 
+| Latency        | high         | low       | 🏆 low            |
+| Lifecycle      | per-resource | per-field | 🏆 per-field      |
+
+## 🔮 Getting there
+
+As you probably guessed, there's a small catch. To store the persisted queries, your server now needs storage and a small runtime component.
+
+Our table actually looks more like so:
+
+| Trait          | REST         | GraphQL   | GraphQL-over-REST               |
+|----------------|--------------|-----------|---------------------------------|
+| Predictability | high         | low       | 🏆 high                         |
+| Cacheability   | high         | low       | 🏆 high                         |
+| Observability  | high         | low       | 🏆 high                         |
+| Friction       | high         | low       | 🏆 low                          | 
+| Latency        | high         | low       | 🏆 low                          |
+| Lifecycle      | per-resource | per-field | 🏆 per-field                    |
+| Complexity     | normal       | normal    | 😐 higher (needs a query store) |
+
+That query store itself isn't super complex, but it's definitely an extra step when you want to start a new API. And it needs to be accessible by all your clients, including authentication.
+
+To make matters worse, the protocol to send persisted queries itself [isn't completely standardized](https://github.com/graphql/graphql-over-http/pull/264). 
+
+The end-result is a diversity of implementations that make persisted queries difficult to read for the newcomer to GraphQL. Despite being an important part of the ecosystem, new deployments vastly overlook persisted queries. This needs to change.
+
+If you care about the future of GraphQL, please review the [persisted documents syntax PR](https://github.com/graphql/graphql-over-http/pull/264). 
+
+If you have a successful deployment using persisted queries, share it, the more deployments using them, the faster we'll make the internet a type-safe place!
+
+---
+
+Photo by [Vardan Papikyan](https://unsplash.com/photos/a-person-holding-a-piece-of-a-puzzle-in-their-hands-DnXqvmS0eXM)
