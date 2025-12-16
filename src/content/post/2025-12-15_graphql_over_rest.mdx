@@ -100,12 +100,19 @@ This is bad for several reasons:
 Persisted queries solve all of that by registering your queries at build time and just sending an id instead of the whole document:
 
 ```
-GET /graphql
+POST /graphql
 host: confetti-app.dev
 content-length: 108
 content-type: application/json
 
 {"operationName":"GetSessions","documentId": "sha256:d7cd52f794595d1c5ca180ac76036462cff132314c821d9e30c47d3725213034"}
+```
+
+To make things even simpler, you can pass your document identifier in your GET url:
+
+```
+GET /graphql/android-client/GetSessions/3
+host: confetti-app.dev
 ```
 
 This solves **all** problems.
