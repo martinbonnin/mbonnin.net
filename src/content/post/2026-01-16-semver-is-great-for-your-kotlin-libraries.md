@@ -11,7 +11,7 @@ This is an interesting question, with lots of nuances.
 
 The closest we have to an authoritative answer is Semantic Versioning (or [SemVer](https://semver.org/)). SemVer defines a [grammar](https://github.com/semver/semver/blob/master/semver.md?plain=1#L147) for version numbers and rules for ordering. SemVer looks like `1.0.0-alpha.1`.
 
-The alternative, used a lot in the ecosystem, is zero-padded versioning. With zero-padded versioning, versions are padded with zeros to ensure a fixed number of digits and a natural lexicographic order (think filesystem). Zero-padded looks like `1.0.0-alpha01`.
+The alternative, used a lot in the ecosystem, is zero-padded versioning. With zero-padded versioning, versions are padded with zeroes to ensure a fixed number of digits and a natural lexicographic order (think filesystem-like). Zero-padded looks like `1.0.0-alpha01`.
 
 I've been wrestling with this question for many years. In fact, I was asking the [same question 5 years ago](https://slack-chats.kotlinlang.org/t/502952/i-see-libs-prefixing-their-alpha-versions-with-0-but-not-doi#ee149f44-ab63-46eb-a590-1a021cb0cf47). At that time, I landed on zero-padded versioning. 
 
