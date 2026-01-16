@@ -23,22 +23,22 @@ To make things very explicit, let's take a look at examples of what it looks lik
 
 Both schemes allow a vast range of options, but we'll limit ourselves to alphas, betas, rcs, and stable:
 
-| Zero-padded    | SemVer         |
-|----------------|----------------|
-| 0.1.0          | 0.1.0          |
-| 0.1.1          | 0.1.1          |
-| 0.1.10         | 0.1.10         |
-| 1.0.0-alpha.01 | 1.0.0-alpha.1  |
-| 1.0.0-alpha.10 | 1.0.0-alpha.10 |
-| 1.0.0-beta.01  | 1.0.0-beta.1   |
-| 1.0.0-beta.10  | 1.0.0-beta.10  |
-| 1.0.0-rc.01    | 1.0.0-rc.1     |
-| 1.0.0-rc.10    | 1.0.0-rc.10    |
-| 1.0.1          | 1.0.1          |
-| 1.0.10         | 1.0.10         |
-| 1.1.0          | 1.1.0          |
-| 2.0.0          | 2.0.0          |
-| 10.0.0         | 10.0.0         |
+| Zero-padded   | SemVer         |
+|---------------|----------------|
+| 0.1.0         | 0.1.0          |
+| 0.1.1         | 0.1.1          |
+| 0.1.10        | 0.1.10         |
+| 1.0.0-alpha01 | 1.0.0-alpha.1  |
+| 1.0.0-alpha10 | 1.0.0-alpha.10 |
+| 1.0.0-beta01  | 1.0.0-beta.1   |
+| 1.0.0-beta10  | 1.0.0-beta.10  |
+| 1.0.0-rc01    | 1.0.0-rc.1     |
+| 1.0.0-rc10    | 1.0.0-rc.10    |
+| 1.0.1         | 1.0.1          |
+| 1.0.10        | 1.0.10         |
+| 1.1.0         | 1.1.0          |
+| 2.0.0         | 2.0.0          |
+| 10.0.0        | 10.0.0         |
 
 
 ## Maven and Gradle both support SemVer
