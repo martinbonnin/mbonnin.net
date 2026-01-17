@@ -5,7 +5,7 @@ publishDate: 2026-01-16T00:00:00Z
 image: '~/assets/images/2026-01-16-semver-is-great-for-your-kotlin-libraries/thumbnail.jpg'
 ---
 
-_**Edit 2026-01-16**: Sebastian Sellmair wrote a comprehensive response [here](https://blog.sellmair.io/the-kotlin-ecosystem-might-not-choose-a-strict-semver-notation). As he points out, both versioning schemes are SemVer compatible! I have [edited](https://github.com/martinbonnin/mbonnin.net/commit/263da871c98d84f737f5b36d2cdf1470c899f85d) this post to be about "strict" vs "zero-padded" SemVer._
+_**Edit 2026-01-17**: Sebastian Sellmair wrote a comprehensive response [here](https://blog.sellmair.io/the-kotlin-ecosystem-might-not-choose-a-strict-semver-notation). As he points out, both versioning schemes are SemVer compatible! I have [edited](https://github.com/martinbonnin/mbonnin.net/commit/263da871c98d84f737f5b36d2cdf1470c899f85d) this post to be about "strict" vs "zero-padded" SemVer._
 
 The question came up lately what versioning scheme to use for Kotlin libraries ([KotlinLang slack](https://slack-chats.kotlinlang.org/c/library-development), [Twitter](https://x.com/Sellmair/status/2011086287059751085), [BlueSky](https://bsky.app/profile/mbonnin.net/post/3mcezm43nf326)). 
 
