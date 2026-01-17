@@ -5,7 +5,7 @@ publishDate: 2026-01-16T00:00:00Z
 image: '~/assets/images/2026-01-16-semver-is-great-for-your-kotlin-libraries/thumbnail.jpg'
 ---
 
-_Edit 2026-01-16: Sebastian Sellmair wrote a comprehensive response [here](https://blog.sellmair.io/the-kotlin-ecosystem-might-not-choose-a-strict-semver-notation). As he points out, both versioning schemes are SemVer compatible. I have edited this post to be about "strict" vs "zero-padded" SemVer._
+_**Edit 2026-01-16**: Sebastian Sellmair wrote a comprehensive response [here](https://blog.sellmair.io/the-kotlin-ecosystem-might-not-choose-a-strict-semver-notation). As he points out, both versioning schemes are SemVer compatible! I have edited this post to be about "strict" vs "zero-padded" SemVer._
 
 The question came up lately what versioning scheme to use for Kotlin libraries ([KotlinLang slack](https://slack-chats.kotlinlang.org/c/library-development), [Twitter](https://x.com/Sellmair/status/2011086287059751085), [BlueSky](https://bsky.app/profile/mbonnin.net/post/3mcezm43nf326)). 
 
@@ -15,8 +15,8 @@ The closest we have to an authoritative answer is Semantic Versioning (or [SemVe
 
 SemVer allows for a wide range of variation, though. Two variants are widely used, we'll call them 'strict' and 'zero-padded':
 
-* Strict SemVer looks like `1.0.0-alpha.1`
-* Zero-padded SemVer looks like `1.0.0-alpha01`
+* **Strict SemVer** looks like `1.0.0-alpha.1`
+* **Zero-padded SemVer** looks like `1.0.0-alpha01`
 
 Strict SemVer is used in many NPM and Rust packages as well as some Kotlin libraries. Zero-padded SemVer is used by AndroidX and a lot of Kotlin libraries.  
 
