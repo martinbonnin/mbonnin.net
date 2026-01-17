@@ -1,6 +1,6 @@
 ---
 title: 'SemVer is a great versioning scheme for Kotlin libraries'
-excerpt: 'Both Maven and Gradle support SemVer'
+excerpt: 'Both Maven and Gradle support strict SemVer'
 publishDate: 2026-01-16T00:00:00Z
 image: '~/assets/images/2026-01-16-semver-is-great-for-your-kotlin-libraries/thumbnail.jpg'
 ---
