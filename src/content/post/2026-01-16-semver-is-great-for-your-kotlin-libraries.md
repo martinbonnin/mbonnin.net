@@ -113,6 +113,8 @@ The rest of the tooling (HTML indices, anything else?) will improve so that sort
 
 Next time you have to choose a versioning scheme, **consider strict SemVer**. 
 
+_Comment on this post on [Bluesky](https://bsky.app/profile/mbonnin.net/post/3mcncpklc4c2h) or [Mastodon](https://mastodon.mbonnin.net/@mb/115912020599025341)_
+
 _PS: we should also start our versions at '0', story for another time!_
 
 ---
