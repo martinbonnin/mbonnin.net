@@ -15,7 +15,7 @@ I believe the future of Kotlin scripting is bright. Despite some of the initial 
 - `build.gradle.kts`
 - [Notebooks](https://kotlinlang.org/docs/kotlin-notebook-overview.html)
 
-I myself wrote about [Kotlin scripting back in May 2020](https://mbonnin.medium.com/may-2020-the-state-of-kotlin-scripting-99cb6cc57db1). To this day, this is one of my most read blog post so this felt like the perfect opportunity to make a small refresher.
+I myself wrote about [Kotlin scripting back in May 2020](https://mbonnin.medium.com/may-2020-the-state-of-kotlin-scripting-99cb6cc57db1). To this day, this is one of my most read blog posts so this felt like the perfect opportunity to make a small refresher.
 
 Let's see how you can use `*.main.kts` today, in November 2024!
 
