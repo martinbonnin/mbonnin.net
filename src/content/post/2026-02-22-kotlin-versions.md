@@ -182,5 +182,7 @@ When that moment comes, consider naming your version after what it really is, i.
 + kotlin-gradle-plugin = "2.3.10"
 ```
 
+_Comment on this post on [Bluesky](https://bsky.app/profile/mbonnin.net/post/3mfhhpuz3jc2r) or [Mastodon](https://mastodon.mbonnin.net/@mb/116115024540953338)_
+
 ---
 [Photo](https://unsplash.com/photos/assorted-handheld-tools-in-tool-rack-t5YUoHW6zRo) by [Barn Images](https://unsplash.com/@barnimages)
