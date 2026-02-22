@@ -74,7 +74,9 @@ kotlin {
 }
 ```
 
-You usually want to use the lowest version of the stdlib that supports your use cases.
+If you're a library author, you usually want to use the lowest possible version of the stdlib. This makes your library generally more compatible. 
+
+If you're an app developer, you usually want to use the highest possible version. This is so that you get the latest fixes and features.
 
 One case where it's important to downgrade the stdlib is if your code runs in environments that force a given version of the stdlib. [Gradle is a famous example](https://github.com/gradle/gradle/issues/16345) (and the only one I'm aware of).
 
