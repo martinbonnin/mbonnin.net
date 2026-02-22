@@ -48,7 +48,7 @@ plugins {
 
 You usually want the latest version of KGP to benefit from improvements such as [Gradle 9 support](https://kotlinlang.org/docs/whatsnew23.html#gradle), isolated projects, or new APIs to integrate better with other plugins. It's always a good idea to use [liberal tooling](https://blog.alllex.me/posts/2023-11-03-liberal-library-tooling/). 
 
-By default, this also set the version for:
+By default, this also sets the version for:
 
 * [compiler](#kotlin-compiler)
 * [standard library](#kotlin-standard-library)
@@ -161,6 +161,7 @@ At the time of writing, Tiny Jib uses:
 * Kotlin Gradle Plugin `2.3` for latest Gradle improvements.
 * Kotlin Compiler `2.2` to support `languageVersion=1.8`
 * Language Version `1.8` to support [Gradle 8](https://docs.gradle.org/current/userguide/compatibility.html#kotlin).
+* Kotlinx serialization `2.2` to be aligned with the Kotlin Compiler version.
 
 This way it uses [latest tooling while still widely compatible](https://blog.alllex.me/posts/2023-11-03-liberal-library-tooling/). 
 
