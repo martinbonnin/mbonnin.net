@@ -135,7 +135,7 @@ kotlin {
 }
 ```
 
-Interestingly, this setting isn't very relevant as your stdlib version in your dependencies is the one that is ultimately going to be important to your consumers. It acts as a guard rail for the compiler to not call into unsupported APIs but there are [plans to marge it with the stdlib version](https://youtrack.jetbrains.com/issue/KT-58998). 
+Interestingly, this setting isn't very relevant as your stdlib version in your dependencies is the one that is ultimately going to be important to your consumers. It acts as a guard rail for the compiler to not call into unsupported APIs but there are [plans to merge it with the stdlib version](https://youtrack.jetbrains.com/issue/KT-58998). 
 
 Until then, you usually want this to match your stdlib version.
 
