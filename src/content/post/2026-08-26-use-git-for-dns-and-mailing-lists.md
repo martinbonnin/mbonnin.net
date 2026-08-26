@@ -192,5 +192,7 @@ The important thing is to:
 
 At this point, documentation, backup and rollbacks are the cherry on top. In all cases, there's really no reason to not use infrastructure as code for your organization in 2026.
 
+_Comment on this post on [Bluesky](https://bsky.app/profile/mbonnin.net/post/3mtxuo6mps32u) or [Mastodon](https://mastodon.mbonnin.net/@mb/117160995090153108)_
+
 ---
 [Photo](https://unsplash.com/photos/people-hiking-on-green-grass-field-during-daytime-Ms_p0I5DQSM) by [nika tchokhonelidze](https://unsplash.com/@nika9447)
