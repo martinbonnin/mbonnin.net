@@ -14,3 +14,7 @@ node_modules/
 .astro
 .idea
 credentials.json
+
+# DNS
+dns/.venv
+dns/plan.txt

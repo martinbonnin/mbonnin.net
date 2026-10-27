@@ -1,0 +1,44 @@
+name: DNS Apply
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dns/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dns-apply
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: dns
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refuse to apply placeholder zone
+        run: |
+          if grep -q PLACEHOLDER zones/mbonnin.net.yaml; then
+            echo "zones/mbonnin.net.yaml is still a placeholder, see dns/README.md"
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - run: pip install -r requirements.txt
+
+      - name: octoDNS apply
+        env:
+          PORKBUN_API_KEY: ${{ secrets.PORKBUN_API_KEY }}
+          PORKBUN_SECRET_KEY: ${{ secrets.PORKBUN_SECRET_KEY }}
+        run: octodns-sync --config-file=config/octodns.yaml --doit

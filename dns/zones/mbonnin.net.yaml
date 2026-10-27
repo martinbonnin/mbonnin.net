@@ -1,0 +1,6 @@
+---
+# PLACEHOLDER: replace this file with the live records before merging
+# (see dns/README.md, "Seeding real records"). Applying an empty zone would
+# delete every record at Porkbun, so dns-apply refuses to run while this
+# marker is present.
+{}
