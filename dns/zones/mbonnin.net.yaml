@@ -31,6 +31,10 @@ blog:
   ttl: 600
   type: CNAME
   value: hashnode.network.
+galak:
+  ttl: 600
+  type: A
+  value: 136.81.218.121
 mastodon:
   ttl: 600
   type: CNAME
