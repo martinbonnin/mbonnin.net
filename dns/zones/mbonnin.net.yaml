@@ -12,13 +12,6 @@
       preference: 10
     - exchange: mxext3.mailbox.org.
       preference: 20
-  - ttl: 86400
-    type: NS
-    values:
-    - curitiba.porkbun.com
-    - fortaleza.porkbun.com
-    - maceio.porkbun.com
-    - salvador.porkbun.com
   - ttl: 600
     type: TXT
     values:
