@@ -1,6 +1,60 @@
 ---
-# PLACEHOLDER: replace this file with the live records before merging
-# (see dns/README.md, "Seeding real records"). Applying an empty zone would
-# delete every record at Porkbun, so dns-apply refuses to run while this
-# marker is present.
-{}
+? ''
+: - ttl: 600
+    type: A
+    value: 199.36.158.100
+  - ttl: 600
+    type: MX
+    values:
+    - exchange: mxext1.mailbox.org.
+      preference: 10
+    - exchange: mxext2.mailbox.org.
+      preference: 10
+    - exchange: mxext3.mailbox.org.
+      preference: 20
+  - ttl: 86400
+    type: NS
+    values:
+    - curitiba.porkbun.com
+    - fortaleza.porkbun.com
+    - maceio.porkbun.com
+    - salvador.porkbun.com
+  - ttl: 600
+    type: TXT
+    values:
+    - google-site-verification=pYnZ8sTdD33WUczoTUIxL3D1uE2MxuJKMG62d3268s0
+    - google-site-verification=we7tMNjukFK2B3UKzNL0eGSIxG3_45HJqfweo1dFYm4
+    - hosting-site=mbonnin-net-805a9
+    - v=spf1 include:mailbox.org ~all
+_atproto:
+  ttl: 600
+  type: TXT
+  value: did=did:plc:i5mxz4yzao5nnmx76cxouvok
+admin:
+  ttl: 600
+  type: A
+  value: 213.186.33.19
+blog:
+  ttl: 600
+  type: CNAME
+  value: hashnode.network.
+mastodon:
+  ttl: 600
+  type: CNAME
+  value: vip.masto.host.
+mbo0001._domainkey:
+  ttl: 600
+  type: CNAME
+  value: mbo0001._domainkey.mailbox.org.
+mbo0002._domainkey:
+  ttl: 600
+  type: CNAME
+  value: mbo0002._domainkey.mailbox.org.
+mbo0003._domainkey:
+  ttl: 600
+  type: CNAME
+  value: mbo0003._domainkey.mailbox.org.
+mbo0004._domainkey:
+  ttl: 600
+  type: CNAME
+  value: mbo0004._domainkey.mailbox.org.
